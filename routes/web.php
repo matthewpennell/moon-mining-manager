@@ -11,6 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Master route.
+Route::get('/', 'AppController@home');
+
+// Handle EVE SSO requests and callbacks.
+Route::get('/login', 'Auth\AuthController@redirectToProvider');
+Route::get('/callback', 'Auth\AuthController@handleProviderCallback');
+
+// Cron job.
+Route::get('/cron/refresh', 'CronController@refresh');
+
+// Logout.
+Route::get('/logout', 'AppController@logout');
