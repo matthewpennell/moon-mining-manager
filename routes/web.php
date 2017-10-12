@@ -14,6 +14,9 @@
 // Master route.
 Route::get('/', 'AppController@home');
 
+// Access management.
+Route::get('/access', 'AppController@showAuthorisedUsers');
+
 // Handle EVE SSO requests and callbacks.
 Route::get('/login', 'Auth\AuthController@redirectToProvider');
 Route::get('/callback', 'Auth\AuthController@handleProviderCallback');

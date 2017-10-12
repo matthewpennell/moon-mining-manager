@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Whitelist;
+use App\User;
 
 class AppController extends Controller
 {
@@ -27,6 +29,28 @@ class AppController extends Controller
             'user' => Auth::user(),
         ]);
 
+    }
+
+    /**
+     * Access management user list. List all the current whitelisted users, together
+     * with the person that authorised them.
+     * 
+     * @return Response
+     */
+    public function showAuthorisedUsers()
+    {
+
+        // If no current logged in user, show the login page.
+        if (!Auth::check())
+        {
+            return view('login');
+        }
+
+        return view('users', [
+            'user' => Auth::user(),
+            'whitelisted_users' => Whitelist::all(),
+        ]);
+        
     }
 
     /**

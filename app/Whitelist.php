@@ -14,7 +14,7 @@ class Whitelist extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User', 'eve_id');
+        return $this->belongsTo('App\User', 'eve_id', 'eve_id');
     }
 
     /**
@@ -22,7 +22,7 @@ class Whitelist extends Model
      */
     public function whitelister()
     {
-        return $this->belongsTo('App\User', 'added_by');
+        return $this->belongsTo('App\User', 'added_by', 'eve_id');
     }
 
 }

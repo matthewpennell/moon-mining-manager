@@ -30,8 +30,10 @@ class AuthController extends Controller
     {
         $user = Socialite::driver('eveonline-sisi')->user();
         $authUser = $this->findOrCreateUser($user);
+
         // Check if the user is whitelisted to access the app.
         Whitelist::where('eve_id', $authUser->eve_id)->firstOrFail();
+
         Auth::login($authUser, true);
         return redirect('/');
     }

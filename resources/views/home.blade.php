@@ -19,6 +19,10 @@
             Welcome back, {{ $user->name }}! 
             <a href="/logout">Logout</a>
         </p>
+        
+        <ul>
+            <li><a href="/access">Manage Access</a></li>
+        </ul>
 
     </body>
 
