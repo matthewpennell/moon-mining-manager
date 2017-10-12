@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Socialite;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Whitelist;
 
 class AuthController extends Controller
 {
@@ -29,6 +30,8 @@ class AuthController extends Controller
     {
         $user = Socialite::driver('eveonline-sisi')->user();
         $authUser = $this->findOrCreateUser($user);
+        // Check if the user is whitelisted to access the app.
+        Whitelist::where('eve_id', $authUser->eve_id)->firstOrFail();
         Auth::login($authUser, true);
         return redirect('/');
     }
