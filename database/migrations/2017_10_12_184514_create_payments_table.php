@@ -16,7 +16,7 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('miner_id');
-            $table->float('amount_received', 12, 2);
+            $table->decimal('amount_received', 17, 2);
             $table->timestamps();
         });
     }

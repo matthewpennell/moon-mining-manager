@@ -16,7 +16,7 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('miner_id');
-            $table->float('amount', 12, 2);
+            $table->decimal('amount', 17, 2);
             $table->timestamps();
         });
     }

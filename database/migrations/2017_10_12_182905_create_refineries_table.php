@@ -19,7 +19,7 @@ class CreateRefineriesTable extends Migration
             $table->string('observer_type', 100);
             $table->string('name', 255);
             $table->integer('solar_system_id');
-            $table->float('income', 15, 2);
+            $table->decimal('income', 17, 2);
             $table->timestamps();
         });
     }

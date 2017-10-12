@@ -19,7 +19,7 @@ class CreateMinersTable extends Migration
             $table->integer('corporation_id');
             $table->string('name', 255);
             $table->string('avatar', 255);
-            $table->float('amount_owed', 15, 2);
+            $table->decimal('amount_owed', 17, 2);
             $table->timestamps();
         });
     }
