@@ -24,8 +24,9 @@ Route::post('/access/blacklist/{id}', 'AppController@blacklistUser');
 Route::get('/login', 'Auth\AuthController@redirectToProvider');
 Route::get('/callback', 'Auth\AuthController@handleProviderCallback');
 
-// Cron job.
-Route::get('/cron/refresh', 'CronController@refresh');
-
 // Logout.
 Route::get('/logout', 'AppController@logout');
+
+// Cron routes.
+Route::get('/cron/refresh', 'CronController@refresh');
+Route::get('/cron/test', 'CronController@pollRefineries');

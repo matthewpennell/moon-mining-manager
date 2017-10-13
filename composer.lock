@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "308c25e765f16290425d8d7a4f814373",
+    "content-hash": "270c866909e5e7c2edeefd6d99291cdb",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -260,6 +260,57 @@
             "time": "2017-05-14T14:47:48+00:00"
         },
         {
+            "name": "eveseat/eseye",
+            "version": "0.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eveseat/eseye.git",
+                "reference": "1dafe7ecb067554cc4bb7c1ebdf1a8fa44adb2c9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eveseat/eseye/zipball/1dafe7ecb067554cc4bb7c1ebdf1a8fa44adb2c9",
+                "reference": "1dafe7ecb067554cc4bb7c1ebdf1a8fa44adb2c9",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2",
+                "monolog/monolog": "^1.22",
+                "nesbot/carbon": "^1.21",
+                "php": ">= 7.0",
+                "predis/predis": "^1.1"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master",
+                "mikey179/vfsstream": "~1",
+                "phpunit/phpunit": "^5.7"
+            },
+            "bin": [
+                "bin/tokengenerator"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Seat\\Eseye\\": "src/"
+                },
+                "files": [
+                    "src/Helpers/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Leon Jacobs",
+                    "email": "leonja511@gmail.com"
+                }
+            ],
+            "description": "A Standalone PHP ESI (EVE Swagger Interface) Client Library",
+            "time": "2017-09-20T15:13:08+00:00"
+        },
+        {
             "name": "fideloper/proxy",
             "version": "3.3.4",
             "source": {
@@ -496,6 +547,49 @@
                 "url"
             ],
             "time": "2017-03-20T17:10:46+00:00"
+        },
+        {
+            "name": "ixudra/curl",
+            "version": "6.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ixudra/curl.git",
+                "reference": "3b43c900d469e0e754f13fa792ea6581ddf645f1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ixudra/curl/zipball/3b43c900d469e0e754f13fa792ea6581ddf645f1",
+                "reference": "3b43c900d469e0e754f13fa792ea6581ddf645f1",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=4.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ixudra\\Curl\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Oris",
+                    "email": "jan.oris@ixudra.be"
+                }
+            ],
+            "description": "Custom PHP Curl library for the Laravel 5 framework - developed by Ixudra",
+            "homepage": "http://ixudra.be",
+            "keywords": [
+                "Ixudra",
+                "curl",
+                "laravel"
+            ],
+            "time": "2017-10-10T19:15:41+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -1353,6 +1447,56 @@
                 "random"
             ],
             "time": "2017-09-27T21:40:39+00:00"
+        },
+        {
+            "name": "predis/predis",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "time": "2016-06-16T16:22:20+00:00"
         },
         {
             "name": "psr/container",
