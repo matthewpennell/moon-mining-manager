@@ -16,6 +16,9 @@ Route::get('/', 'AppController@home');
 
 // Access management.
 Route::get('/access', 'AppController@showAuthorisedUsers');
+Route::get('/access/new', 'AppController@showUserAccessHistory');
+Route::post('/access/whitelist/{id}', 'AppController@whitelistUser');
+Route::post('/access/blacklist/{id}', 'AppController@blacklistUser');
 
 // Handle EVE SSO requests and callbacks.
 Route::get('/login', 'Auth\AuthController@redirectToProvider');

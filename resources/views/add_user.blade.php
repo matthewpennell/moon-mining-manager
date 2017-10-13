@@ -8,7 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Users &#0183; EVE Moon Mining Manager</title>
+        <title>Add New Users &#0183; EVE Moon Mining Manager</title>
 
     </head>
 
@@ -24,27 +24,25 @@
             <li><a href="/access">Manage Access</a></li>
         </ul>
 
-        <h1>Authorised Users</h1>
+        <h1>Add New Users</h1>
 
-        <p><a href="/access/new">Add new user</a></p>
+        <p>These are all the users that have attempted to access the application in the past. Click the button to whitelist your chosen user(s).</p>
 
         <table>
             <thead>
                 <tr>
                     <th>User</th>
-                    <th>Added by</th>
-                    <th>Delete</th>
+                    <th>Whitelist</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($whitelisted_users as $user)
+                @foreach ($access_history as $user)
                     <tr>
-                        <td><img src="{{ $user->user->avatar }}" alt=""> {{ $user->user->name }}</td>
-                        <td><img src="{{ $user->whitelister->avatar }}" alt=""> {{ $user->whitelister->name }}</td>
+                        <td><img src="{{ $user->avatar }}" alt=""> {{ $user->name }}</td>
                         <td>
-                            <form method="post" action="/access/blacklist/{{ $user->eve_id }}">
+                            <form method="post" action="/access/whitelist/{{ $user->eve_id }}">
                                 {{ csrf_field() }}
-                                <button>Remove user</button>
+                                <button>Whitelist user</button>
                             </form>
                         </td>
                     </tr>
