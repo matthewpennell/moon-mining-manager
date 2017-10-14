@@ -55,3 +55,5 @@
 [2017-10-14 11:16:36] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
 [2017-10-14 11:16:50] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
 [2017-10-14 11:22:07] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-14 11:41:02] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/93796719/?datasource=singularity [1.10s]
+[2017-10-14 11:41:02] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/

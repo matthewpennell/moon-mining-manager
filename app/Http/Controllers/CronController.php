@@ -8,10 +8,14 @@ use Seat\Eseye\Configuration;
 use Seat\Eseye\Containers\EsiAuthentication;
 use Seat\Eseye\Eseye;
 use App\User;
+use App\Refinery;
 
 class CronController extends Controller
 {
     
+    /**
+     * Cron task to request information on all of the currently active moon mining observer structures.
+     */
     public function pollRefineries()
     {
         // Set config datasource using environment variable.
@@ -46,6 +50,7 @@ class CronController extends Controller
                                 'esi-industry.read_corporation_mining.v1',
                                 'esi-wallet.read_corporation_wallet.v1',
                                 'esi-mail.send_mail.v1',
+                                'esi-universe.read_structures.v1',
                             ],
             'token_expires' => date('Y-m-d H:i:s', time() + $new_token->expires_in),
         ]);
@@ -58,12 +63,33 @@ class CronController extends Controller
             'character_id' => $user->eve_id,
         ]);
 
+        // Request a list of all of the active mining observers belonging to the corporation.
         $mining_observers = $esi->invoke('get', '/corporation/{corporation_id}/mining/observers/', [
             'corporation_id' => $character->corporation_id,
         ]);
         
-        // Do something.
-        dd($mining_observers);
+        // Process the refineries list. For each entry, we want to check and see if it already exists 
+        // in the database. If it does, we flag that it is currently active. If it doesn't, we create 
+        // a new database entry for it.
+        foreach ($mining_observers as $observer)
+        {
+            $refinery = Refinery::find($observer->observer_id);
+            if ($refinery->isEmpty())
+            {
+                $refinery = new Refinery;
+                $refinery->observer_id = $observer->observer_id;
+                $refinery->observer_type = $observer->observer_type;
+                // Pull down additional information about this structure.
+                $structure = $esi->invoke('get', '/universe/structures/{structure_id}/', [
+                    'structure_id' => $observer->observer_id,
+                ]);
+                $refinery->name = $structure->name;
+                $refinery->solar_system_id = $structure->solar_system_id;
+            }
+            $refinery->is_active = 1;
+            $refinery->save();
+        }
+
     }
 
 }

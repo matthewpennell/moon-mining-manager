@@ -22,6 +22,7 @@ class AuthController extends Controller
             'esi-industry.read_corporation_mining.v1',
             'esi-wallet.read_corporation_wallet.v1',
             'esi-mail.send_mail.v1',
+            'esi-universe.read_structures.v1',
         ])->redirect();
     }
 
