@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Ixudra\Curl\Facades\Curl;
-use Seat\Eseye\Cache\NullCache;
 use Seat\Eseye\Configuration;
-use Seat\Eseye\Containers\EsiConfiguration;
 use Seat\Eseye\Containers\EsiAuthentication;
 use Seat\Eseye\Eseye;
 use App\User;
@@ -16,7 +14,7 @@ class CronController extends Controller
     
     public function pollRefineries()
     {
-        // Set config datasource to Sisi.
+        // Set config datasource using environment variable.
         $configuration = Configuration::getInstance();
         $configuration->datasource = env('ESEYE_DATASOURCE', 'tranquility');
 
@@ -36,21 +34,36 @@ class CronController extends Controller
             ->enableDebug('logFile.txt')
             ->post();
         $new_token = json_decode($response);
+        $user->refresh_token = $new_token->refresh_token;
+        $user->save();
 
         $authentication = new EsiAuthentication([
             'secret'        => env('TESTEVEONLINE_CLIENT_SECRET'),
             'client_id'     => env('TESTEVEONLINE_CLIENT_ID'),
             'access_token'  => $new_token->access_token,
-            'refresh_token' => $new_token->refresh_token,
+            'refresh_token' => $user->refresh_token,
+            'scopes'        => [
+                                'esi-industry.read_corporation_mining.v1',
+                                'esi-wallet.read_corporation_wallet.v1',
+                                'esi-mail.send_mail.v1',
+                            ],
+            'token_expires' => date('Y-m-d H:i:s', time() + $new_token->expires_in),
         ]);
 
-        $esi = new Eseye();
-        $character_info = $esi->invoke('get', '/characters/{character_id}/', [
+        // Create ESI API object.
+        $esi = new Eseye($authentication);
+        
+        // Retrieve the user's character details.
+        $character = $esi->invoke('get', '/characters/{character_id}/', [
             'character_id' => $user->eve_id,
         ]);
+
+        $mining_observers = $esi->invoke('get', '/corporation/{corporation_id}/mining/observers/', [
+            'corporation_id' => $character->corporation_id,
+        ]);
         
-        // got data!
-        echo $character_info->name;
+        // Do something.
+        dd($mining_observers);
     }
 
 }

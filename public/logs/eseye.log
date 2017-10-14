@@ -15,3 +15,43 @@
 [2017-10-13 15:17:27] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
 [2017-10-13 15:19:28] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.14s]
 [2017-10-13 16:22:11] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/94560622/?datasource=singularity [0.58s]
+[2017-10-14 09:33:35] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/93796719/?datasource=singularity [1.31s]
+[2017-10-14 09:36:23] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-14 09:36:23] eseye.ERROR: [http 401] [Unauthorized] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/?datasource=singularity [0.17s]
+[2017-10-14 09:39:00] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-14 09:39:00] eseye.ERROR: [http 401] [Unauthorized] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/?datasource=singularity [0.13s]
+[2017-10-14 09:44:05] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-14 09:44:06] eseye.ERROR: [http 401] [Unauthorized] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/?datasource=singularity [0.12s]
+[2017-10-14 09:44:47] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.15s]
+[2017-10-14 09:45:26] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.13s]
+[2017-10-14 09:46:41] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.11s]
+[2017-10-14 09:48:07] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
+[2017-10-14 09:49:28] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.13s]
+[2017-10-14 09:49:38] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-14 09:49:38] eseye.ERROR: [http 401] [Unauthorized] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/?datasource=singularity [0.22s]
+[2017-10-14 09:49:55] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
+[2017-10-14 09:54:40] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.24s]
+[2017-10-14 09:54:50] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.13s]
+[2017-10-14 10:37:52] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.16s]
+[2017-10-14 10:38:13] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/93796719/?datasource=singularity [1.01s]
+[2017-10-14 10:39:51] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-14 10:39:51] eseye.ERROR: [http 401] [Unauthorized] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/?datasource=singularity [0.09s]
+[2017-10-14 10:40:08] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-14 10:40:08] eseye.ERROR: [http 401] [Unauthorized] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/?datasource=singularity [0.08s]
+[2017-10-14 10:42:11] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
+[2017-10-14 10:44:05] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
+[2017-10-14 10:48:32] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
+[2017-10-14 10:49:37] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.13s]
+[2017-10-14 10:49:54] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
+[2017-10-14 10:51:31] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.11s]
+[2017-10-14 10:51:49] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
+[2017-10-14 10:53:10] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
+[2017-10-14 11:01:01] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
+[2017-10-14 11:04:38] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.12s]
+[2017-10-14 11:05:14] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [1.64s]
+[2017-10-14 11:06:16] eseye.ERROR: [http 400] [Bad Request] post -> https://login.eveonline.com/oauth/token/?grant_type=refresh_token [0.11s]
+[2017-10-14 11:14:54] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-14 11:14:58] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/?datasource=singularity [3.40s]
+[2017-10-14 11:16:36] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-14 11:16:50] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-14 11:22:07] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/

@@ -1,8 +1,6 @@
 vendor/
 node_modules/
 npm-debug.log
-eseye.log
-public/logFile.txt
 
 # Laravel 4 specific
 bootstrap/compiled.php
@@ -12,6 +10,7 @@ app/storage/
 public/storage
 public/hot
 public/cache/latest
+public/log*
 storage/*.key
 .env.*.php
 .env.php

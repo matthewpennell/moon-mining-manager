@@ -22,6 +22,7 @@
         
         <ul>
             <li><a href="/access">Manage Access</a></li>
+            <li><a href="/cron/test">Poll Refineries</a></li>
         </ul>
 
     </body>
