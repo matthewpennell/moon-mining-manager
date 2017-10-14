@@ -103,4 +103,20 @@ class CronController extends EveController
 
     }
 
+    /**
+     * 
+     */
+    public function pollWallet()
+    {
+
+    }
+
+    /**
+     * Calculate the total amount owing per person, generate invoices, send emails.
+     */
+    public function generateInvoices()
+    {
+        
+    }
+
 }

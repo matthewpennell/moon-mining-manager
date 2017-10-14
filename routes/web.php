@@ -20,6 +20,10 @@ Route::get('/access/new', 'AppController@showUserAccessHistory');
 Route::post('/access/whitelist/{id}', 'AppController@whitelistUser');
 Route::post('/access/blacklist/{id}', 'AppController@blacklistUser');
 
+// Tax management.
+Route::get('/taxes', 'TaxController@showTaxRates');
+Route::post('/taxes/update/{id}', 'TaxController@updateTaxRate');
+
 // Handle EVE SSO requests and callbacks.
 Route::get('/login', 'Auth\AuthController@redirectToProvider');
 Route::get('/callback', 'Auth\AuthController@handleProviderCallback');
@@ -28,5 +32,7 @@ Route::get('/callback', 'Auth\AuthController@handleProviderCallback');
 Route::get('/logout', 'AppController@logout');
 
 // Cron routes.
-Route::get('/cron/refresh', 'CronController@refresh');
-Route::get('/cron/test', 'CronController@pollRefineries');
+Route::get('/cron/refineries', 'CronController@pollRefineries');
+Route::get('/cron/observers', 'CronController@pollMiningObservers');
+Route::get('/cron/wallet', 'CronController@pollWallet');
+Route::get('/cron/invoices', 'CronController@generateInvoices');

@@ -8,7 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Users &#0183; EVE Moon Mining Manager</title>
+        <title>Tax Rates &#0183; EVE Moon Mining Manager</title>
 
     </head>
 
@@ -25,27 +25,26 @@
             <li><a href="/taxes">Manage Tax Rates</a></li>
         </ul>
 
-        <h1>Authorised Users</h1>
-
-        <p><a href="/access/new">Add new user</a></p>
+        <h1>Tax Rates</h1>
 
         <table>
             <thead>
                 <tr>
-                    <th>User</th>
-                    <th>Added by</th>
-                    <th>Delete</th>
+                    <th>Moon Ore</th>
+                    <th>Tax Rate</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($whitelisted_users as $user)
+                @foreach ($tax_rates as $rate)
                     <tr>
-                        <td><img src="{{ $user->user->avatar }}" alt=""> {{ $user->user->name }}</td>
-                        <td><img src="{{ $user->whitelister->avatar }}" alt=""> {{ $user->whitelister->name }}</td>
+                        <td>{{ $rate->type->typeName }}</td>
+                        <td>{{ round($rate->tax_rate) }}%</td>
                         <td>
-                            <form method="post" action="/access/blacklist/{{ $user->eve_id }}">
+                            <form method="post" action="/taxes/update/{{ $rate->id }}">
                                 {{ csrf_field() }}
-                                <button>Remove user</button>
+                                <input type="text" size="3" name="new_tax_rate">
+                                <button>Update tax rate</button>
                             </form>
                         </td>
                     </tr>
