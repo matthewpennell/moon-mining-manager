@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Whitelist;
 use App\User;
+use App\Miner;
+use App\Refinery;
 
 class AppController extends Controller
 {
@@ -25,8 +28,16 @@ class AppController extends Controller
             return view('login');
         }
 
+        // Calculate the total currently owed and total income generated.
+        $total_amount_owed = DB::table('miners')->select(DB::raw('SUM(amount_owed) AS total'))->where('amount_owed', '>', 0)->first();
+        $total_income = DB::table('refineries')->select(DB::raw('SUM(income) AS total'))->first();
+
         return view('home', [
             'user' => Auth::user(),
+            'miners' => Miner::where('amount_owed', '>', 0)->get(),
+            'total_amount_owed' => $total_amount_owed->total,
+            'refineries' => Refinery::all(),
+            'total_income' => $total_income->total,
         ]);
 
     }

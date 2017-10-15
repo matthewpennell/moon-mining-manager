@@ -20,11 +20,8 @@
             <a href="/logout">Logout</a>
         </p>
         
-        <ul>
-            <li><a href="/access">Manage Access</a></li>
-            <li><a href="/taxes">Manage Tax Rates</a></li>
-        </ul>
-
+        @include('common.navigation')
+        
         <h1>Tax Rates</h1>
 
         <p>

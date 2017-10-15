@@ -20,10 +20,8 @@
             <a href="/logout">Logout</a>
         </p>
         
-        <ul>
-            <li><a href="/access">Manage Access</a></li>
-        </ul>
-
+        @include('common.navigation')
+        
         <h1>Add New Users</h1>
 
         <p>These are all the users that have attempted to access the application in the past. Click the button to whitelist your chosen user(s).</p>

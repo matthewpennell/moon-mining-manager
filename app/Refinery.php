@@ -22,7 +22,7 @@ class Refinery extends Model
      */
     public function system()
     {
-        return $this->belongsTo('App\SolarSystem');
+        return $this->belongsTo('App\SolarSystem', 'solar_system_id');
     }
 
 }

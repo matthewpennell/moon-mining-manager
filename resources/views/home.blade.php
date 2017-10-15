@@ -20,10 +20,61 @@
             <a href="/logout">Logout</a>
         </p>
         
-        <ul>
-            <li><a href="/access">Manage Access</a></li>
-            <li><a href="/taxes">Manage Tax Rates</a></li>
-        </ul>
+        @include('common.navigation')
+
+        <h1>Moon Mining Manager</h1>
+
+        <h2>Outstanding Debts</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Miner</th>
+                    <th>Amount Owed</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td>Total Outstanding:</td>
+                    <td align="right">{{ $total_amount_owed }} ISK</td>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach ($miners as $miner)
+                    <tr>
+                        <td>{{ $miner->name }}</td>
+                        <td align="right">{{ $miner->amount_owed }} ISK</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <h2>Income Per Refinery</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Refinery</th>
+                    <th>System</th>
+                    <th>Income</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="2">Total Income:</td>
+                    <td align="right">{{ $total_income }} ISK</td>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach ($refineries as $refinery)
+                    <tr>
+                        <td>{{ $refinery->name }}</td>
+                        <td>{{ $refinery->system->solarSystemName }}</td>
+                        <td align="right">{{ $refinery->income }} ISK</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
     </body>
 
