@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\EveController;
 use Illuminate\Http\Request;
 use Socialite;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Whitelist;
 
-class AuthController extends Controller
+class AuthController extends EveController
 {
     /**
      * Redirect the user to the EVE Online SSO page and ask for permission to search corporation assets.
@@ -39,7 +39,20 @@ class AuthController extends Controller
         // Check if the user is whitelisted to access the app.
         Whitelist::where('eve_id', $authUser->eve_id)->firstOrFail();
 
-        Auth::login($authUser, true);
+        // Check if the user is a member of the correct alliance.
+        $character = $this->esi->invoke('get', '/characters/{character_id}/', [
+            'character_id' => $authUser->eve_id,
+        ]);
+        $corporation = $this->esi->invoke('get', '/corporations/{corporation_id}/', [
+            'corporation_id' => $character->corporation_id,
+        ]);
+
+        // If an alliance is set, it must match the stored environment variable.
+        if ($corporation->alliance_id && $corporation->alliance_id == env('EVE_ALLIANCE_ID', NULL))
+        {
+            Auth::login($authUser, true);
+        }
+
         return redirect('/');
     }
 
