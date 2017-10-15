@@ -26,6 +26,10 @@ Route::post('/taxes/update_value/{id}', 'TaxController@updateValue');
 Route::post('/taxes/update_rate/{id}', 'TaxController@updateTaxRate');
 Route::post('/taxes/update_master_rate', 'TaxController@updateMasterTaxRate');
 
+// Email management.
+Route::get('/emails', 'EmailController@showEmails');
+Route::post('/emails/update', 'EmailController@updateEmails');
+
 // Handle EVE SSO requests and callbacks.
 Route::get('/login', 'Auth\AuthController@redirectToProvider');
 Route::get('/callback', 'Auth\AuthController@handleProviderCallback');
