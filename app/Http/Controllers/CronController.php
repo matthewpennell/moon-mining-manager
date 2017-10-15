@@ -121,8 +121,9 @@ class CronController extends EveController
         
         // Array to hold all of the information we want to send by invoice.
         $invoice_data = [];
-        // Create an array to hold miner details. We'll write it back to the database when we're done.
+        // Create arrays to hold miner and refinery details. We'll write it back to the database when we're done.
         $miner_data = [];
+        $refinery_data = [];
         
         // Grab all of the ore values and tax rates to refer to in calculations. This
         // returns an array keyed by type_id, so individual values/tax rates can be returned
@@ -148,6 +149,15 @@ class CronController extends EveController
             {
                 $miner_data[$entry->miner_id] = $tax_amount;
             }
+            // Add the income for this entry to the refinery array.
+            if (isset($refinery_data[$entry->refinery_id]))
+            {
+                $refinery_data[$entry->refinery_id] += $tax_amount;
+            }
+            else
+            {
+                $refinery_data[$entry->refinery_id] = $tax_amount;
+            }
             $entry->processed = 1;
             $entry->save(); // this might be expensive, maybe update them all at the end?
         }
@@ -158,6 +168,14 @@ class CronController extends EveController
             $miner = Miner::where('eve_id', $key)->first();
             $miner->amount_owed += $value;
             $miner->save();
+        }
+
+        // Loop through all the refinery data and update the database records.
+        foreach ($refinery_data as $key => $value)
+        {
+            $refinery = Refinery::where('observer_id', $key)->first();
+            $refinery->income += $value;
+            $refinery->save();
         }
 
         // For all miners that currently owe an outstanding balance, generate and send an invoice.
