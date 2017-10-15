@@ -31,6 +31,7 @@
             <thead>
                 <tr>
                     <th>Moon Ore</th>
+                    <th>Value</th>
                     <th>Tax Rate</th>
                     <th></th>
                 </tr>
@@ -39,12 +40,19 @@
                 @foreach ($tax_rates as $rate)
                     <tr>
                         <td>{{ $rate->type->typeName }}</td>
+                        <td>
+                            <form method="post" action="/taxes/update_value/{{ $rate->id }}">
+                                {{ csrf_field() }}
+                                <input type="text" size="5" name="new_value" value="{{ round($rate->value) }}"> ISK
+                                <button type="submit">Save</button>
+                            </form>
+                        </td>
                         <td>{{ round($rate->tax_rate) }}%</td>
                         <td>
-                            <form method="post" action="/taxes/update/{{ $rate->id }}">
+                            <form method="post" action="/taxes/update_rate/{{ $rate->id }}">
                                 {{ csrf_field() }}
                                 <input type="text" size="3" name="new_tax_rate">
-                                <button>Update tax rate</button>
+                                <button type="submit">Update tax rate</button>
                             </form>
                         </td>
                     </tr>

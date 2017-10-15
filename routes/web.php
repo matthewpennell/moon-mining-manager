@@ -22,7 +22,8 @@ Route::post('/access/blacklist/{id}', 'AppController@blacklistUser');
 
 // Tax management.
 Route::get('/taxes', 'TaxController@showTaxRates');
-Route::post('/taxes/update/{id}', 'TaxController@updateTaxRate');
+Route::post('/taxes/update_value/{id}', 'TaxController@updateValue');
+Route::post('/taxes/update_rate/{id}', 'TaxController@updateTaxRate');
 
 // Handle EVE SSO requests and callbacks.
 Route::get('/login', 'Auth\AuthController@redirectToProvider');

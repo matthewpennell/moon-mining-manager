@@ -24,6 +24,22 @@ class TaxController extends Controller
     }
 
     /**
+     * Update the stored value for a specified item.
+     */
+    public function updateValue(Request $request, $id = NULL)
+    {
+        if ($id == NULL)
+        {
+            return redirect('/taxes');
+        }
+        $rate = TaxRate::find($id);
+        $rate->value = $request->input('new_value');
+        $rate->updated_by = Auth::user()->id;
+        $rate->save();
+        return redirect('/taxes');
+    }
+
+    /**
      * Update the stored rate of tax for a specified item.
      */
     public function updateTaxRate(Request $request, $id = NULL)
