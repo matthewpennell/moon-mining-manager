@@ -16,6 +16,7 @@ class EveController extends Controller
 {
 
     protected $esi; // Eseye object for performing all ESI requests
+    protected $character_id; // reference to the prime user's character ID
     protected $corporation_id; // reference to the prime user's corporation ID
 
     /**
@@ -69,6 +70,7 @@ class EveController extends Controller
             'character_id' => $user->eve_id,
         ]);
 
+        $this->character_id = $user->eve_id;
         $this->corporation_id = $character->corporation_id;
 
     }

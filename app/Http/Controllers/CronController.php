@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Refinery;
 use App\MiningActivity;
 use App\Miner;
+use App\TaxRate;
 
 class CronController extends EveController
 {
@@ -79,24 +80,24 @@ class CronController extends EveController
                     $mining_activity->type_id = $log_entry->type_id;
                     $mining_activity->quantity = $log_entry->quantity;
                     $mining_activity->save();
-                }
-                // Check if this miner is already known.
-                $existing_miner = Miner::where('eve_id', $log_entry->character_id)->get();
-                if ($existing_miner->isEmpty())
-                {
-                    // Create a new entry for this miner, including pulling additional information.
-                    $miner = new Miner;
-                    $miner->eve_id = $log_entry->character_id;
-                    $character = $this->esi->invoke('get', '/characters/{character_id}/', [
-                        'character_id' => $log_entry->character_id,
-                    ]);
-                    $miner->name = $character->name;
-                    $miner->corporation_id = $character->corporation_id;
-                    $portrait = $this->esi->invoke('get', '/characters/{character_id}/portrait/', [
-                        'character_id' => $log_entry->character_id,
-                    ]);
-                    $miner->avatar = $portrait->px128x128;
-                    $miner->save();
+                    // Check if this miner is already known.
+                    $existing_miner = Miner::where('eve_id', $log_entry->character_id)->get();
+                    if ($existing_miner->isEmpty())
+                    {
+                        // Create a new entry for this miner, including pulling additional information.
+                        $miner = new Miner;
+                        $miner->eve_id = $log_entry->character_id;
+                        $character = $this->esi->invoke('get', '/characters/{character_id}/', [
+                            'character_id' => $log_entry->character_id,
+                        ]);
+                        $miner->name = $character->name;
+                        $miner->corporation_id = $character->corporation_id;
+                        $portrait = $this->esi->invoke('get', '/characters/{character_id}/portrait/', [
+                            'character_id' => $log_entry->character_id,
+                        ]);
+                        $miner->avatar = $portrait->px128x128;
+                        $miner->save();
+                    }
                 }
             }
         }
@@ -117,6 +118,71 @@ class CronController extends EveController
     public function generateInvoices()
     {
         
+        // Array to hold all of the information we want to send by invoice.
+        $invoice_data = [];
+        // Create an array to hold miner details. We'll write it back to the database when we're done.
+        $miner_data = [];
+        
+        // Grab all of the ore values and tax rates to refer to in calculations. This
+        // returns an array keyed by type_id, so individual values/tax rates can be returned
+        // by reference to $tax_rates[type_id]->value or $tax_rates[type_id]->tax_rate.
+        $tax_rates = TaxRate::select('type_id', 'value', 'tax_rate')->get()->keyBy('type_id');
+
+        // Grab all of the unprocessed mining activity records and loop through them.
+        $activity = MiningActivity::where('processed', 0)->get();
+
+        foreach ($activity as $entry)
+        {
+            // Each mining activity relates to a single ore type.
+            // We calculate the total value of that activity, and apply the 
+            // current tax rate to derive a tax amount to charge.
+            $total_value = $entry->quantity * $tax_rates[$entry->type_id]->value;
+            $tax_amount = $total_value * $tax_rates[$entry->type_id]->tax_rate / 100;
+            // Add the tax amount for this entry to the miner array.
+            if (isset($miner_data[$entry->miner_id]))
+            {
+                $miner_data[$entry->miner_id] += $tax_amount;
+            }
+            else
+            {
+                $miner_data[$entry->miner_id] = $tax_amount;
+            }
+            $entry->processed = 1;
+            $entry->save(); // this might be expensive, maybe update them all at the end?
+        }
+
+        // Loop through all of the miner data and update the database records.
+        foreach ($miner_data as $key => $value)
+        {
+            $miner = Miner::where('eve_id', $key)->first();
+            $miner->amount_owed += $value;
+            $miner->save();
+        }
+
+        // For all miners that currently owe an outstanding balance, generate and send an invoice.
+        $debtors = Miner::where('amount_owed', '>', 0)->get();
+        foreach ($debtors as $miner)
+        {
+            $template = '<h1>Moon Mining Statement ' . date('Y-m-d') . '</h1>';
+            $template .= '<p>You currently owe: ' . $miner->amount_owed . ' ISK</p>';
+            $template .= '<p>Please pay by following these instructions:</p>';
+            $mail = array(
+                'body' => $template,
+                'recipients' => array(
+                    array(
+                        'recipient_id' => $miner->eve_id,
+                        'recipient_type' => 'character'
+                    )
+                ),
+                'subject' => 'Alliance Moon Mining Statement ' . date('Y-m-d')
+            );
+            // Send the evemail.
+            $this->esi->setBody($mail);
+            $this->esi->invoke('post', '/characters/{character_id}/mail/', [
+                'character_id' => $this->character_id,
+            ]);
+        }
+
     }
 
 }

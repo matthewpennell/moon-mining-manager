@@ -38,3 +38,5 @@ Route::get('/cron/refineries', 'CronController@pollRefineries');
 Route::get('/cron/observers', 'CronController@pollMiningObservers');
 Route::get('/cron/wallet', 'CronController@pollWallet');
 Route::get('/cron/invoices', 'CronController@generateInvoices');
+
+Route::get('/mailtest', 'CronController@testMail');
