@@ -24,6 +24,14 @@
         
         <h1>Email Templates</h1>
 
+        <p>Within the body of the emails, you can use the following placeholder text. It will be replaced by the appropriate values when sent.</p>
+
+        <ul>
+            <li><strong>{date}</strong> - the current date</li>
+            <li><strong>{name}</strong> - the name of the recipient</li>
+            <li><strong>{amount_owed}</strong> - the total amount currently owed by the recipient</li>
+        </ul>
+
         <form action="/emails/update" method="post">
             {{ csrf_field() }}
             <table>

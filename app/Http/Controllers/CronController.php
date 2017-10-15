@@ -8,6 +8,7 @@ use App\Refinery;
 use App\MiningActivity;
 use App\Miner;
 use App\TaxRate;
+use App\Template;
 
 class CronController extends EveController
 {
@@ -161,20 +162,25 @@ class CronController extends EveController
 
         // For all miners that currently owe an outstanding balance, generate and send an invoice.
         $debtors = Miner::where('amount_owed', '>', 0)->get();
+        $template = Template::where('name', 'weekly_invoice')->first();
         foreach ($debtors as $miner)
         {
-            $template = '<h1>Moon Mining Statement ' . date('Y-m-d') . '</h1>';
-            $template .= '<p>You currently owe: ' . $miner->amount_owed . ' ISK</p>';
-            $template .= '<p>Please pay by following these instructions:</p>';
+            // Replace placeholder elements in email template.
+            $template->subject = str_replace('{date}', date('Y-m-d'), $template->subject);
+            $template->subject = str_replace('{name}', $miner->name, $template->subject);
+            $template->subject = str_replace('{amount_owed}', $miner->amount_owed, $template->subject);
+            $template->body = str_replace('{date}', date('Y-m-d'), $template->body);
+            $template->body = str_replace('{name}', $miner->name, $template->body);
+            $template->body = str_replace('{amount_owed}', $miner->amount_owed, $template->body);
             $mail = array(
-                'body' => $template,
+                'body' => $template->body,
                 'recipients' => array(
                     array(
                         'recipient_id' => $miner->eve_id,
                         'recipient_type' => 'character'
                     )
                 ),
-                'subject' => 'Alliance Moon Mining Statement ' . date('Y-m-d')
+                'subject' => $template->subject,
             );
             // Send the evemail.
             $this->esi->setBody($mail);
