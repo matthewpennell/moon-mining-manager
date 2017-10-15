@@ -55,4 +55,19 @@ class TaxController extends Controller
         return redirect('/taxes');
     }
 
+    /**
+     * Update the stored rate of tax for all items.
+     */
+    public function updateMasterTaxRate(Request $request)
+    {
+        if (!is_numeric($request->input('new_tax_rate')))
+        {
+            return redirect('/taxes');
+        }
+        TaxRate::query()->update([
+            'tax_rate' => $request->input('new_tax_rate')
+        ]);
+        return redirect('/taxes');
+    }
+
 }

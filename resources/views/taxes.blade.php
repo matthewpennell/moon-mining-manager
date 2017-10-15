@@ -27,6 +27,15 @@
 
         <h1>Tax Rates</h1>
 
+        <p>
+            Update the tax rate for all ores to:
+            <form method="post" action="/taxes/update_master_rate">
+                {{ csrf_field() }}
+                <input type="text" size="3" name="new_tax_rate">
+                <button type="submit">Update</button>
+            </form>
+        </p>
+
         <table>
             <thead>
                 <tr>
