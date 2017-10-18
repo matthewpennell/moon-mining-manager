@@ -36,14 +36,14 @@
             <tfoot>
                 <tr>
                     <td>Total Outstanding:</td>
-                    <td align="right">{{ $total_amount_owed }} ISK</td>
+                    <td align="right">{{ number_format($total_amount_owed) }} ISK</td>
                 </tr>
             </tfoot>
             <tbody>
                 @foreach ($miners as $miner)
                     <tr>
-                        <td>{{ $miner->name }}</td>
-                        <td align="right">{{ $miner->amount_owed }} ISK</td>
+                        <td><a href="/miner/{{ $miner->eve_id }}">{{ $miner->name }}</a></td>
+                        <td align="right">{{ number_format($miner->amount_owed) }} ISK</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -62,15 +62,15 @@
             <tfoot>
                 <tr>
                     <td colspan="2">Total Income:</td>
-                    <td align="right">{{ $total_income }} ISK</td>
+                    <td align="right">{{ number_format($total_income) }} ISK</td>
                 </tr>
             </tfoot>
             <tbody>
                 @foreach ($refineries as $refinery)
                     <tr>
-                        <td>{{ $refinery->name }}</td>
+                        <td><a href="/refinery/{{ $refinery->observer_id }}">{{ $refinery->name }}</a></td>
                         <td>{{ $refinery->system->solarSystemName }}</td>
-                        <td align="right">{{ $refinery->income }} ISK</td>
+                        <td align="right">{{ number_format($refinery->income) }} ISK</td>
                     </tr>
                 @endforeach
             </tbody>

@@ -9,6 +9,7 @@ use App\MiningActivity;
 use App\Miner;
 use App\TaxRate;
 use App\Template;
+use App\Invoice;
 
 class CronController extends EveController
 {
@@ -23,12 +24,12 @@ class CronController extends EveController
         $mining_observers = $this->esi->invoke('get', '/corporation/{corporation_id}/mining/observers/', [
             'corporation_id' => $this->corporation_id,
         ]);
-        
+
         // Process the refineries list. For each entry, we want to check and see if it already exists 
         // in the database. If it doesn't, we create a new database entry for it.
         foreach ($mining_observers as $observer)
         {
-            $refinery = Refinery::find($observer->observer_id);
+            $refinery = Refinery::where('observer_id', $observer->observer_id)->get();
             if ($refinery->isEmpty())
             {
                 $refinery = new Refinery;
@@ -138,44 +139,54 @@ class CronController extends EveController
             // Each mining activity relates to a single ore type.
             // We calculate the total value of that activity, and apply the 
             // current tax rate to derive a tax amount to charge.
-            $total_value = $entry->quantity * $tax_rates[$entry->type_id]->value;
-            $tax_amount = $total_value * $tax_rates[$entry->type_id]->tax_rate / 100;
-            // Add the tax amount for this entry to the miner array.
-            if (isset($miner_data[$entry->miner_id]))
+            // If the ore type is not recognised, skip the entry.
+            if (isset($tax_rates[$entry->type_id]))
             {
-                $miner_data[$entry->miner_id] += $tax_amount;
-            }
-            else
-            {
-                $miner_data[$entry->miner_id] = $tax_amount;
-            }
-            // Add the income for this entry to the refinery array.
-            if (isset($refinery_data[$entry->refinery_id]))
-            {
-                $refinery_data[$entry->refinery_id] += $tax_amount;
-            }
-            else
-            {
-                $refinery_data[$entry->refinery_id] = $tax_amount;
+                $total_value = $entry->quantity * $tax_rates[$entry->type_id]->value;
+                $tax_amount = $total_value * $tax_rates[$entry->type_id]->tax_rate / 100;
+                // Add the tax amount for this entry to the miner array.
+                if (isset($miner_data[$entry->miner_id]))
+                {
+                    $miner_data[$entry->miner_id] += $tax_amount;
+                }
+                else
+                {
+                    $miner_data[$entry->miner_id] = $tax_amount;
+                }
+                // Add the income for this entry to the refinery array.
+                if (isset($refinery_data[$entry->refinery_id]))
+                {
+                    $refinery_data[$entry->refinery_id] += $tax_amount;
+                }
+                else
+                {
+                    $refinery_data[$entry->refinery_id] = $tax_amount;
+                }
             }
             $entry->processed = 1;
             $entry->save(); // this might be expensive, maybe update them all at the end?
         }
 
         // Loop through all of the miner data and update the database records.
-        foreach ($miner_data as $key => $value)
+        if (count($miner_data))
         {
-            $miner = Miner::where('eve_id', $key)->first();
-            $miner->amount_owed += $value;
-            $miner->save();
+            foreach ($miner_data as $key => $value)
+            {
+                $miner = Miner::where('eve_id', $key)->first();
+                $miner->amount_owed += $value;
+                $miner->save();
+            }
         }
 
         // Loop through all the refinery data and update the database records.
-        foreach ($refinery_data as $key => $value)
+        if (count($refinery_data))
         {
-            $refinery = Refinery::where('observer_id', $key)->first();
-            $refinery->income += $value;
-            $refinery->save();
+            foreach ($refinery_data as $key => $value)
+            {
+                $refinery = Refinery::where('observer_id', $key)->first();
+                $refinery->income += $value;
+                $refinery->save();
+            }
         }
 
         // For all miners that currently owe an outstanding balance, generate and send an invoice.
@@ -205,6 +216,11 @@ class CronController extends EveController
             $this->esi->invoke('post', '/characters/{character_id}/mail/', [
                 'character_id' => $this->character_id,
             ]);
+            // Write an invoice entry.
+            $invoice = new Invoice;
+            $invoice->miner_id = $miner->eve_id;
+            $invoice->amount = $miner->amount_owed;
+            $invoice->save();
         }
 
     }
