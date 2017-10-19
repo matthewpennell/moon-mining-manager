@@ -484,3 +484,6 @@
 [2017-10-18 20:08:41] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.58s]
 [2017-10-18 20:08:42] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.01s]
 [2017-10-18 20:08:43] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.33s]
+[2017-10-19 17:25:27] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/93796719/?datasource=singularity [1.03s]
+[2017-10-19 17:25:33] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/94560622/?datasource=singularity [1.21s]
+[2017-10-19 17:25:33] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporations/98267685/?datasource=singularity [0.29s]

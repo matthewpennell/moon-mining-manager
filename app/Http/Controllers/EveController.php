@@ -29,8 +29,8 @@ class EveController extends Controller
         $configuration = Configuration::getInstance();
         $configuration->datasource = env('ESEYE_DATASOURCE', 'tranquility');
 
-        // Create authentication with app details and refresh token from user 1.
-        $user = User::first();
+        // Create authentication with app details and refresh token from nominated prime user.
+        $user = User::where('eve_id', env('ESI_PRIME_USER_ID', 0))->first();
 
         // Need to request a new valid access token from EVE SSO using the refresh token of the original request.
         $url = 'https://sisilogin.testeveonline.com/oauth/token';

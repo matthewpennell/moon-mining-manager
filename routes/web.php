@@ -25,6 +25,7 @@ Route::get('/taxes', 'TaxController@showTaxRates');
 Route::post('/taxes/update_value/{id}', 'TaxController@updateValue');
 Route::post('/taxes/update_rate/{id}', 'TaxController@updateTaxRate');
 Route::post('/taxes/update_master_rate', 'TaxController@updateMasterTaxRate');
+Route::get('/taxes/load', 'TaxController@loadInitialTaxRates');
 
 // Email management.
 Route::get('/emails', 'EmailController@showEmails');

@@ -47,7 +47,7 @@
                     <tr>
                         <td>{{ $rate->type->typeName }}</td>
                         <td>
-                            <form method="post" action="/taxes/update_value/{{ $rate->id }}">
+                            <form method="post" action="/taxes/update_value/{{ $rate->type_id }}">
                                 {{ csrf_field() }}
                                 <input type="text" size="5" name="new_value" value="{{ round($rate->value) }}"> ISK
                                 <button type="submit">Save</button>
@@ -55,7 +55,7 @@
                         </td>
                         <td>{{ round($rate->tax_rate) }}%</td>
                         <td>
-                            <form method="post" action="/taxes/update_rate/{{ $rate->id }}">
+                            <form method="post" action="/taxes/update_rate/{{ $rate->type_id }}">
                                 {{ csrf_field() }}
                                 <input type="text" size="3" name="new_tax_rate">
                                 <button type="submit">Update tax rate</button>
