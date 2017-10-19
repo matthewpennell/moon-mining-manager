@@ -29,8 +29,8 @@ class CronController extends EveController
         // in the database. If it doesn't, we create a new database entry for it.
         foreach ($mining_observers as $observer)
         {
-            $refinery = Refinery::where('observer_id', $observer->observer_id)->get();
-            if ($refinery->isEmpty())
+            $refinery = Refinery::where('observer_id', $observer->observer_id)->first();
+            if (!isset($refinery))
             {
                 $refinery = new Refinery;
                 $refinery->observer_id = $observer->observer_id;
@@ -41,9 +41,11 @@ class CronController extends EveController
                 ]);
                 $refinery->name = $structure->name;
                 $refinery->solar_system_id = $structure->solar_system_id;
+                $refinery->save();
             }
-            $refinery->save();
         }
+
+        echo 'Next, <a href="/cron/observers">observers</a>';
 
     }
 
@@ -72,8 +74,8 @@ class CronController extends EveController
                     'refinery_id' => $refinery->observer_id,
                     'type_id' => $log_entry->type_id,
                     'quantity' => $log_entry->quantity,
-                ])->get();
-                if ($existing_activity->isEmpty())
+                ])->first();
+                if (!isset($existing_activity))
                 {
                     // Create a new entry in the database for this activity.
                     $mining_activity = new MiningActivity;
@@ -83,8 +85,8 @@ class CronController extends EveController
                     $mining_activity->quantity = $log_entry->quantity;
                     $mining_activity->save();
                     // Check if this miner is already known.
-                    $existing_miner = Miner::where('eve_id', $log_entry->character_id)->get();
-                    if ($existing_miner->isEmpty())
+                    $existing_miner = Miner::where('eve_id', $log_entry->character_id)->first();
+                    if (!isset($existing_miner))
                     {
                         // Create a new entry for this miner, including pulling additional information.
                         $miner = new Miner;
@@ -104,6 +106,7 @@ class CronController extends EveController
             }
         }
 
+        echo 'Next, <a href="/cron/invoices">invoices</a>';
     }
 
     /**
@@ -136,33 +139,45 @@ class CronController extends EveController
 
         foreach ($activity as $entry)
         {
+            // If the ore type is not recognised, insert it into the tax rates table
+            // with a default value and tax rate.
+            if (!isset($tax_rates[$entry->type_id]))
+            {
+                $unrecognised_ore = new TaxRate;
+                $unrecognised_ore->type_id = $entry->type_id;
+                $unrecognised_ore->value = 100;
+                $unrecognised_ore->tax_rate = 5;
+                $unrecognised_ore->updated_by = 0;
+                $unrecognised_ore->save();
+                $tax_rates[$entry->type_id] = $unrecognised_ore;
+            }
+
             // Each mining activity relates to a single ore type.
             // We calculate the total value of that activity, and apply the 
             // current tax rate to derive a tax amount to charge.
-            // If the ore type is not recognised, skip the entry.
-            if (isset($tax_rates[$entry->type_id]))
+            $total_value = $entry->quantity * $tax_rates[$entry->type_id]->value;
+            $tax_amount = $total_value * $tax_rates[$entry->type_id]->tax_rate / 100;
+
+            // Add the tax amount for this entry to the miner array.
+            if (isset($miner_data[$entry->miner_id]))
             {
-                $total_value = $entry->quantity * $tax_rates[$entry->type_id]->value;
-                $tax_amount = $total_value * $tax_rates[$entry->type_id]->tax_rate / 100;
-                // Add the tax amount for this entry to the miner array.
-                if (isset($miner_data[$entry->miner_id]))
-                {
-                    $miner_data[$entry->miner_id] += $tax_amount;
-                }
-                else
-                {
-                    $miner_data[$entry->miner_id] = $tax_amount;
-                }
-                // Add the income for this entry to the refinery array.
-                if (isset($refinery_data[$entry->refinery_id]))
-                {
-                    $refinery_data[$entry->refinery_id] += $tax_amount;
-                }
-                else
-                {
-                    $refinery_data[$entry->refinery_id] = $tax_amount;
-                }
+                $miner_data[$entry->miner_id] += $tax_amount;
             }
+            else
+            {
+                $miner_data[$entry->miner_id] = $tax_amount;
+            }
+
+            // Add the income for this entry to the refinery array.
+            if (isset($refinery_data[$entry->refinery_id]))
+            {
+                $refinery_data[$entry->refinery_id] += $tax_amount;
+            }
+            else
+            {
+                $refinery_data[$entry->refinery_id] = $tax_amount;
+            }
+
             $entry->processed = 1;
             $entry->save(); // this might be expensive, maybe update them all at the end?
         }

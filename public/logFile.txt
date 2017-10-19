@@ -1,3 +1,4 @@
+* Hostname sisilogin.testeveonline.com was found in DNS cache
 *   Trying 87.237.38.62...
 * Connected to sisilogin.testeveonline.com (87.237.38.62) port 443 (#0)
 * ALPN, offering http/1.1
@@ -30,7 +31,7 @@ Content-Type: application/x-www-form-urlencoded
 < Expires: -1
 < Request-Context: appId=cid-v1:2afa543e-6a1c-4f85-8f9d-083599c8c7b5
 < X-Powered-By: ASP.NET
-< Date: Thu, 19 Oct 2017 17:25:31 GMT
+< Date: Thu, 19 Oct 2017 18:28:31 GMT
 < Connection: close
 < Content-Length: 230
 < 
