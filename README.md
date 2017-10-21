@@ -2,9 +2,19 @@
 
 This application manages moon-mining revenue and invoicing for EVE Online corporations and alliances.
 
+## Requirements
+
+* PHP 7.1+
+* MySQL
+
 ## Installation instructions
 
-TBC
+* Run `composer install` to install dependencies
+* Run `php artisan migrate` to create the database tables
+
+## Operation instructions
+
+* Run `php artisan queue:work` to start the job queue process
 
 ### EVE tables
 
