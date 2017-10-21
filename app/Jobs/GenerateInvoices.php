@@ -134,8 +134,8 @@ class GenerateInvoices implements ShouldQueue
             }
         }
 
-        // For all miners that currently owe an outstanding balance, generate and send an invoice.
-        $debtors = Miner::where('amount_owed', '>', 0)->get();
+        // For all miners in your alliance that currently owe an outstanding balance, generate and send an invoice.
+        $debtors = Miner::where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->get();
         $template = Template::where('name', 'weekly_invoice')->first();
         $delay_counter = 0;
 

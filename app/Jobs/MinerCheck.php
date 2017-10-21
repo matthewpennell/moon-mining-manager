@@ -53,6 +53,10 @@ class MinerCheck implements ShouldQueue
                 'character_id' => $this->miner_id,
             ]);
             $miner->avatar = $portrait->px128x128;
+            $alliance = $esi->esi->invoke('get', '/corporations/{corporation_id}/', [
+                'corporation_id' => $character->corporation_id,
+            ]);
+            $miner->alliance_id = $alliance->alliance_id;
             $miner->save();
         }
 
