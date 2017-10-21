@@ -7,7 +7,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Classes\EsiConnection;
 use App\TaxRate;
 use App\MiningActivity;
 use App\Type;
@@ -16,6 +15,8 @@ use App\Refinery;
 use App\Template;
 use App\Invoice;
 use Ixudra\Curl\Facades\Curl;
+use App\Jobs\SendEvemail;
+use Carbon\Carbon;
 
 class GenerateInvoices implements ShouldQueue
 {
@@ -38,7 +39,6 @@ class GenerateInvoices implements ShouldQueue
      */
     public function handle()
     {
-        $esi = new EsiConnection;
 
         // Array to hold all of the information we want to send by invoice.
         $invoice_data = [];
@@ -137,8 +137,11 @@ class GenerateInvoices implements ShouldQueue
         // For all miners that currently owe an outstanding balance, generate and send an invoice.
         $debtors = Miner::where('amount_owed', '>', 0)->get();
         $template = Template::where('name', 'weekly_invoice')->first();
+        $delay_counter = 0;
+
         foreach ($debtors as $miner)
         {
+
             // Replace placeholder elements in email template.
             $template->subject = str_replace('{date}', date('Y-m-d'), $template->subject);
             $template->subject = str_replace('{name}', $miner->name, $template->subject);
@@ -156,16 +159,17 @@ class GenerateInvoices implements ShouldQueue
                 ),
                 'subject' => $template->subject,
             );
-            // Send the evemail.
-            $esi->esi->setBody($mail);
-            $esi->esi->invoke('post', '/characters/{character_id}/mail/', [
-                'character_id' => $esi->character_id,
-            ]);
+
+            // Queue sending the evemail, spaced at 1 minute intervals to avoid triggering the mailspam limiter.
+            SendEvemail::dispatch($mail)->delay(Carbon::now()->addMinutes($delay_counter * 1));
+            $delay_counter++;
+
             // Write an invoice entry.
             $invoice = new Invoice;
             $invoice->miner_id = $miner->eve_id;
             $invoice->amount = $miner->amount_owed;
             $invoice->save();
+
         }
 
     }

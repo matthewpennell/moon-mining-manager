@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\EsiConnection;
 use App\Jobs\PollRefineries;
 use App\Jobs\PollMiningObservers;
 use App\Jobs\PollWallet;

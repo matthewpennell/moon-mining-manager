@@ -28,3 +28,78 @@
 [2017-10-21 10:31:12] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.27s]
 [2017-10-21 10:31:12] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.34s]
 [2017-10-21 10:31:13] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.62s]
+[2017-10-21 10:41:07] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-21 10:42:37] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-21 10:42:38] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/?datasource=singularity [0.64s]
+[2017-10-21 10:42:41] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/universe/structures/1025243026713/?datasource=singularity [2.51s]
+[2017-10-21 10:42:45] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/universe/structures/1025243043490/?datasource=singularity [3.28s]
+[2017-10-21 11:01:48] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:01:53] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:01:55] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/1025243043490/?datasource=singularity [1.76s]
+[2017-10-21 11:01:56] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:01:57] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/1025243026713/?datasource=singularity [1.33s]
+[2017-10-21 11:01:57] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:01:58] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:01:58] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:01:58] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:01:59] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:01:59] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:02:00] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:02:00] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:02:00] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:02:01] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:02:01] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:02:01] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:02:02] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:02:02] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:02:03] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:02:03] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:03:10] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:03:11] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/94560622/?datasource=singularity [0.61s]
+[2017-10-21 11:03:11] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/94560622/portrait/?datasource=singularity [0.35s]
+[2017-10-21 11:03:33] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/{observer_id}/
+[2017-10-21 11:03:34] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/97144530/?datasource=singularity [0.28s]
+[2017-10-21 11:03:34] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/97144530/portrait/?datasource=singularity [0.03s]
+[2017-10-21 11:03:35] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/830238945/?datasource=singularity [0.27s]
+[2017-10-21 11:03:35] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/830238945/portrait/?datasource=singularity [0.03s]
+[2017-10-21 11:03:36] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/90334898/?datasource=singularity [1.08s]
+[2017-10-21 11:03:36] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/90334898/portrait/?datasource=singularity [0.03s]
+[2017-10-21 11:03:37] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/93445913/?datasource=singularity [0.30s]
+[2017-10-21 11:03:37] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/93445913/portrait/?datasource=singularity [0.03s]
+[2017-10-21 11:03:39] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/1002487376/?datasource=singularity [0.29s]
+[2017-10-21 11:03:39] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/1002487376/portrait/?datasource=singularity [0.03s]
+[2017-10-21 11:16:33] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [2.29s]
+[2017-10-21 11:16:35] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.85s]
+[2017-10-21 11:16:37] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.37s]
+[2017-10-21 11:16:40] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.51s]
+[2017-10-21 11:16:42] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.34s]
+[2017-10-21 11:16:44] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.41s]
+[2017-10-21 11:16:45] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.61s]
+[2017-10-21 11:16:47] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.52s]
+[2017-10-21 11:16:50] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.51s]
+[2017-10-21 11:16:51] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.64s]
+[2017-10-21 11:16:53] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.81s]
+[2017-10-21 11:16:56] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.61s]
+[2017-10-21 11:31:03] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.47s]
+[2017-10-21 11:31:04] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.74s]
+[2017-10-21 11:31:05] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.64s]
+[2017-10-21 11:31:07] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.40s]
+[2017-10-21 11:31:08] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.62s]
+[2017-10-21 11:31:10] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.38s]
+[2017-10-21 11:31:11] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.68s]
+[2017-10-21 11:31:13] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.33s]
+[2017-10-21 11:31:15] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.78s]
+[2017-10-21 11:31:17] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.31s]
+[2017-10-21 11:31:19] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.77s]
+[2017-10-21 11:31:21] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.92s]
+[2017-10-21 11:31:23] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.83s]
+[2017-10-21 11:31:24] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.65s]
+[2017-10-21 11:31:25] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.74s]
+[2017-10-21 11:31:26] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.62s]
+[2017-10-21 11:31:27] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.69s]
+[2017-10-21 11:31:29] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.35s]
+[2017-10-21 11:40:04] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/93796719/?datasource=singularity [0.34s]
+[2017-10-21 11:40:05] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.46s]
+[2017-10-21 11:41:05] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.72s]
+[2017-10-21 11:42:04] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.81s]
+[2017-10-21 11:43:07] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.68s]

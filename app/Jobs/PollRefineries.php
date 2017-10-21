@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Classes\EsiConnection;
 use App\Refinery;
+use App\Jobs\PollStructureData;
 
 class PollRefineries implements ShouldQueue
 {
@@ -49,13 +50,9 @@ class PollRefineries implements ShouldQueue
                 $refinery = new Refinery;
                 $refinery->observer_id = $observer->observer_id;
                 $refinery->observer_type = $observer->observer_type;
-                // Pull down additional information about this structure.
-                $structure = $esi->esi->invoke('get', '/universe/structures/{structure_id}/', [
-                    'structure_id' => $observer->observer_id,
-                ]);
-                $refinery->name = $structure->name;
-                $refinery->solar_system_id = $structure->solar_system_id;
                 $refinery->save();
+                // Create a new job to fill in the parts we don't know from this response.
+                PollStructureData::dispatch($observer->observer_id);
             }
         }
 

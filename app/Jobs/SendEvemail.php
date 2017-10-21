@@ -8,21 +8,21 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Classes\EsiConnection;
-use App\Refinery;
-use App\Jobs\PollRefinery;
 
-class PollMiningObservers implements ShouldQueue
+class SendEvemail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    private $mail;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($mail)
     {
-        //
+        $this->mail = $mail;
     }
 
     /**
@@ -33,16 +33,9 @@ class PollMiningObservers implements ShouldQueue
     public function handle()
     {
         $esi = new EsiConnection;
-
-        // Grab all of the refineries and loop through them.
-        $refineries = Refinery::all();
-        
-        // For each refinery create a new job in the queue to poll the API.
-        foreach ($refineries as $refinery)
-        {
-            PollRefinery::dispatch($refinery->observer_id);
-        }
-
+        $esi->esi->setBody($this->mail);
+        $esi->esi->invoke('post', '/characters/{character_id}/mail/', [
+            'character_id' => $esi->character_id,
+        ]);
     }
-
 }
