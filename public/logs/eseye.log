@@ -572,3 +572,10 @@
 [2017-10-21 09:33:53] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.30s]
 [2017-10-21 09:33:53] eseye.ERROR: [http 420] [status code 420] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.31s]
 [2017-10-21 10:10:28] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-21 14:56:34] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/93796719/?datasource=singularity [1.43s]
+[2017-10-21 14:56:34] eseye.WARNING: Access denied to https://esi.tech.ccp.is/latest/corporations/98444656/wallets/?datasource=singularity due to missing scopes.
+[2017-10-21 15:04:20] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/94560622/?datasource=singularity [1.28s]
+[2017-10-21 15:04:21] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporations/98267685/?datasource=singularity [0.43s]
+[2017-10-21 15:05:34] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/2112376093/?datasource=singularity [1.23s]
+[2017-10-21 15:05:34] eseye.WARNING: Access denied to https://esi.tech.ccp.is/latest/corporations/98444656/wallets/?datasource=singularity due to missing scopes.
+[2017-10-21 16:05:03] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/93796719/?datasource=singularity [1.33s]

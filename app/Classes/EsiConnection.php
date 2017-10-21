@@ -18,6 +18,7 @@ class EsiConnection
     public $esi; // Eseye object for performing all ESI requests
     public $character_id; // reference to the prime user's character ID
     public $corporation_id; // reference to the prime user's corporation ID
+    public $token; // reference to the renewed token, needed by the raw curl check for X-Pages header
 
     /**
      * Class constructor. Create an ESI API object to handle all requests.
@@ -70,10 +71,11 @@ class EsiConnection
             'character_id' => $user->eve_id,
         ]);
 
-        // Set class variables for use by other classes.
+        // Set object variables for use by other classes.
         $this->character_id = $user->eve_id;
         $this->corporation_id = $character->corporation_id;
-
+        $this->token = $new_token->access_token;
+                
     }
     
 }

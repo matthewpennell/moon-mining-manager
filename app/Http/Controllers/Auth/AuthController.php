@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Classes\EsiConnection;
 use Socialite;
 use Illuminate\Support\Facades\Auth;

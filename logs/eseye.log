@@ -103,3 +103,7 @@
 [2017-10-21 11:41:05] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.72s]
 [2017-10-21 11:42:04] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [0.81s]
 [2017-10-21 11:43:07] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/93796719/mail/?datasource=singularity [1.68s]
+[2017-10-21 16:30:38] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/93796719/?datasource=singularity [0.35s]
+[2017-10-21 16:30:38] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/
+[2017-10-21 16:30:42] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporation/98444656/mining/observers/?datasource=singularity [3.53s]
+[2017-10-21 16:30:42] eseye.WARNING: An unknown URI was called. Allowing /corporation/{corporation_id}/mining/observers/

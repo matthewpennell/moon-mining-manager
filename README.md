@@ -11,6 +11,7 @@ This application manages moon-mining revenue and invoicing for EVE Online corpor
 
 * Run `composer install` to install dependencies
 * Run `php artisan migrate` to create the database tables
+* Add entries to `.env` for your chosen character (with Accountant roles) and alliance
 
 ## Operation instructions
 
