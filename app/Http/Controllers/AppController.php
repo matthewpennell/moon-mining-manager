@@ -29,12 +29,13 @@ class AppController extends Controller
         }
 
         // Calculate the total currently owed and total income generated.
-        $total_amount_owed = DB::table('miners')->select(DB::raw('SUM(amount_owed) AS total'))->where('amount_owed', '>', 0)->first();
+        $total_amount_owed = DB::table('miners')->select(DB::raw('SUM(amount_owed) AS total'))->where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->first();
         $total_income = DB::table('refineries')->select(DB::raw('SUM(income) AS total'))->first();
 
         return view('home', [
             'user' => Auth::user(),
-            'miners' => Miner::where('amount_owed', '>', 0)->get(),
+            'miners' => Miner::where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->get(),
+            'ninjas' => Miner::whereNull('alliance_id')->orwhere('alliance_id', '<>', env('EVE_ALLIANCE_ID'))->get(),
             'total_amount_owed' => $total_amount_owed->total,
             'refineries' => Refinery::all(),
             'total_income' => $total_income->total,

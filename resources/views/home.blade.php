@@ -44,8 +44,29 @@
             <tbody>
                 @foreach ($miners as $miner)
                     <tr>
-                        <td><a href="/miners/{{ $miner->eve_id }}">{{ $miner->name }}</a></td>
+                        <td><a href="/miners/{{ $miner->eve_id }}">{{ $miner->name }}</a> ({{ $miner->corporation->name }})</td>
                         <td align="right">{{ number_format($miner->amount_owed) }} ISK</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <h2>Ninja Miners</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Miner</th>
+                    <th>Corporation/Alliance</th>
+                    <th>Amount Owed</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($ninjas as $ninja)
+                    <tr>
+                        <td>{{ $ninja->name }}</a></td>
+                        <td>{{ $ninja->corporation->name }} ({{ $ninja->alliance->name }})</td>
+                        <td align="right">{{ number_format($ninja->amount_owed) }} ISK</td>
                     </tr>
                 @endforeach
             </tbody>

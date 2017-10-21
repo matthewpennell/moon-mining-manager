@@ -33,6 +33,24 @@ class Miner extends Model
     }
 
     /**
+     * Get the name of the alliance for this character.
+     */
+    public function alliance()
+    {
+        return $this->belongsTo('App\Alliance', 'alliance_id', 'alliance_id')->withDefault([
+            'name' => 'no alliance',
+        ]);
+    }
+
+    /**
+     * Get the name of the corporation of this character.
+     */
+    public function corporation()
+    {
+        return $this->belongsTo('App\Corporation', 'corporation_id', 'corporation_id');
+    }
+
+    /**
      * Return a total of all payments made by this miner.
      */
     public function getTotalPaymentsAttribute()

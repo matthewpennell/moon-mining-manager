@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Classes\EsiConnection;
 use App\MiningActivity;
 use App\Jobs\MinerCheck;
+use App\Miner;
 
 class PollRefinery implements ShouldQueue
 {
