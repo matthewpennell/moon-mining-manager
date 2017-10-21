@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\EveController;
-use Illuminate\Http\Request;
-use App\Refinery;
-use App\MiningActivity;
-use App\Miner;
-use App\TaxRate;
-use App\Template;
-use App\Invoice;
-use Ixudra\Curl\Facades\Curl;
-use App\Type;
+use App\Classes\EsiConnection;
+use App\Jobs\PollRefineries;
+use App\Jobs\PollMiningObservers;
+use App\Jobs\PollWallet;
+use App\Jobs\GenerateInvoices;
 
-class CronController extends EveController
+class CronController extends Controller
 {
 
     /**
@@ -21,34 +16,8 @@ class CronController extends EveController
      */
     public function pollRefineries()
     {
-        
-        // Request a list of all of the active mining observers belonging to the corporation.
-        $mining_observers = $this->esi->invoke('get', '/corporation/{corporation_id}/mining/observers/', [
-            'corporation_id' => $this->corporation_id,
-        ]);
-
-        // Process the refineries list. For each entry, we want to check and see if it already exists 
-        // in the database. If it doesn't, we create a new database entry for it.
-        foreach ($mining_observers as $observer)
-        {
-            $refinery = Refinery::where('observer_id', $observer->observer_id)->first();
-            if (!isset($refinery))
-            {
-                $refinery = new Refinery;
-                $refinery->observer_id = $observer->observer_id;
-                $refinery->observer_type = $observer->observer_type;
-                // Pull down additional information about this structure.
-                $structure = $this->esi->invoke('get', '/universe/structures/{structure_id}/', [
-                    'structure_id' => $observer->observer_id,
-                ]);
-                $refinery->name = $structure->name;
-                $refinery->solar_system_id = $structure->solar_system_id;
-                $refinery->save();
-            }
-        }
-
+        PollRefineries::dispatch();
         echo 'Next, <a href="/cron/observers">observers</a>';
-
     }
 
     /**
@@ -57,57 +26,7 @@ class CronController extends EveController
      */
     public function pollMiningObservers()
     {
-        
-        // Grab all of the refineries and loop through them.
-        $refineries = Refinery::all();
-
-        foreach ($refineries as $refinery)
-        {
-            // Retrieve the mining activity log for this refinery.
-            $activity_log = $this->esi->invoke('get', '/corporation/{corporation_id}/mining/observers/{observer_id}/', [
-                'corporation_id' => $this->corporation_id,
-                'observer_id' => $refinery->observer_id,
-            ]);
-            foreach ($activity_log as $log_entry)
-            {
-                // Check whether this entry has already been recorded.
-                $existing_activity = MiningActivity::where([
-                    'miner_id' => $log_entry->character_id,
-                    'refinery_id' => $refinery->observer_id,
-                    'type_id' => $log_entry->type_id,
-                    'quantity' => $log_entry->quantity,
-                ])->first();
-                if (!isset($existing_activity))
-                {
-                    // Create a new entry in the database for this activity.
-                    $mining_activity = new MiningActivity;
-                    $mining_activity->miner_id = $log_entry->character_id;
-                    $mining_activity->refinery_id = $refinery->observer_id;
-                    $mining_activity->type_id = $log_entry->type_id;
-                    $mining_activity->quantity = $log_entry->quantity;
-                    $mining_activity->save();
-                    // Check if this miner is already known.
-                    $existing_miner = Miner::where('eve_id', $log_entry->character_id)->first();
-                    if (!isset($existing_miner))
-                    {
-                        // Create a new entry for this miner, including pulling additional information.
-                        $miner = new Miner;
-                        $miner->eve_id = $log_entry->character_id;
-                        $character = $this->esi->invoke('get', '/characters/{character_id}/', [
-                            'character_id' => $log_entry->character_id,
-                        ]);
-                        $miner->name = $character->name;
-                        $miner->corporation_id = $character->corporation_id;
-                        $portrait = $this->esi->invoke('get', '/characters/{character_id}/portrait/', [
-                            'character_id' => $log_entry->character_id,
-                        ]);
-                        $miner->avatar = $portrait->px128x128;
-                        $miner->save();
-                    }
-                }
-            }
-        }
-
+        PollMiningObservers::dispatch();
         echo 'Next, <a href="/cron/invoices">invoices</a>';
     }
 
@@ -116,7 +35,8 @@ class CronController extends EveController
      */
     public function pollWallet()
     {
-
+        PollWallet::dispatch();
+        echo '<a href="/cron/refineries">Back to the start?</a>';
     }
 
     /**
@@ -124,135 +44,8 @@ class CronController extends EveController
      */
     public function generateInvoices()
     {
-        
-        // Array to hold all of the information we want to send by invoice.
-        $invoice_data = [];
-        // Create arrays to hold miner and refinery details. We'll write it back to the database when we're done.
-        $miner_data = [];
-        $refinery_data = [];
-        
-        // Grab all of the ore values and tax rates to refer to in calculations. This
-        // returns an array keyed by type_id, so individual values/tax rates can be returned
-        // by reference to $tax_rates[type_id]->value or $tax_rates[type_id]->tax_rate.
-        $tax_rates = TaxRate::select('type_id', 'value', 'tax_rate')->get()->keyBy('type_id');
-
-        // Grab all of the unprocessed mining activity records and loop through them.
-        $activity = MiningActivity::where('processed', 0)->get();
-
-        foreach ($activity as $entry)
-        {
-            // If the ore type is not recognised, insert it into the tax rates table
-            // with a default value and tax rate.
-            if (!isset($tax_rates[$entry->type_id]))
-            {
-                $unrecognised_ore = new TaxRate;
-                $unrecognised_ore->type_id = $entry->type_id;
-                $unrecognised_ore->value = 100;
-                $unrecognised_ore->tax_rate = 5;
-                $unrecognised_ore->updated_by = 0;
-                $unrecognised_ore->save();
-                $tax_rates[$entry->type_id] = $unrecognised_ore;
-                // Check if it's in the invTypes table. This step can be removed after expansion release.
-                $type = Type::where('typeID', $entry->type_id)->first();
-                if (!isset($type))
-                {
-                    $type = new Type;
-                    $type->typeID = $entry->type_id;
-                }
-                $url = 'https://esi.tech.ccp.is/latest/universe/types/' . $entry->type_id . '/?datasource=singularity';
-                $response = json_decode(Curl::to($url)->get());
-                $type->groupID = $response->group_id;
-                $type->typeName = $response->name;
-                $type->description = $response->description;
-                $type->save();
-            }
-
-            // Each mining activity relates to a single ore type.
-            // We calculate the total value of that activity, and apply the 
-            // current tax rate to derive a tax amount to charge.
-            $total_value = $entry->quantity * $tax_rates[$entry->type_id]->value;
-            $tax_amount = $total_value * $tax_rates[$entry->type_id]->tax_rate / 100;
-
-            // Add the tax amount for this entry to the miner array.
-            if (isset($miner_data[$entry->miner_id]))
-            {
-                $miner_data[$entry->miner_id] += $tax_amount;
-            }
-            else
-            {
-                $miner_data[$entry->miner_id] = $tax_amount;
-            }
-
-            // Add the income for this entry to the refinery array.
-            if (isset($refinery_data[$entry->refinery_id]))
-            {
-                $refinery_data[$entry->refinery_id] += $tax_amount;
-            }
-            else
-            {
-                $refinery_data[$entry->refinery_id] = $tax_amount;
-            }
-
-            $entry->processed = 1;
-            $entry->save(); // this might be expensive, maybe update them all at the end?
-        }
-
-        // Loop through all of the miner data and update the database records.
-        if (count($miner_data))
-        {
-            foreach ($miner_data as $key => $value)
-            {
-                $miner = Miner::where('eve_id', $key)->first();
-                $miner->amount_owed += $value;
-                $miner->save();
-            }
-        }
-
-        // Loop through all the refinery data and update the database records.
-        if (count($refinery_data))
-        {
-            foreach ($refinery_data as $key => $value)
-            {
-                $refinery = Refinery::where('observer_id', $key)->first();
-                $refinery->income += $value;
-                $refinery->save();
-            }
-        }
-
-        // For all miners that currently owe an outstanding balance, generate and send an invoice.
-        $debtors = Miner::where('amount_owed', '>', 0)->get();
-        $template = Template::where('name', 'weekly_invoice')->first();
-        foreach ($debtors as $miner)
-        {
-            // Replace placeholder elements in email template.
-            $template->subject = str_replace('{date}', date('Y-m-d'), $template->subject);
-            $template->subject = str_replace('{name}', $miner->name, $template->subject);
-            $template->subject = str_replace('{amount_owed}', $miner->amount_owed, $template->subject);
-            $template->body = str_replace('{date}', date('Y-m-d'), $template->body);
-            $template->body = str_replace('{name}', $miner->name, $template->body);
-            $template->body = str_replace('{amount_owed}', $miner->amount_owed, $template->body);
-            $mail = array(
-                'body' => $template->body,
-                'recipients' => array(
-                    array(
-                        'recipient_id' => $miner->eve_id,
-                        'recipient_type' => 'character'
-                    )
-                ),
-                'subject' => $template->subject,
-            );
-            // Send the evemail.
-            $this->esi->setBody($mail);
-            $this->esi->invoke('post', '/characters/{character_id}/mail/', [
-                'character_id' => $this->character_id,
-            ]);
-            // Write an invoice entry.
-            $invoice = new Invoice;
-            $invoice->miner_id = $miner->eve_id;
-            $invoice->amount = $miner->amount_owed;
-            $invoice->save();
-        }
-
+        GenerateInvoices::dispatch();
+        echo 'Next, <a href="/cron/wallet">wallet</a>';
     }
 
 }

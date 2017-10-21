@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Classes;
 
-use Illuminate\Http\Request;
 use Ixudra\Curl\Facades\Curl;
 use Seat\Eseye\Configuration;
 use Seat\Eseye\Containers\EsiAuthentication;
@@ -10,14 +9,15 @@ use Seat\Eseye\Eseye;
 use App\User;
 
 /**
- * Parent controller for all other controllers making use of the EVE ESI API endpoints.
+ * Generic class for use by controllers or queued jobs that need to request information
+ * from the ESI API.
  */
-class EveController extends Controller
+class EsiConnection
 {
 
-    protected $esi; // Eseye object for performing all ESI requests
-    protected $character_id; // reference to the prime user's character ID
-    protected $corporation_id; // reference to the prime user's corporation ID
+    public $esi; // Eseye object for performing all ESI requests
+    public $character_id; // reference to the prime user's character ID
+    public $corporation_id; // reference to the prime user's corporation ID
 
     /**
      * Class constructor. Create an ESI API object to handle all requests.
@@ -70,6 +70,7 @@ class EveController extends Controller
             'character_id' => $user->eve_id,
         ]);
 
+        // Set class variables for use by other classes.
         $this->character_id = $user->eve_id;
         $this->corporation_id = $character->corporation_id;
 

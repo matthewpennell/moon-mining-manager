@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\EveController;
-use Illuminate\Http\Request;
+use App\Classes\EsiConnection;
 use Socialite;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Whitelist;
 
-class AuthController extends EveController
+class AuthController extends Controller
 {
     /**
      * Redirect the user to the EVE Online SSO page and ask for permission to search corporation assets.
@@ -31,8 +30,10 @@ class AuthController extends EveController
      *
      * @return Response
      */
-    public function handleProviderCallback(Request $request)
+    public function handleProviderCallback()
     {
+        $esi = new EsiConnection;
+        
         $user = Socialite::driver('eveonline-sisi')->user();
         $authUser = $this->findOrCreateUser($user);
 
@@ -40,10 +41,10 @@ class AuthController extends EveController
         Whitelist::where('eve_id', $authUser->eve_id)->firstOrFail();
 
         // Check if the user is a member of the correct alliance.
-        $character = $this->esi->invoke('get', '/characters/{character_id}/', [
+        $character = $esi->esi->invoke('get', '/characters/{character_id}/', [
             'character_id' => $authUser->eve_id,
         ]);
-        $corporation = $this->esi->invoke('get', '/corporations/{corporation_id}/', [
+        $corporation = $esi->esi->invoke('get', '/corporations/{corporation_id}/', [
             'corporation_id' => $character->corporation_id,
         ]);
 
