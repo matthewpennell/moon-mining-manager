@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Miner extends Model
 {
@@ -29,6 +30,14 @@ class Miner extends Model
     public function mining_activity()
     {
         return $this->hasMany('App\MiningActivity');
+    }
+
+    /**
+     * Return a total of all payments made by this miner.
+     */
+    public function getTotalPaymentsAttribute()
+    {
+        return DB::table('payments')->select('amount_received')->where('miner_id', $this->eve_id)->sum('amount_received');
     }
 
 }

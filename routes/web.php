@@ -20,6 +20,10 @@ Route::get('/access/new', 'AppController@showUserAccessHistory');
 Route::post('/access/whitelist/{id}', 'AppController@whitelistUser');
 Route::post('/access/blacklist/{id}', 'AppController@blacklistUser');
 
+// Miner reporting.
+Route::get('/miners', 'MinerController@showMiners');
+Route::get('/miners/{id}', 'MinerController@showMinerDetails');
+
 // Tax management.
 Route::get('/taxes', 'TaxController@showTaxRates');
 Route::post('/taxes/update_value/{id}', 'TaxController@updateValue');
@@ -27,7 +31,7 @@ Route::post('/taxes/update_rate/{id}', 'TaxController@updateTaxRate');
 Route::post('/taxes/update_master_rate', 'TaxController@updateMasterTaxRate');
 Route::get('/taxes/load', 'TaxController@loadInitialTaxRates');
 
-// Email management.
+// Email template management.
 Route::get('/emails', 'EmailController@showEmails');
 Route::post('/emails/update', 'EmailController@updateEmails');
 

@@ -160,8 +160,8 @@ class GenerateInvoices implements ShouldQueue
                 'subject' => $template->subject,
             );
 
-            // Queue sending the evemail, spaced at 1 minute intervals to avoid triggering the mailspam limiter.
-            SendEvemail::dispatch($mail)->delay(Carbon::now()->addMinutes($delay_counter * 1));
+            // Queue sending the evemail, spaced at 20-second intervals to avoid triggering the mailspam limiter (4/min).
+            SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($delay_counter * 20));
             $delay_counter++;
 
             // Write an invoice entry.

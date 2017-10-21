@@ -42,7 +42,7 @@
             <tbody>
                 @foreach ($miners as $miner)
                     <tr>
-                        <td><a href="/miner/{{ $miner->eve_id }}">{{ $miner->name }}</a></td>
+                        <td><a href="/miners/{{ $miner->eve_id }}">{{ $miner->name }}</a></td>
                         <td align="right">{{ number_format($miner->amount_owed) }} ISK</td>
                     </tr>
                 @endforeach
