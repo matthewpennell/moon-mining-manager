@@ -26,6 +26,8 @@
 
         <h2>Outstanding Debts</h2>
 
+        <p><a href="/payment/new">Log a payment</a> received via alternative means</p>
+
         <table>
             <thead>
                 <tr>

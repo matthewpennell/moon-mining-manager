@@ -24,6 +24,10 @@ Route::post('/access/blacklist/{id}', 'AppController@blacklistUser');
 Route::get('/miners', 'MinerController@showMiners');
 Route::get('/miners/{id}', 'MinerController@showMinerDetails');
 
+// Payment management.
+Route::get('/payment/new', 'PaymentController@addNewPayment');
+Route::post('/payment/new', 'PaymentController@insertNewPayment');
+
 // Tax management.
 Route::get('/taxes', 'TaxController@showTaxRates');
 Route::post('/taxes/update_value/{id}', 'TaxController@updateValue');
