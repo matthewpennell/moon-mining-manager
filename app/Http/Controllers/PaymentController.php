@@ -13,8 +13,7 @@ class PaymentController extends Controller
     public function addNewPayment()
     {
 
-        return view('payment/new', [
-            'user' => Auth::user(),
+        return view('payment.new', [
             'miners' => Miner::orderBy('name', 'asc')->get(),
         ]);
         

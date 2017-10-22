@@ -13,7 +13,6 @@ class EmailController extends Controller
     {
 
         return view('emails', [
-            'user' => Auth::user(),
             'templates' => Template::all(),
         ]);
         

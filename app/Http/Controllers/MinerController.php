@@ -18,8 +18,7 @@ class MinerController extends Controller
     public function showMiners()
     {
 
-        return view('miners/all', [
-            'user' => Auth::user(),
+        return view('miners.all', [
             'miners' => Miner::all(),
         ]);
         
@@ -46,8 +45,7 @@ class MinerController extends Controller
         // Sort the log by reverse chronological order.
         krsort($activity_log);
 
-        return view('miners/single', [
-            'user' => Auth::user(),
+        return view('miners.single', [
             'miner' => Miner::where('eve_id', $id)->first(),
             'activity_log' => $activity_log,
         ]);

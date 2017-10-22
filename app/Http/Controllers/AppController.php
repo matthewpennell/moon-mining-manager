@@ -27,7 +27,6 @@ class AppController extends Controller
         $total_income = DB::table('refineries')->select(DB::raw('SUM(income) AS total'))->first();
 
         return view('home', [
-            'user' => Auth::user(),
             'miners' => Miner::where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->get(),
             'ninjas' => Miner::whereNull('alliance_id')->orwhere('alliance_id', '<>', env('EVE_ALLIANCE_ID'))->get(),
             'total_amount_owed' => $total_amount_owed->total,
@@ -47,7 +46,6 @@ class AppController extends Controller
     {
 
         return view('users', [
-            'user' => Auth::user(),
             'whitelisted_users' => Whitelist::all(),
         ]);
         
@@ -61,7 +59,6 @@ class AppController extends Controller
     {
 
         return view('add_user', [
-            'user' => Auth::user(),
             'access_history' => User::whereNotIn('eve_id', function ($q) {
                 $q->select('eve_id')->from('whitelist');
             })->get(),
