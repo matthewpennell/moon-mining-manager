@@ -57,8 +57,11 @@ class EsiConnection
             ->enableDebug('logFile.txt')
             ->post();
         $new_token = json_decode($response);
-        $user->refresh_token = $new_token->refresh_token;
-        $user->save();
+        if (isset($new_token->refresh_token))
+        {
+            $user->refresh_token = $new_token->refresh_token;
+            $user->save();
+        }
 
         $authentication = new EsiAuthentication([
             'secret'        => $secret,
