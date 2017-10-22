@@ -7,8 +7,6 @@ use App\Jobs\PollMiningObservers;
 use App\Jobs\PollWallet;
 use App\Jobs\GenerateInvoices;
 
-use App\Classes\EsiConnection;
-
 class CronController extends Controller
 {
 
@@ -36,32 +34,7 @@ class CronController extends Controller
      */
     public function pollWallet()
     {
-        //PollWallet::dispatch();
-        $esi = new EsiConnection;
-
-        // Request the corp wallet info.
-        $wallet = $esi->esi->invoke('get', '/corporations/{corporation_id}/wallets/', [
-            'corporation_id' => $esi->corporation_id,
-        ]);
-
-        foreach ($wallet as $division)
-        {
-            echo 'Division ' . $division->division . ' : ' . $division->balance . ' ISK<br>';
-        }
-
-        // Request the transactions from a specific division.
-        $transactions = $esi->esi->invoke('get', '/corporations/{corporation_id}/wallets/{division}/transactions/', [
-            'corporation_id' => $esi->corporation_id,
-            'division' => 1,
-        ]);
-
-        foreach ($transactions as $transaction)
-        {
-            echo '<pre style="border: 1px dashed; margin: 10px;">';
-            print_r($transaction);
-            echo '</pre>';
-        }
-
+        PollWallet::dispatch();
         echo '<a href="/cron/refineries">Back to the start?</a>';
     }
 

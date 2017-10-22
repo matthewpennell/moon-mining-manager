@@ -62,7 +62,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Return user if exists; create and return if doesn't
+     * Return user if exists; create and return if doesn't.
      *
      * @param $user
      * @return User
