@@ -583,3 +583,8 @@
 [2017-10-21 17:10:26] eseye.WARNING: Access denied to https://esi.tech.ccp.is/latest/corporations/98444656/wallets/?datasource=singularity due to missing scopes.
 [2017-10-21 17:10:58] eseye.WARNING: Access denied to https://esi.tech.ccp.is/latest/corporations/98444656/wallets/?datasource=singularity due to missing scopes.
 [2017-10-21 17:11:14] eseye.ERROR: [http 403] [Forbidden] get -> https://esi.tech.ccp.is/latest/corporations/98444656/wallets/?datasource=singularity [0.55s]
+[2017-10-21 20:02:45] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/2112376093/?datasource=singularity [1.17s]
+[2017-10-21 20:02:46] eseye.ERROR: [http 403] [Forbidden] get -> https://esi.tech.ccp.is/latest/corporations/98444656/wallets/?datasource=singularity [0.58s]
+[2017-10-22 10:17:25] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/2112376093/?datasource=tranquility [1.01s]
+[2017-10-22 10:17:27] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporations/98169165/?datasource=tranquility [0.02s]
+[2017-10-22 10:18:39] eseye.ERROR: [http 403] [Forbidden] get -> https://esi.tech.ccp.is/latest/corporations/98169165/wallets/?datasource=tranquility [0.53s]

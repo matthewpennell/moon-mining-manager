@@ -1,38 +1,37 @@
-* Hostname sisilogin.testeveonline.com was found in DNS cache
-*   Trying 87.237.38.62...
-* Connected to sisilogin.testeveonline.com (87.237.38.62) port 443 (#0)
+* Hostname in DNS cache was stale, zapped
+*   Trying 87.237.34.203...
+* Connected to login.eveonline.com (87.237.34.203) port 443 (#0)
 * ALPN, offering http/1.1
 * Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
 * successfully set certificate verify locations:
 *   CAfile: /etc/ssl/certs/ca-certificates.crt
   CApath: /etc/ssl/certs
-* NPN, no overlap, use HTTP1.1
 * SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384
 * ALPN, server did not agree to a protocol
 * Server certificate:
-* 	 subject: C=IS; L=Reykjavik; O=CCP Hf; CN=*.testeveonline.com
-* 	 start date: Aug 16 08:57:25 2017 GMT
-* 	 expire date: Aug 16 09:27:25 2020 GMT
-* 	 subjectAltName: sisilogin.testeveonline.com matched
+* 	 subject: C=IS; L=Reykjavik; O=CCP Hf; CN=*.eveonline.com
+* 	 start date: Jan 13 14:17:18 2016 GMT
+* 	 expire date: Jan 13 14:47:18 2019 GMT
+* 	 subjectAltName: login.eveonline.com matched
 * 	 issuer: C=US; O=Entrust, Inc.; OU=See www.entrust.net/legal-terms; OU=(c) 2012 Entrust, Inc. - for authorized use only; CN=Entrust Certification Authority - L1K
 * 	 SSL certificate verify ok.
 > POST /oauth/token HTTP/1.1
-Host: sisilogin.testeveonline.com
+Host: login.eveonline.com
 Accept: */*
-Authorization: Basic MTJlOGY3M2VjNzZkNDI1MGI0ZTc2MGJlYWJkYzY4OTM6QXRlZm1DZkg3UlA5ZlBGNlk1bkdrMVpPbXpUQ2trSUwzdzRVbGpSYQ==
+Authorization: Basic NTY2NWMyYTIyNzUxNGM1NjkxZWNhZmRlMTlhNjUwNmM6MTUzVVJJOEpkT3VCNlUyT3J4R0tRYUJmb2s2YmQ5U2FvWm96Q2R0eQ==
 Content-Length: 104
 Content-Type: application/x-www-form-urlencoded
 
 * upload completely sent off: 104 out of 104 bytes
-< HTTP/1.1 200 OK
+< HTTP/1.1 400 Bad Request
 < Cache-Control: no-cache
 < Pragma: no-cache
 < Content-Type: application/json; charset=utf-8
 < Expires: -1
-< Request-Context: appId=cid-v1:2afa543e-6a1c-4f85-8f9d-083599c8c7b5
+< Request-Context: appId=cid-v1:2ccf88f2-29b9-460a-bc15-7c0b79926f61
 < X-Powered-By: ASP.NET
-< Date: Sat, 21 Oct 2017 17:11:13 GMT
+< Date: Sun, 22 Oct 2017 10:19:29 GMT
 < Connection: close
-< Content-Length: 230
+< Content-Length: 90
 < 
 * Closing connection 0
