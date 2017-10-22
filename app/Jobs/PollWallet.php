@@ -49,24 +49,20 @@ class PollWallet implements ShouldQueue
         {
             if ($transaction->ref_type == 'player_donation')
             {
-                echo 'player_donation found!<br>';
                 // Check if this donation is actually from a recognised miner.
                 $miner = Miner::where('eve_id', $transaction->first_party_id)->first();
                 if (isset($miner))
                 {
-                    echo 'valid miner found!<br>';
                     // Check if this donation was already processed.
                     $payment = Payment::where('ref_id', $transaction->ref_id)->first();
                     if (!isset($payment))
                     {
 
-                        echo 'no record of this payment<br>';
-
                         // Record this transaction in the payments table.
                         $payment = new Payment;
                         $payment->miner_id = $transaction->first_party_id;
                         $payment->ref_id = $transaction->ref_id;
-                        $payment->amount = $transaction->amount;
+                        $payment->amount_received = $transaction->amount;
                         $payment->save();
 
                         // Deduct the amount from their outstanding balance.
@@ -98,7 +94,6 @@ class PollWallet implements ShouldQueue
             
                         // Queue sending the evemail, spaced at 20-second intervals to avoid triggering the mailspam limiter (4/min).
                         SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($delay_counter * 20));
-                        echo 'queued email for sending<br>';
                         $delay_counter++;
                 
                     }

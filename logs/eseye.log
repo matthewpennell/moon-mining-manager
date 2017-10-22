@@ -141,3 +141,6 @@
 [2017-10-21 18:13:43] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporations/98169165/?datasource=singularity [0.32s]
 [2017-10-22 13:40:18] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/2112376093/?datasource=tranquility [0.66s]
 [2017-10-22 13:40:19] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporations/98444656/wallets/1/journal/?datasource=tranquility [0.56s]
+[2017-10-22 14:27:43] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/2112376093/?datasource=tranquility [0.55s]
+[2017-10-22 14:27:44] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporations/98444656/wallets/1/journal/?datasource=tranquility [1.42s]
+[2017-10-22 14:31:21] eseye.INFO: [http 201] [Created] post -> https://esi.tech.ccp.is/latest/characters/2112376093/mail/?datasource=tranquility [1.13s]
