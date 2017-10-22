@@ -13,12 +13,6 @@ class PaymentController extends Controller
     public function addNewPayment()
     {
 
-        // If no current logged in user, show the login page.
-        if (!Auth::check())
-        {
-            return view('login');
-        }
-
         return view('payment/new', [
             'user' => Auth::user(),
             'miners' => Miner::orderBy('name', 'asc')->get(),

@@ -22,12 +22,6 @@ class AppController extends Controller
     public function home()
     {
 
-        // If no current logged in user, show the login page.
-        if (!Auth::check())
-        {
-            return view('login');
-        }
-
         // Calculate the total currently owed and total income generated.
         $total_amount_owed = DB::table('miners')->select(DB::raw('SUM(amount_owed) AS total'))->where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->first();
         $total_income = DB::table('refineries')->select(DB::raw('SUM(income) AS total'))->first();
@@ -52,12 +46,6 @@ class AppController extends Controller
     public function showAuthorisedUsers()
     {
 
-        // If no current logged in user, show the login page.
-        if (!Auth::check())
-        {
-            return view('login');
-        }
-
         return view('users', [
             'user' => Auth::user(),
             'whitelisted_users' => Whitelist::all(),
@@ -71,12 +59,6 @@ class AppController extends Controller
      */
     public function showUserAccessHistory()
     {
-
-        // If no current logged in user, show the login page.
-        if (!Auth::check())
-        {
-            return view('login');
-        }
 
         return view('add_user', [
             'user' => Auth::user(),

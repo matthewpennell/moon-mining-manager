@@ -14,7 +14,7 @@
 
     <body>
 
-        <a href="/login">Login via EVE SSO</a>
+        <a href="/sso">Login via EVE SSO</a>
 
     </body>
 

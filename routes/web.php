@@ -12,10 +12,15 @@
 */
 
 // Master route.
-Route::get('/', 'AppController@home');
+Route::get('/', 'AppController@home')->middleware('login');
+
+// Login page.
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
 
 // Access management.
-Route::prefix('access')->group(function () {
+Route::middleware(['login'])->prefix('access')->group(function () {
     Route::get('/', 'AppController@showAuthorisedUsers');
     Route::get('/new', 'AppController@showUserAccessHistory');
     Route::post('/whitelist/{id}', 'AppController@whitelistUser');
@@ -23,19 +28,19 @@ Route::prefix('access')->group(function () {
 });
 
 // Miner reporting.
-Route::prefix('miners')->group(function () {
+Route::middleware(['login'])->prefix('miners')->group(function () {
     Route::get('/', 'MinerController@showMiners');
     Route::get('/{id}', 'MinerController@showMinerDetails');
 });
 
 // Payment management.
-Route::prefix('payment')->group(function () {
+Route::middleware(['login'])->prefix('payment')->group(function () {
     Route::get('/new', 'PaymentController@addNewPayment');
     Route::post('/new', 'PaymentController@insertNewPayment');
 });
 
 // Tax management.
-Route::prefix('taxes')->group(function () {
+Route::middleware(['login'])->prefix('taxes')->group(function () {
     Route::get('/', 'TaxController@showTaxRates');
     Route::post('/update_value/{id}', 'TaxController@updateValue');
     Route::post('/update_rate/{id}', 'TaxController@updateTaxRate');
@@ -44,13 +49,13 @@ Route::prefix('taxes')->group(function () {
 });
 
 // Email template management.
-Route::prefix('emails')->group(function () {
+Route::middleware(['login'])->prefix('emails')->group(function () {
     Route::get('/', 'EmailController@showEmails');
     Route::post('/update', 'EmailController@updateEmails');
 });
 
 // Handle EVE SSO requests and callbacks.
-Route::get('/login', 'Auth\AuthController@redirectToProvider');
+Route::get('/sso', 'Auth\AuthController@redirectToProvider');
 Route::get('/callback', 'Auth\AuthController@handleProviderCallback');
 
 // Logout.

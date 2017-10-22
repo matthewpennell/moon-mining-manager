@@ -18,12 +18,6 @@ class MinerController extends Controller
     public function showMiners()
     {
 
-        // If no current logged in user, show the login page.
-        if (!Auth::check())
-        {
-            return view('login');
-        }
-
         return view('miners/all', [
             'user' => Auth::user(),
             'miners' => Miner::all(),
@@ -38,9 +32,9 @@ class MinerController extends Controller
     {
 
         // If no current logged in user, show the login page.
-        if ($id == NULL || !Auth::check())
+        if ($id == NULL)
         {
-            return view('login');
+            return redirect('/');
         }
 
         // Build an aggregate activity log of all this miner's activities.

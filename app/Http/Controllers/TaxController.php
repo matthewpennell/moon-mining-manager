@@ -13,12 +13,6 @@ class TaxController extends Controller
     
     public function showTaxRates()
     {
-        // If no current logged in user, show the login page.
-        if (!Auth::check())
-        {
-            return view('login');
-        }
-
         return view('taxes', [
             'user' => Auth::user(),
             'tax_rates' => TaxRate::orderby('type_id')->get(),

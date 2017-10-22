@@ -12,12 +12,6 @@ class EmailController extends Controller
     public function showEmails()
     {
 
-        // If no current logged in user, show the login page.
-        if (!Auth::check())
-        {
-            return view('login');
-        }
-
         return view('emails', [
             'user' => Auth::user(),
             'templates' => Template::all(),
