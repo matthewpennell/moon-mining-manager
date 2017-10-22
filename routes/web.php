@@ -15,29 +15,39 @@
 Route::get('/', 'AppController@home');
 
 // Access management.
-Route::get('/access', 'AppController@showAuthorisedUsers');
-Route::get('/access/new', 'AppController@showUserAccessHistory');
-Route::post('/access/whitelist/{id}', 'AppController@whitelistUser');
-Route::post('/access/blacklist/{id}', 'AppController@blacklistUser');
+Route::prefix('access')->group(function () {
+    Route::get('/', 'AppController@showAuthorisedUsers');
+    Route::get('/new', 'AppController@showUserAccessHistory');
+    Route::post('/whitelist/{id}', 'AppController@whitelistUser');
+    Route::post('/blacklist/{id}', 'AppController@blacklistUser');
+});
 
 // Miner reporting.
-Route::get('/miners', 'MinerController@showMiners');
-Route::get('/miners/{id}', 'MinerController@showMinerDetails');
+Route::prefix('miners')->group(function () {
+    Route::get('/', 'MinerController@showMiners');
+    Route::get('/{id}', 'MinerController@showMinerDetails');
+});
 
 // Payment management.
-Route::get('/payment/new', 'PaymentController@addNewPayment');
-Route::post('/payment/new', 'PaymentController@insertNewPayment');
+Route::prefix('payment')->group(function () {
+    Route::get('/new', 'PaymentController@addNewPayment');
+    Route::post('/new', 'PaymentController@insertNewPayment');
+});
 
 // Tax management.
-Route::get('/taxes', 'TaxController@showTaxRates');
-Route::post('/taxes/update_value/{id}', 'TaxController@updateValue');
-Route::post('/taxes/update_rate/{id}', 'TaxController@updateTaxRate');
-Route::post('/taxes/update_master_rate', 'TaxController@updateMasterTaxRate');
-Route::get('/taxes/load', 'TaxController@loadInitialTaxRates');
+Route::prefix('taxes')->group(function () {
+    Route::get('/', 'TaxController@showTaxRates');
+    Route::post('/update_value/{id}', 'TaxController@updateValue');
+    Route::post('/update_rate/{id}', 'TaxController@updateTaxRate');
+    Route::post('/update_master_rate', 'TaxController@updateMasterTaxRate');
+    Route::get('/load', 'TaxController@loadInitialTaxRates');
+});
 
 // Email template management.
-Route::get('/emails', 'EmailController@showEmails');
-Route::post('/emails/update', 'EmailController@updateEmails');
+Route::prefix('emails')->group(function () {
+    Route::get('/', 'EmailController@showEmails');
+    Route::post('/update', 'EmailController@updateEmails');
+});
 
 // Handle EVE SSO requests and callbacks.
 Route::get('/login', 'Auth\AuthController@redirectToProvider');
@@ -47,9 +57,9 @@ Route::get('/callback', 'Auth\AuthController@handleProviderCallback');
 Route::get('/logout', 'AppController@logout');
 
 // Cron routes.
-Route::get('/cron/refineries', 'CronController@pollRefineries');
-Route::get('/cron/observers', 'CronController@pollMiningObservers');
-Route::get('/cron/wallet', 'CronController@pollWallet');
-Route::get('/cron/invoices', 'CronController@generateInvoices');
-
-Route::get('/mailtest', 'CronController@testMail');
+Route::prefix('cron')->group(function () {
+    Route::get('/refineries', 'CronController@pollRefineries');
+    Route::get('/observers', 'CronController@pollMiningObservers');
+    Route::get('/wallet', 'CronController@pollWallet');
+    Route::get('/invoices', 'CronController@generateInvoices');
+});
