@@ -12,6 +12,7 @@ public/hot
 public/cache/latest
 cache/latest
 public/log*
+public/logFile.txt
 storage/*.key
 .env.*.php
 .env.php
