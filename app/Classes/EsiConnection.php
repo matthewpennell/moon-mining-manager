@@ -33,15 +33,26 @@ class EsiConnection
         // Create authentication with app details and refresh token from nominated prime user.
         $user = User::where('eve_id', env('ESI_PRIME_USER_ID', 0))->first();
 
+        $url = 'https://login.eveonline.com/oauth/token';
+        $secret = env('EVEONLINE_CLIENT_SECRET');
+        $client_id = env('EVEONLINE_CLIENT_ID');
+
+        // If we are running on Sisi, override the oauth location and client information.
+        if (env('ESEYE_DATASOURCE', 'tranquility') == 'singularity')
+        {
+            $url = 'https://sisilogin.testeveonline.com/oauth/token';
+            $secret = env('TESTEVEONLINE_CLIENT_SECRET');
+            $client_id = env('TESTEVEONLINE_CLIENT_ID');
+        }
+
         // Need to request a new valid access token from EVE SSO using the refresh token of the original request.
-        $url = 'https://sisilogin.testeveonline.com/oauth/token';
         $response = Curl::to($url)
             ->withData(array(
                 'grant_type' => "refresh_token",
                 'refresh_token' => $user->refresh_token
             ))
             ->withHeaders(array(
-                'Authorization: Basic ' . base64_encode(env('TESTEVEONLINE_CLIENT_ID') . ':' . env('TESTEVEONLINE_CLIENT_SECRET'))
+                'Authorization: Basic ' . base64_encode($client_id . ':' . $secret)
             ))
             ->enableDebug('logFile.txt')
             ->post();
@@ -50,15 +61,16 @@ class EsiConnection
         $user->save();
 
         $authentication = new EsiAuthentication([
-            'secret'        => env('TESTEVEONLINE_CLIENT_SECRET'),
-            'client_id'     => env('TESTEVEONLINE_CLIENT_ID'),
+            'secret'        => $secret,
+            'client_id'     => $client_id,
             'access_token'  => $new_token->access_token,
             'refresh_token' => $user->refresh_token,
             'scopes'        => [
-                                'esi-industry.read_corporation_mining.v1',
+//                                'esi-industry.read_corporation_mining.v1',
                                 'esi-wallet.read_corporation_wallets.v1',
                                 'esi-mail.send_mail.v1',
                                 'esi-universe.read_structures.v1',
+                                'esi-corporations.read_structures.v1',
                             ],
             'token_expires' => date('Y-m-d H:i:s', time() + $new_token->expires_in),
         ]);
