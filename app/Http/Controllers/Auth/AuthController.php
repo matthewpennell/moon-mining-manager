@@ -34,13 +34,15 @@ class AuthController extends Controller
      */
     public function handleProviderCallback()
     {
-        $esi = new EsiConnection;
         
+        // Find or create the user.
         $user = Socialite::driver('eveonline')->user();
         $authUser = $this->findOrCreateUser($user);
 
         // Check if the user is whitelisted to access the app.
         Whitelist::where('eve_id', $authUser->eve_id)->firstOrFail();
+
+        $esi = new EsiConnection;
 
         // Check if the user is a member of the correct alliance.
         $character = $esi->esi->invoke('get', '/characters/{character_id}/', [
