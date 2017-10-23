@@ -20,6 +20,7 @@ This application manages moon-mining revenue and invoicing for EVE Online corpor
 ### EVE tables
 
 * invTypes
+* invTypeMaterials
 * mapSolarSystems
 
 ## License

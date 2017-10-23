@@ -599,3 +599,17 @@
 [2017-10-22 14:15:23] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporations/98522659/?datasource=tranquility [0.03s]
 [2017-10-22 14:24:21] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporations/98522659/?datasource=tranquility [0.15s]
 [2017-10-22 14:30:21] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporations/98444656/wallets/1/journal/?datasource=tranquility [0.89s]
+[2017-10-23 18:26:34] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/2112376093/?datasource=tranquility [0.54s]
+[2017-10-23 18:43:05] eseye.ERROR: [http 400] [Bad Request] get -> https://esi.tech.ccp.is/latest/markets/10000002/history/?datasource=tranquility [0.20s]
+[2017-10-23 18:43:55] eseye.WARNING: An unknown URI was called. Allowing /markets/{region_id}/history/{type_id}/
+[2017-10-23 18:43:55] eseye.ERROR: [http 404] [Not Found] get -> https://esi.tech.ccp.is/latest/markets/10000002/history/1228/?datasource=tranquility [0.10s]
+[2017-10-23 18:44:11] eseye.WARNING: An unknown URI was called. Allowing /markets/{region_id}/history/?type_id={type_id}
+[2017-10-23 18:44:12] eseye.ERROR: [http 404] [Not Found] get -> https://esi.tech.ccp.is/latest/markets/10000002/history/%3Ftype_id=1228?datasource=tranquility [0.10s]
+[2017-10-23 18:45:51] eseye.WARNING: An unknown URI was called. Allowing /markets/{region_id}/history/?type_id={type_id}
+[2017-10-23 18:45:51] eseye.ERROR: [http 404] [Not Found] get -> https://esi.tech.ccp.is/latest/markets/10000002/history/%3Ftype_id=1228?datasource=tranquility [0.09s]
+[2017-10-23 18:46:03] eseye.WARNING: An unknown URI was called. Allowing /markets/{region_id}/history/?type_id={type_id}
+[2017-10-23 18:55:08] eseye.WARNING: An unknown URI was called. Allowing /markets/{region_id}/history/?type_id={type_id}
+[2017-10-23 18:55:33] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/markets/10000002/history/?datasource=tranquility&type_id=1228 [0.74s]
+[2017-10-23 19:22:00] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/markets/10000002/history/?datasource=tranquility&type_id=34 [0.15s]
+[2017-10-23 19:22:00] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/markets/10000002/history/?datasource=tranquility&type_id=35 [0.06s]
+[2017-10-23 19:27:39] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/2112376093/?datasource=tranquility [0.60s]

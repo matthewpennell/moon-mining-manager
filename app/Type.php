@@ -12,4 +12,9 @@ class Type extends Model
     public $incrementing = false;
     public $timestamps = false;
 
+    public function type_materials()
+    {
+        return $this->hasMany('App\TypeMaterial', 'typeID', 'typeID');
+    }
+
 }
