@@ -36,7 +36,7 @@ class PollRefinery implements ShouldQueue
         // If this is the first page request, we need to check for multiple pages and generate subsequent jobs.
         if ($page == 1)
         {
-            // This raw curl request can be replaced with an $esi call once the library is updated to return response headers.
+            // This raw curl request can be replaced with an $esi call once the Eseye library is updated to return response headers.
             $url = 'https://esi.tech.ccp.is/latest/corporation/' . $esi->corporation_id . '/mining/observers/' . $id . '/?datasource=singularity&token=' . $esi->token;
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -111,6 +111,19 @@ class PollRefinery implements ShouldQueue
                 if (!isset($miner))
                 {
                     MinerCheck::dispatch($log_entry->character_id);
+                }
+                // Check if this ore type exists in the taxes table.
+                $tax_rate = TaxRate::where('type_id', $log_entry->type_id)->first();
+                // If not, create and insert it with zero values.
+                if (!isset($tax_rate))
+                {
+                    $tax_rate = new TaxRate;
+                    $tax_rate->type_id = $log_entry->type_id;
+                    $tax_rate->check_materials = 1;
+                    $tax_rate->value = 0;
+                    $tax_rate->tax_rate = 0;
+                    $tax_rate->updated_by = 0;
+                    $tax_rate->save();
                 }
             }
         }

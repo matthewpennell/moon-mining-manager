@@ -56,32 +56,6 @@ class GenerateInvoices implements ShouldQueue
 
         foreach ($activity as $entry)
         {
-            // If the ore type is not recognised, insert it into the tax rates table
-            // with a default value and tax rate.
-            if (!isset($tax_rates[$entry->type_id]))
-            {
-                $unrecognised_ore = new TaxRate;
-                $unrecognised_ore->type_id = $entry->type_id;
-                $unrecognised_ore->value = 100;
-                $unrecognised_ore->tax_rate = 5;
-                $unrecognised_ore->updated_by = 0;
-                $unrecognised_ore->save();
-                $tax_rates[$entry->type_id] = $unrecognised_ore;
-                // Check if it's in the invTypes table. This step can be removed after expansion release.
-                $type = Type::where('typeID', $entry->type_id)->first();
-                if (!isset($type))
-                {
-                    $type = new Type;
-                    $type->typeID = $entry->type_id;
-                }
-                $url = 'https://esi.tech.ccp.is/latest/universe/types/' . $entry->type_id . '/?datasource=singularity';
-                $response = json_decode(Curl::to($url)->get());
-                $type->groupID = $response->group_id;
-                $type->typeName = $response->name;
-                $type->description = $response->description;
-                $type->save();
-            }
-
             // Each mining activity relates to a single ore type.
             // We calculate the total value of that activity, and apply the 
             // current tax rate to derive a tax amount to charge.

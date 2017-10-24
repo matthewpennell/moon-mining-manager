@@ -16,4 +16,12 @@ class TaxRate extends Model
         return $this->belongsTo('App\Type', 'type_id');
     }
 
+    /**
+     * Get the reprocessed material records associated with the tax rate.
+     */
+    public function reprocessed_materials()
+    {
+        return $this->hasMany('App\TypeMaterial', 'typeID', 'type_id');
+    }
+
 }
