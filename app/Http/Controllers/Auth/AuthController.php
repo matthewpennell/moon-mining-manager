@@ -19,7 +19,7 @@ class AuthController extends Controller
     public function redirectToProvider()
     {
         return Socialite::driver('eveonline')->scopes([
-//            'esi-industry.read_corporation_mining.v1',
+            'esi-industry.read_corporation_mining.v1',
             'esi-wallet.read_corporation_wallets.v1',
             'esi-mail.send_mail.v1',
             'esi-universe.read_structures.v1',
