@@ -656,3 +656,5 @@
 [2017-10-24 19:51:57] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/markets/10000002/history/?datasource=tranquility&type_id=16648 [0.06s]
 [2017-10-24 19:57:29] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/markets/10000002/history/?datasource=tranquility&type_id=16650 [0.35s]
 [2017-10-24 19:57:29] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/markets/10000002/history/?datasource=tranquility&type_id=16653 [0.07s]
+[2017-10-25 09:48:32] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/characters/2112376093/?datasource=singularity [4.40s]
+[2017-10-25 09:48:32] eseye.INFO: [http 200] [OK] get -> https://esi.tech.ccp.is/latest/corporations/98444656/?datasource=singularity [0.24s]

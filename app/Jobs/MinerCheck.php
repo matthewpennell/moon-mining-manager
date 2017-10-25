@@ -11,6 +11,7 @@ use App\Classes\EsiConnection;
 use App\Miner;
 use App\Corporation;
 use App\Alliance;
+use Illuminate\Support\Facades\Log;
 
 class MinerCheck implements ShouldQueue
 {
@@ -44,6 +45,7 @@ class MinerCheck implements ShouldQueue
         // If not, create a new entry, including pulling additional information.
         if (!isset($existing_miner))
         {
+            Log::info('MinerCheck: new miner ' . $this->miner_id . ' found, creating new record');
             $miner = new Miner;
             $miner->eve_id = $this->miner_id;
             $character = $esi->esi->invoke('get', '/characters/{character_id}/', [
@@ -63,6 +65,7 @@ class MinerCheck implements ShouldQueue
                 $miner->alliance_id = $corporation->alliance_id;
             }
             $miner->save();
+            Log::info('MinerCheck: saved new miner ' . $miner->eve_id . ' from corporation ' . $miner->corporation_id);
             // Also retrieve the corporation and alliance names for use in reporting.
             $existing_corporation = Corporation::where('corporation_id', $character->corporation_id)->first();
             if (!isset($existing_corporation))
@@ -71,6 +74,7 @@ class MinerCheck implements ShouldQueue
                 $new_corporation->corporation_id = $character->corporation_id;
                 $new_corporation->name = $corporation->corporation_name;
                 $new_corporation->save();
+                Log::info('MinerCheck: stored new corporation ' . $character->corporation_id);
             }
             if (isset($corporation->alliance_id))
             {
@@ -84,6 +88,7 @@ class MinerCheck implements ShouldQueue
                     ]);
                     $new_alliance->name = $alliance->alliance_name;
                     $new_alliance->save();
+                    Log::info('MinerCheck: stored new alliance ' . $corporation->alliance_id);
                 }
             }
         }

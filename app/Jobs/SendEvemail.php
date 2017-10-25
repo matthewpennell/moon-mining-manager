@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Classes\EsiConnection;
+use Illuminate\Support\Facades\Log;
 
 class SendEvemail implements ShouldQueue
 {
@@ -37,5 +38,6 @@ class SendEvemail implements ShouldQueue
         $esi->esi->invoke('post', '/characters/{character_id}/mail/', [
             'character_id' => $esi->character_id,
         ]);
+        Log::info('SendEvemail: sent evemail');
     }
 }

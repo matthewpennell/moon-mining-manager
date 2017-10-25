@@ -10,20 +10,11 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Classes\EsiConnection;
 use App\Refinery;
 use App\Jobs\PollStructureData;
+use Illuminate\Support\Facades\Log;
 
 class PollRefineries implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Execute the job.
@@ -40,6 +31,8 @@ class PollRefineries implements ShouldQueue
             'corporation_id' => $esi->corporation_id,
         ]);
 
+        Log::info('PollRefineries: found ' . count($mining_observers) . ' refineries');
+
         // Process the refineries list. For each entry, we want to check and see if it already exists 
         // in the database. If it doesn't, we create a new database entry for it.
         foreach ($mining_observers as $observer)
@@ -51,6 +44,7 @@ class PollRefineries implements ShouldQueue
                 $refinery->observer_id = $observer->observer_id;
                 $refinery->observer_type = $observer->observer_type;
                 $refinery->save();
+                Log::info('PollRefineries: created new refinery record for ' . $observer->observer_id);
                 // Create a new job to fill in the parts we don't know from this response.
                 PollStructureData::dispatch($observer->observer_id);
             }

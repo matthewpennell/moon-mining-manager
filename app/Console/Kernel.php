@@ -4,6 +4,12 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Jobs\PollWallet;
+use App\Jobs\UpdateReprocessedMaterials;
+use App\Jobs\PollRefineries;
+use App\Jobs\UpdateMaterialValues;
+use App\Jobs\PollMiningObservers;
+use App\Jobs\GenerateInvoices;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,8 +30,25 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+
+        // Check for any new refineries that have been anchored.
+        $schedule->job(new PollRefineries)->dailyAt('00:05');
+
+        // Check for miners making payments to the corporation wallet.
+        $schedule->job(new PollWallet)->hourlyAt(30);
+
+        // Pull the mining activity for the day and store it.
+        $schedule->job(new PollMiningObservers)->dailyAt('02:00');
+
+        // Check for any new ores that have been mined where we don't have details of their component materials.
+        $schedule->job(new UpdateReprocessedMaterials)->twiceDaily(4, 16);
+        
+        // Update the stored prices for materials and ores.
+        $schedule->job(new UpdateMaterialValues)->dailyAt('05:00');
+        
+        // Send weekly invoices.
+        $schedule->job(new GenerateInvoices)->weekly()->mondays()->at('07:00');
+
     }
 
     /**

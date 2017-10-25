@@ -10,7 +10,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Classes\EsiConnection;
 use App\MiningActivity;
 use App\Jobs\MinerCheck;
+use App\TaxRate;
 use App\Miner;
+use Illuminate\Support\Facades\Log;
 
 class PollRefinery implements ShouldQueue
 {
@@ -45,6 +47,7 @@ class PollRefinery implements ShouldQueue
             $body = curl_exec($ch);
             if ($this->total_pages > 1)
             {
+                Log::info('PollRefinery: found more than 1 page of mining data, queuing additional jobs for ' . $this->total_pages . ' total pages');
                 for ($i = 2; $i <= $this->total_pages; $i++)
                 {
                     PollRefinery::dispatch($refinery->observer_id, $i);
@@ -80,12 +83,18 @@ class PollRefinery implements ShouldQueue
 
         $esi = new EsiConnection;
 
+        Log::info('PollRefinery: requesting mining activity log for refinery ' . $this->observer_id);
+
         // Retrieve the mining activity log page for this refinery.
         $activity_log = $esi->esi->invoke('get', '/corporation/{corporation_id}/mining/observers/{observer_id}/', [
             'corporation_id' => $esi->corporation_id,
             'observer_id' => $this->observer_id,
             'page' => $this->page,
         ]);
+
+        Log::info('PollRefinery: received ' . count($activity_log) . ' mining records');
+
+        $new_activity_records = 0;
 
         foreach ($activity_log as $log_entry)
         {
@@ -105,11 +114,13 @@ class PollRefinery implements ShouldQueue
                 $mining_activity->type_id = $log_entry->type_id;
                 $mining_activity->quantity = $log_entry->quantity;
                 $mining_activity->save();
+                $new_activity_records++;
                 // Check if this miner is already known.
                 $miner = Miner::where('eve_id', $log_entry->character_id)->first();
                 // If not, create a job to add the new miner entry.
                 if (!isset($miner))
                 {
+                    Log::info('PollRefinery: unknown miner found, queuing job to retrieve details');
                     MinerCheck::dispatch($log_entry->character_id);
                 }
                 // Check if this ore type exists in the taxes table.
@@ -121,12 +132,15 @@ class PollRefinery implements ShouldQueue
                     $tax_rate->type_id = $log_entry->type_id;
                     $tax_rate->check_materials = 1;
                     $tax_rate->value = 0;
-                    $tax_rate->tax_rate = 0;
+                    $tax_rate->tax_rate = 7;
                     $tax_rate->updated_by = 0;
                     $tax_rate->save();
+                    Log::info('PollRefinery: unknown ore found, new tax rate record created');
                 }
             }
         }
+
+        Log::info('PollRefinery: inserted ' . $new_activity_records . ' new mining activity records');
         
     }
 

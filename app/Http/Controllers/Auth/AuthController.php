@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('eveonline')->scopes([
+        return Socialite::driver('eveonline-sisi')->scopes([
             'esi-industry.read_corporation_mining.v1',
             'esi-wallet.read_corporation_wallets.v1',
             'esi-mail.send_mail.v1',
@@ -36,7 +36,7 @@ class AuthController extends Controller
     {
         
         // Find or create the user.
-        $user = Socialite::driver('eveonline')->user();
+        $user = Socialite::driver('eveonline-sisi')->user();
         $authUser = $this->findOrCreateUser($user);
 
         // Check if the user is whitelisted to access the app.

@@ -60,14 +60,3 @@ Route::get('/callback', 'Auth\AuthController@handleProviderCallback');
 
 // Logout.
 Route::get('/logout', 'AppController@logout');
-
-// Cron routes.
-Route::prefix('cron')->group(function () {
-    Route::get('/refineries', 'CronController@pollRefineries');
-    Route::get('/observers', 'CronController@pollMiningObservers');
-    Route::get('/wallet', 'CronController@pollWallet');
-    Route::get('/invoices', 'CronController@generateInvoices');
-    Route::get('/reprocess', 'CronController@updateReprocessedMaterials');
-    Route::get('/materials', 'CronController@updateMaterialValues');
-    Route::get('/values', 'CronController@updateOreValues');
-});

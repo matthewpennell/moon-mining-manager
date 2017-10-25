@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Classes\EsiConnection;
 use App\Refinery;
+use Illuminate\Support\Facades\Log;
 
 class PollStructureData implements ShouldQueue
 {
@@ -46,6 +47,8 @@ class PollStructureData implements ShouldQueue
         $refinery->name = $structure->name;
         $refinery->solar_system_id = $structure->solar_system_id;
         $refinery->save();
+
+        Log::info('PollStructureData: updated stored information about refinery ' . $this->structure_id);
 
     }
 

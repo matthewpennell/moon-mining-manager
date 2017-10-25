@@ -12,20 +12,12 @@ use App\Miner;
 use App\Payment;
 use App\Template;
 use App\Jobs\SendEvemail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class PollWallet implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Execute the job.
@@ -43,6 +35,8 @@ class PollWallet implements ShouldQueue
             'division' => 1, // master wallet
         ]);
 
+        Log::info('PollWallet: retrieved ' . count($transactions) . ' transactions from the corporation wallet');
+
         $delay_counter = 0;
 
         foreach ($transactions as $transaction)
@@ -53,6 +47,7 @@ class PollWallet implements ShouldQueue
                 $miner = Miner::where('eve_id', $transaction->first_party_id)->first();
                 if (isset($miner))
                 {
+                    Log::info('PollWallet: found a player donation from a recognised miner ' . $miner->eve_id);
                     // Check if this donation was already processed.
                     $payment = Payment::where('ref_id', $transaction->ref_id)->first();
                     if (!isset($payment))
@@ -64,6 +59,8 @@ class PollWallet implements ShouldQueue
                         $payment->ref_id = $transaction->ref_id;
                         $payment->amount_received = $transaction->amount;
                         $payment->save();
+
+                        Log::info('PollWallet: saved a new payment from miner ' . $miner->eve_id . ' for ' . $transaction->amount);
 
                         // Deduct the amount from their outstanding balance.
                         $miner->amount_owed -= $transaction->amount;
@@ -95,6 +92,8 @@ class PollWallet implements ShouldQueue
                         // Queue sending the evemail, spaced at 20-second intervals to avoid triggering the mailspam limiter (4/min).
                         SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($delay_counter * 20));
                         $delay_counter++;
+
+                        Log::info('PollWallet: queued job to send receipt evemail');
                 
                     }
                 }

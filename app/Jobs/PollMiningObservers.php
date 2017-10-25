@@ -10,20 +10,12 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Classes\EsiConnection;
 use App\Refinery;
 use App\Jobs\PollRefinery;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class PollMiningObservers implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Execute the job.
@@ -36,11 +28,15 @@ class PollMiningObservers implements ShouldQueue
 
         // Grab all of the refineries and loop through them.
         $refineries = Refinery::all();
+        $delay_counter = 0;
+
+        Log::info('PollMiningObservers: creating jobs to poll ' . count($refineries) . ' refineries');
         
         // For each refinery create a new job in the queue to poll the API.
         foreach ($refineries as $refinery)
         {
-            PollRefinery::dispatch($refinery->observer_id);
+            PollRefinery::dispatch($refinery->observer_id)->delay(Carbon::now()->addMinutes($delay_counter));
+            $delay_counter++;
         }
 
     }
