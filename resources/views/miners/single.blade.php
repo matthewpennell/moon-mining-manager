@@ -1,32 +1,16 @@
-<!doctype html>
+@extends('layouts.master')
 
-<html lang="{{ app()->getLocale() }}">
+@section('title', 'Miner Details')
 
-    <head>
+@section('content')
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <h2>Miner Details: {{ $miner->name }}</h2>
 
-        <title>{{ $miner->name }} &#0183; EVE Moon Mining Manager</title>
+    <p>Total paid to date: {{ number_format($miner->total_payments) }} ISK</p>
 
-    </head>
+    <p>Currently owes: {{ number_format($miner->amount_owed) }} ISK</p>
 
-    <body>
-
-        <p>
-            <img src="{{ $user->avatar }}" width="40" height="40" alt="{{ $user->name }}" style="border-radius: 20px;">
-            Welcome back, {{ $user->name }}! 
-            <a href="/logout">Logout</a>
-        </p>
-        
-        @include('common.navigation')
-
-        <h1>Miner Details: {{ $miner->name }}</h1>
-
-        <h2>Total paid to date: {{ number_format($miner->total_payments) }} ISK</h2>
-
-        <h3>Currently owes: {{ number_format($miner->amount_owed) }} ISK</h3>
+    <div class="block">
 
         <h2>Activity Log</h2>
 
@@ -34,7 +18,7 @@
             <thead>
                 <tr>
                     <th>Activity</th>
-                    <th>Amount</th>
+                    <th class="numeric">Amount</th>
                     <th>Date</th>
                 </tr>
             </thead>
@@ -52,7 +36,7 @@
                                 Payment received
                             @endif
                         </td>
-                        <td align="right">
+                        <td class="numeric">
                             @if (isset($activity['amount']))
                                 {{ number_format($activity['amount']) }} ISK
                             @endif
@@ -69,6 +53,6 @@
             </tbody>
         </table>
 
-    </body>
+    </div>
 
-</html>
+@endsection
