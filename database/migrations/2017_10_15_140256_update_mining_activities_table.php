@@ -14,7 +14,7 @@ class UpdateMiningActivitiesTable extends Migration
     public function up()
     {
         Schema::table('mining_activities', function (Blueprint $table) {
-            $table->boolean('processed')->after('quantity')->default(FALSE);
+            $table->boolean('processed')->default(0)->after('quantity');
         });
     }
 
