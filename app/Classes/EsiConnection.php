@@ -54,7 +54,7 @@ class EsiConnection
             ->withHeaders(array(
                 'Authorization: Basic ' . base64_encode($client_id . ':' . $secret)
             ))
-            ->enableDebug('logFile.txt')
+            //->enableDebug('logFile.txt')
             ->post();
         $new_token = json_decode($response);
         if (isset($new_token->refresh_token))
