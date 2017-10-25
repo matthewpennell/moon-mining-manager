@@ -19,6 +19,8 @@ class PollWallet implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 10;
+
     /**
      * Execute the job.
      *

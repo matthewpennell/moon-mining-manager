@@ -18,6 +18,7 @@ class PollRefinery implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 10;
     private $observer_id;
     private $page;
     private $total_pages;

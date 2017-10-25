@@ -15,6 +15,7 @@ class PollStructureData implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 10;
     private $structure_id;
 
     /**

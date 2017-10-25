@@ -17,6 +17,8 @@ class UpdateMaterialValues implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 3;
+    
     /**
      * Execute the job.
      *

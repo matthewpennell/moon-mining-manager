@@ -17,6 +17,7 @@ class MinerCheck implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 10;
     private $miner_id;
 
     /**

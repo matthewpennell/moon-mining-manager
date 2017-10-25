@@ -16,6 +16,8 @@ class PollRefineries implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 10;
+
     /**
      * Execute the job.
      *

@@ -14,6 +14,7 @@ class SendEvemail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 3;
     private $mail;
 
     /**
