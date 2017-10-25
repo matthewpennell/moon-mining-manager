@@ -18,6 +18,7 @@ class CreateInvoicesTable extends Migration
             $table->integer('miner_id');
             $table->decimal('amount', 17, 2);
             $table->timestamps();
+            $table->index('miner_id');
         });
     }
 

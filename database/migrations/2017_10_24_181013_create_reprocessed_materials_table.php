@@ -15,7 +15,7 @@ class CreateReprocessedMaterialsTable extends Migration
     {
         Schema::create('reprocessed_materials', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('materialTypeID');
+            $table->integer('materialTypeID')->unique();
             $table->decimal('average_price', 10, 2);
             $table->timestamps();
         });

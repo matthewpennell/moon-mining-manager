@@ -15,7 +15,7 @@ class CreateTaxesTable extends Migration
     {
         Schema::create('taxes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('type_id');
+            $table->integer('type_id')->unique();
             $table->decimal('value', 12, 2);
             $table->decimal('tax_rate', 5, 2);
             $table->integer('updated_by');

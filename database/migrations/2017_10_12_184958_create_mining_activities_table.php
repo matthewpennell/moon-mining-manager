@@ -20,6 +20,7 @@ class CreateMiningActivitiesTable extends Migration
             $table->integer('type_id');
             $table->integer('quantity');
             $table->timestamps();
+            $table->index('miner_id');
         });
     }
 

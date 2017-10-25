@@ -18,7 +18,7 @@ class AlterUsersTable extends Migration
             $table->dropColumn('password');
             $table->string('token', 255)->after('name');
             $table->string('avatar', 255)->after('name');
-            $table->string('eve_id', 10)->after('id');
+            $table->string('eve_id', 10)->after('id')->unique();
             $table->string('refresh_token', 255)->after('token')->nullable();
         });
     }

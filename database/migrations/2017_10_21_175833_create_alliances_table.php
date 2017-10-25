@@ -15,7 +15,7 @@ class CreateAlliancesTable extends Migration
     {
         Schema::create('alliances', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('alliance_id');
+            $table->integer('alliance_id')->unique();
             $table->string('name', 255);
             $table->timestamps();
         });

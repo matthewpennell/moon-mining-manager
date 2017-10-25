@@ -15,7 +15,7 @@ class CreateMinersTable extends Migration
     {
         Schema::create('miners', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('eve_id');
+            $table->integer('eve_id')->unique();
             $table->integer('corporation_id');
             $table->string('name', 255);
             $table->string('avatar', 255);

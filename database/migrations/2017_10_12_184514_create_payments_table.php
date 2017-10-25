@@ -18,6 +18,7 @@ class CreatePaymentsTable extends Migration
             $table->integer('miner_id');
             $table->decimal('amount_received', 17, 2);
             $table->timestamps();
+            $table->index('miner_id');
         });
     }
 

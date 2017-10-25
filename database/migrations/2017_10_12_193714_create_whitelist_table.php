@@ -15,7 +15,7 @@ class CreateWhitelistTable extends Migration
     {
         Schema::create('whitelist', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('eve_id');
+            $table->integer('eve_id')->unique();
             $table->integer('added_by');
             $table->timestamps();
         });

@@ -15,6 +15,7 @@ class UpdateRefineriesTable extends Migration
     {
         Schema::table('refineries', function (Blueprint $table) {
             $table->bigInteger('observer_id')->change();
+            $table->unique('observer_id');
         });
     }
 
