@@ -12,6 +12,7 @@ use App\MiningActivity;
 use App\Jobs\MinerCheck;
 use App\TaxRate;
 use App\Miner;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class PollRefinery implements ShouldQueue
@@ -49,9 +50,11 @@ class PollRefinery implements ShouldQueue
             if ($this->total_pages > 1)
             {
                 Log::info('PollRefinery: found more than 1 page of mining data, queuing additional jobs for ' . $this->total_pages . ' total pages');
+                $delay_counter = 1;
                 for ($i = 2; $i <= $this->total_pages; $i++)
                 {
-                    PollRefinery::dispatch($refinery->observer_id, $i);
+                    PollRefinery::dispatch($refinery->observer_id, $i)->delay(Carbon::now()->addMinutes($delay_counter));
+                    $delay_counter++;
                 }
             }
         }
@@ -84,7 +87,7 @@ class PollRefinery implements ShouldQueue
 
         $esi = new EsiConnection;
 
-        Log::info('PollRefinery: requesting mining activity log for refinery ' . $this->observer_id);
+        Log::info('PollRefinery: requesting mining activity log for refinery ' . $this->observer_id . ', page ' . $this->page);
 
         // Retrieve the mining activity log page for this refinery.
         $activity_log = $esi->esi->invoke('get', '/corporation/{corporation_id}/mining/observers/{observer_id}/', [
@@ -95,7 +98,7 @@ class PollRefinery implements ShouldQueue
 
         Log::info('PollRefinery: received ' . count($activity_log) . ' mining records');
 
-        $new_activity_records = 0;
+        $new_mining_activity_records = array();
 
         foreach ($activity_log as $log_entry)
         {
@@ -108,14 +111,14 @@ class PollRefinery implements ShouldQueue
             ])->first();
             if (!isset($existing_activity))
             {
-                // Create a new entry in the database for this activity.
-                $mining_activity = new MiningActivity;
-                $mining_activity->miner_id = $log_entry->character_id;
-                $mining_activity->refinery_id = $this->observer_id;
-                $mining_activity->type_id = $log_entry->type_id;
-                $mining_activity->quantity = $log_entry->quantity;
-                $mining_activity->save();
-                $new_activity_records++;
+                // Add a new mining activity array to the list.
+                $new_mining_activity_records[] = [
+                    'miner_id' => $log_entry->character_id,
+                    'refinery_id' => $this->observer_id,
+                    'type_id' => $log_entry->type_id,
+                    'quantity' => $log_entry->quantity,
+                ];
+
                 // Check if this miner is already known.
                 $miner = Miner::where('eve_id', $log_entry->character_id)->first();
                 // If not, create a job to add the new miner entry.
@@ -124,6 +127,7 @@ class PollRefinery implements ShouldQueue
                     Log::info('PollRefinery: unknown miner found, queuing job to retrieve details');
                     MinerCheck::dispatch($log_entry->character_id);
                 }
+
                 // Check if this ore type exists in the taxes table.
                 $tax_rate = TaxRate::where('type_id', $log_entry->type_id)->first();
                 // If not, create and insert it with zero values.
@@ -136,12 +140,15 @@ class PollRefinery implements ShouldQueue
                     $tax_rate->tax_rate = 7;
                     $tax_rate->updated_by = 0;
                     $tax_rate->save();
-                    Log::info('PollRefinery: unknown ore found, new tax rate record created');
+                    Log::info('PollRefinery: unknown ore ' . $tax_rate->type_id . ' found, new tax rate record created');
                 }
             }
         }
 
-        Log::info('PollRefinery: inserted ' . $new_activity_records . ' new mining activity records');
+        // Insert all of the new mining activity records to the database.
+        MiningActivity::insert($new_mining_activity_records);
+
+        Log::info('PollRefinery: inserted ' . count($new_mining_activity_records) . ' new mining activity records');
         
     }
 
