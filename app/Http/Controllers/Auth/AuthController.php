@@ -11,6 +11,15 @@ use App\Whitelist;
 
 class AuthController extends Controller
 {
+
+    private $socialite_driver;
+
+    public function __construct()
+    {
+        // Set the Socialite driver to use based on whether we are working with TQ or Sisi.
+        $this->socialite_driver = (env('ESEYE_DATASOURCE', 'tranquility') != 'singularity') ? 'eveonline' : 'eveonline-sisi';
+    }
+
     /**
      * Redirect the user to the EVE Online SSO page and ask for permission to search corporation assets.
      *
@@ -18,7 +27,7 @@ class AuthController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('eveonline')->scopes([
+        return Socialite::driver($this->socialite_driver)->scopes([
             'esi-industry.read_corporation_mining.v1',
             'esi-wallet.read_corporation_wallets.v1',
             'esi-mail.send_mail.v1',
@@ -36,7 +45,7 @@ class AuthController extends Controller
     {
         
         // Find or create the user.
-        $user = Socialite::driver('eveonline')->user();
+        $user = Socialite::driver($this->socialite_driver)->user();
         $authUser = $this->findOrCreateUser($user);
 
         // Check if the user is whitelisted to access the app.
