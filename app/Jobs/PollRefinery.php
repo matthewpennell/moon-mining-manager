@@ -99,57 +99,74 @@ class PollRefinery implements ShouldQueue
         Log::info('PollRefinery: received ' . count($activity_log) . ' mining records');
 
         $new_mining_activity_records = array();
+        $miner_ids = array();
+        $type_ids = array();
 
         foreach ($activity_log as $log_entry)
         {
-            // Check whether this entry has already been recorded.
-            $existing_activity = MiningActivity::where([
+
+            $hash = hash('sha1', $log_entry->character_id . $this->observer_id . $log_entry->type_id . $log_entry->quantity . $log_entry->last_updated);
+
+            // Add a new mining activity array to the list.
+            $new_mining_activity_records[] = [
+                'hash' => $hash,
                 'miner_id' => $log_entry->character_id,
                 'refinery_id' => $this->observer_id,
                 'type_id' => $log_entry->type_id,
                 'quantity' => $log_entry->quantity,
-            ])->first();
-            if (!isset($existing_activity))
+            ];
+
+            // Store the miner.
+            if (!in_array($log_entry->character_id, $miner_ids))
             {
-                // Add a new mining activity array to the list.
-                $new_mining_activity_records[] = [
-                    'miner_id' => $log_entry->character_id,
-                    'refinery_id' => $this->observer_id,
-                    'type_id' => $log_entry->type_id,
-                    'quantity' => $log_entry->quantity,
-                ];
-
-                // Check if this miner is already known.
-                $miner = Miner::where('eve_id', $log_entry->character_id)->first();
-                // If not, create a job to add the new miner entry.
-                if (!isset($miner))
-                {
-                    Log::info('PollRefinery: unknown miner found, queuing job to retrieve details');
-                    MinerCheck::dispatch($log_entry->character_id);
-                }
-
-                // Check if this ore type exists in the taxes table.
-                $tax_rate = TaxRate::where('type_id', $log_entry->type_id)->first();
-                // If not, create and insert it with zero values.
-                if (!isset($tax_rate))
-                {
-                    $tax_rate = new TaxRate;
-                    $tax_rate->type_id = $log_entry->type_id;
-                    $tax_rate->check_materials = 1;
-                    $tax_rate->value = 0;
-                    $tax_rate->tax_rate = 7;
-                    $tax_rate->updated_by = 0;
-                    $tax_rate->save();
-                    Log::info('PollRefinery: unknown ore ' . $tax_rate->type_id . ' found, new tax rate record created');
-                }
+                $miner_ids[] = $log_entry->character_id;
             }
+
+            // Store the ore type.
+            if (!in_array($log_entry->type_id, $type_ids))
+            {
+                $type_ids[] = $log_entry->type_id;
+            }
+
         }
 
         // Insert all of the new mining activity records to the database.
-        MiningActivity::insert($new_mining_activity_records);
+        MiningActivity::insertIgnore($new_mining_activity_records);
 
-        Log::info('PollRefinery: inserted ' . count($new_mining_activity_records) . ' new mining activity records');
+        Log::info('PollRefinery: inserted up to ' . count($new_mining_activity_records) . ' new mining activity records');
         
+        // Check if this miner is already known.
+        foreach ($miner_ids as $miner_id)
+        {
+            $miner = Miner::where('eve_id', $miner_id)->first();
+            // If not, create a job to add the new miner entry.
+            $delay_counter = 1;
+            if (!isset($miner))
+            {
+                Log::info('PollRefinery: unknown miner found, queuing job to retrieve details');
+                MinerCheck::dispatch($miner_id)->delay(Carbon::now()->addSeconds($delay_counter * 5));
+                $delay_counter++;
+            }
+        }
+
+        // Check if this ore type exists in the taxes table.
+        foreach ($type_ids as $type_id)
+        {
+            $tax_rate = TaxRate::where('type_id', $type_id)->first();
+            // If not, create and insert it with zero values.
+            if (!isset($tax_rate))
+            {
+                $tax_rate = new TaxRate;
+                $tax_rate->type_id = $type_id;
+                $tax_rate->check_materials = 1;
+                $tax_rate->value = 0;
+                $tax_rate->tax_rate = 7;
+                $tax_rate->updated_by = 0;
+                $tax_rate->save();
+                Log::info('PollRefinery: unknown ore ' . $type_id . ' found, new tax rate record created');
+            }
+        }
+
     }
 
 }

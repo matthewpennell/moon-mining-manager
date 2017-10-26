@@ -9,6 +9,7 @@
         "eveseat/eseye": "^0.0.10",
         "fideloper/proxy": "~3.3",
         "ixudra/curl": "^6.13",
+        "jdavidbakr/replaceable-model": "^1.0",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
