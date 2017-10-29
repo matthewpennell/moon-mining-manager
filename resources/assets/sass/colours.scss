@@ -1,0 +1,47 @@
+$text: #242626;
+$bg_dark: #242626;
+$bg_light: #cad9d7;
+$highlight: #408077;
+$num_positive: #4a8040;
+$num_negative: #6c0d06;
+
+body {
+    background: #fff;
+    color: $text;
+}
+
+.navigation {
+    background: $bg_dark;
+    color: #fff;
+}
+
+.content {
+    background: $bg_light;
+}
+
+.header,
+.card {
+    background: #fff;
+    color: $text;
+}
+
+.card {
+    box-shadow: 0 2px 2px #999;
+}
+
+.num-positive {
+    color: $num_positive;
+}
+
+.num-negative {
+    color: $num_negative;
+}
+
+.highlight {
+    background: $highlight;
+    color: #fff;
+}
+
+.negative {
+    background: $num_negative;
+}

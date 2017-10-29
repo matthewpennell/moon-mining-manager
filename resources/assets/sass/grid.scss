@@ -1,0 +1,25 @@
+// Fix the CSS border-box property to include padding and borders.
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.row {
+    padding-right: 1.4285714%;
+    padding-bottom: 20px;
+    overflow: hidden;
+}
+
+// 14-column fluid grid.
+@for $i from 1 through 12 {
+    .col-#{$i} {
+        width: 8.333333333% * $i;
+    }
+}
+
+[class^="col-"] {
+    float: left;
+    padding-left: 20px;
+}

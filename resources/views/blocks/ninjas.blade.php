@@ -1,24 +1,14 @@
 <div class="block">
+    
+    <div class="card-heading">Ninja Miners</div>
 
-    <h2>Ninja Miners</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Miner</th>
-                <th>Corporation/Alliance</th>
-                <th class="numeric">Amount Owed</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($ninjas as $ninja)
-                <tr>
-                    <td>{{ $ninja->name }}</a></td>
-                    <td>{{ $ninja->corporation->name }} ({{ $ninja->alliance->name }})</td>
-                    <td class="numeric">{{ number_format($ninja->amount_owed) }} ISK</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    @foreach ($ninjas as $ninja)
+        @include('common.card', [
+            'size' => 'small',
+            'avatar' => $ninja->avatar,
+            'name' => $ninja->name . ' (' . $ninja->corporation->name . ')', 
+            'amount' => $ninja->amount_owed
+        ])
+    @endforeach
 
 </div>

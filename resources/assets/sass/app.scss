@@ -1,82 +1,26 @@
 // normalize.css
 @import "~normalize.css/normalize.css";
 
-// Variables
-@import "variables";
+// Colours
+@import "colours";
 
-body {
-    background: #fff;
-    color: #111;
-    font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 18px;
-}
+// Fonts
+@import "fonts";
 
-.header {
-    height: 150px;
-    background: #444 url(../images/header.jpg) no-repeat 50%;
-    background-size: cover;
-    text-indent: -999em;
-}
+// Typography
+@import "typography";
 
-h1 {
-    margin: 0;
-}
+// Basic grid
+@import "grid";
 
-.navigation {
-    height: 50px;
-    background: #ccc;
-    line-height: 50px;
-}
+// Layout
+@import "layout";
 
-.navigation ul {
-    list-style: none;
-    margin: 0;
-}
+// Navigation
+@import "navigation";
 
-.navigation li a {
-    float: left;
-    padding: 0 20px;
-    text-decoration: none;
-    color: #111;
-}
+// Tables
+@import "tables";
 
-.navigation li a:hover, .navigation li a:focus {
-    background: #fff;
-}
-
-.user {
-    float: right;
-}
-
-.container {
-    width: 80%;
-    margin: 0 auto;
-}
-
-.block {
-    width: 45%;
-    margin-right: 5%;
-    float: left;
-}
-
-.block table th,
-.block table td {
-    padding: 5px 10px;
-    text-align: left;
-}
-
-.block table .numeric {
-    text-align: right;
-}
-
-tfoot {
-    font-weight: bold;
-}
-
-img.avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 32px;
-    vertical-align: middle;
-}
+// Forms
+@import "forms";

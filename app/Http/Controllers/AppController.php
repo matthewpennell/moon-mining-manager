@@ -9,6 +9,8 @@ use App\Whitelist;
 use App\User;
 use App\Miner;
 use App\Refinery;
+use App\Payment;
+use App\SolarSystem;
 
 class AppController extends Controller
 {
@@ -26,11 +28,24 @@ class AppController extends Controller
         $total_amount_owed = DB::table('miners')->select(DB::raw('SUM(amount_owed) AS total'))->where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->first();
         $total_income = DB::table('refineries')->select(DB::raw('SUM(income) AS total'))->first();
 
+        // Grab the top miner, refinery and system.
+        $top_payer = Payment::select(DB::raw('miner_id, SUM(amount_received) AS total'))->groupBy('miner_id')->orderBy('total', 'desc')->first();
+        $top_miner = Miner::where('eve_id', $top_payer->miner_id)->first();
+        $top_miner->total = $top_payer->total;
+        $top_refinery = Refinery::orderBy('income', 'desc')->first();
+        $top_refinery_system = Refinery::select(DB::raw('solar_system_id, SUM(income) AS total'))->groupBy('solar_system_id')->orderBy('total', 'desc')->first();
+        $top_system = SolarSystem::find($top_refinery_system->solar_system_id);
+        $top_system->total = $top_refinery_system->total;
+
+
         return view('home', [
-            'miners' => Miner::where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->get(),
+            'top_miner' => $top_miner,
+            'top_refinery' => $top_refinery,
+            'top_system' => $top_system,
+            'miners' => Miner::where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->orderBy('amount_owed', 'desc')->get(),
             'ninjas' => Miner::whereNull('alliance_id')->orwhere('alliance_id', '<>', env('EVE_ALLIANCE_ID'))->get(),
             'total_amount_owed' => $total_amount_owed->total,
-            'refineries' => Refinery::all(),
+            'refineries' => Refinery::orderBy('income', 'desc')->get(),
             'total_income' => $total_income->total,
         ]);
 
@@ -47,18 +62,6 @@ class AppController extends Controller
 
         return view('users', [
             'whitelisted_users' => Whitelist::all(),
-        ]);
-        
-    }
-
-    /**
-     * Choosing a new user to whitelist. Displays a list of everyone that has tried
-     * to login in the past, with buttons to whitelist.
-     */
-    public function showUserAccessHistory()
-    {
-
-        return view('add_user', [
             'access_history' => User::whereNotIn('eve_id', function ($q) {
                 $q->select('eve_id')->from('whitelist');
             })->get(),

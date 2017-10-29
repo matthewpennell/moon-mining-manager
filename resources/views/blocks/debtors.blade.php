@@ -1,30 +1,17 @@
-<div class="block">
+<div class="card-heading">Debts</div>
 
-    <h2>Outstanding Debts</h2>
+<!--<p><a href="/payment/new">Log a payment</a> received via alternative means</p>-->
 
-    <p><a href="/payment/new">Log a payment</a> received via alternative means</p>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Miner</th>
-                <th class="numeric">Amount Owed</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <td>Total Outstanding:</td>
-                <td class="numeric">{{ number_format($total_amount_owed) }} ISK</td>
-            </tr>
-        </tfoot>
-        <tbody>
-            @foreach ($miners as $miner)
-                <tr>
-                    <td><a href="/miners/{{ $miner->eve_id }}">{{ $miner->name }}</a> ({{ $miner->corporation->name }})</td>
-                    <td class="numeric">{{ number_format($miner->amount_owed) }} ISK</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-
+<div class="card highlight">
+    <span class="num">{{ number_format($total_amount_owed) }}</span> ISK
 </div>
+
+@foreach ($miners as $miner)
+    @include('common.card', [
+        'link' => '/miners/' . $miner->eve_id,
+        'size' => 'small',
+        'avatar' => $miner->avatar,
+        'name' => $miner->name, 
+        'amount' => -$miner->amount_owed
+    ])
+@endforeach

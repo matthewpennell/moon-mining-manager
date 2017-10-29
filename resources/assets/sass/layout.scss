@@ -1,0 +1,86 @@
+html, body {
+    height: 100%;
+}
+
+.container {
+    min-height: 100%;
+    display: flex;
+}
+
+.navigation {
+    width: 12.8571429%;
+}
+
+.content {
+    width: 87.1428571%;
+}
+
+.header {
+    height: 160px;
+    margin: 0 0 20px;
+    position: relative;
+}
+
+.title {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.block {
+    margin: 0 0 20px;
+}
+
+.card {
+    overflow: hidden;
+    padding-top: 20px;
+    margin-top: 10px;
+    display: block;
+    text-decoration: none;
+    box-shadow: 0 2px 4px #bbb;
+    .avatar {
+        float: left;
+        margin: -20px 10px 0 0;
+        width: 100px;
+        height: 100px;
+    }
+    .primary {
+        font-size: 20px;
+        width: 50%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.card-small {
+    padding-top: 0;
+    line-height: 40px;
+    .avatar {
+        width: 40px;
+        height: 40px;
+        margin-top: 0;
+    }
+    .primary {
+        font-size: 14px;
+        float: left;
+    }
+    .amount {
+        float: right;
+        padding-right: 10px;
+    }
+}
+
+a.card:hover {
+    position: relative;
+    top: 1px;
+    box-shadow: 0 0 4px #bbb;
+}
+
+.highlight {
+    padding-bottom: 20px;
+}
+
+.information {
+    padding: 20px;
+}

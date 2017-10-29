@@ -1,0 +1,19 @@
+table {
+    text-align: left;
+    width: 100%;
+}
+
+th, td {
+    background: #fff;
+    padding: 10px;
+}
+
+th {
+    background: $bg_dark;
+    color: #fff;
+}
+
+.numeric {
+    text-align: right;
+}
+

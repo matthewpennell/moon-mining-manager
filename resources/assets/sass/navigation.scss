@@ -1,0 +1,51 @@
+.user {
+    height: 160px;
+    border-bottom: 1px solid #3a3c3c;
+    padding: 20px 0;
+    text-align: center;
+    .avatar {
+        width: 90px;
+        height: 90px;
+        border-radius: 50px;
+        display: block;
+        margin: 0 auto 10px;
+        border: 5px solid #3a3c3c;
+    }
+    .user-name {
+        opacity: 0.71;
+    }
+    a {
+        display: none;
+    }
+    &:hover {
+        .user-name {
+            display: none;
+        }
+        a {
+            display: block;
+        }
+    }
+}
+
+.navigation {
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 20px 0 0 20px;
+    }
+    li {
+        line-height: 40px;
+        opacity: 0.71;
+        &:hover {
+            opacity: 1;
+        }
+    }
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+    [class^="icon-"], [class*=" icon-"] {
+        font-size: 20px;
+        margin-right: 10px;
+    }        
+}

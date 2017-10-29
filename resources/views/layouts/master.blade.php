@@ -16,14 +16,21 @@
 
     <body>
 
-        <div class="header">
-            <h1>Moon Mining Manager</h1>
-        </div>
-
-        @include('common.navigation')
-
         <div class="container">
-            @yield('content')
+
+            <div class="navigation">
+                @include('common.navigation')
+            </div>
+
+            <div class="content">
+                <div class="col-12 header">
+                    <div class="title">
+                        @yield('title')
+                    </div>
+                </div>
+                @yield('content')
+            </div>
+
         </div>
 
         <script src="/js/app.js"></script>

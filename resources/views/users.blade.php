@@ -1,35 +1,50 @@
 @extends('layouts.master')
 
-@section('title', 'Home')
+@section('title', 'Settings')
 
 @section('content')
-        
-    <h2>Authorised Users</h2>
 
-    <p><a href="/access/new">Add new user</a></p>
+    <div class="row">
+            
+        <div class="card-heading">Authorised users</div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>User</th>
-                <th>Added by</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($whitelisted_users as $user)
-                <tr>
-                    <td><img src="{{ $user->user->avatar }}" alt="" class="avatar"> {{ $user->user->name }}</td>
-                    <td><img src="{{ $user->whitelister->avatar }}" alt="" class="avatar"> {{ $user->whitelister->name }}</td>
-                    <td>
+        @foreach ($whitelisted_users as $user)
+            <div class="col-4">
+                <div class="card">
+                    <img src="{{ $user->user->avatar }}" class="avatar">
+                    <div class="primary">{{ $user->user->name }}</div>
+                    <div class="secondary">Added by {{ $user->whitelister->name }}</div>
+                    <div class="inline-form">
                         <form method="post" action="/access/blacklist/{{ $user->eve_id }}">
                             {{ csrf_field() }}
-                            <button>Remove user</button>
+                            <button type="submit">Remove user</button>
                         </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-        
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+    </div>
+
+    <div class="row">
+            
+        <div class="card-heading">Add new authorised user</div>
+
+        @foreach ($access_history as $user)
+            <div class="col-4">
+                <div class="card">
+                    <img src="{{ $user->avatar }}" class="avatar">
+                    <div class="primary">{{ $user->name }}</div>
+                    <div class="inline-form">
+                        <form method="post" action="/access/whitelist/{{ $user->eve_id }}">
+                            {{ csrf_field() }}
+                            <button type="submit">Add user</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+    </div>
+
 @endsection

@@ -1,19 +1,45 @@
-<div class="navigation">
-
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/miners">Miners</a></li>
-        <li><a href="/taxes">Manage Tax Rates</a></li>
-        <li><a href="/emails">Manage Emails</a></li>
-        <li><a href="/access">Manage Access</a></li>
-    </ul>
-
-    <div class="user">
-        {{ $user->name }}
-        <img src="{{ $user->avatar }}" width="40" height="40" alt="{{ $user->name }}" style="border-radius: 20px;">
-        <a href="/logout">Logout</a>
-    </div>
-
+<div class="user">
+    <img src="{{ $user->avatar }}" class="avatar" alt="{{ $user->name }}">
+    <div class="user-name">{{ $user->name }}</div>
+    <a href="/logout">Logout</a>
 </div>
 
+<ul>
+    <li>
+        <a href="/">
+            <i class="icon-home"></i>
+            Home
+        </a>
+    </li>
+    <li>
+        <a href="/miners">
+            <i class="icon-users"></i>
+            Miners
+        </a>
+    </li>
+    <li>
+        <a href="/reports">
+            <i class="icon-stats-dots"></i>
+            Reports
+        </a>
+    </li>
+    <li>
+        <a href="/taxes">
+            <i class="icon-coin-dollar"></i>
+            Taxes
+        </a>
+    </li>
+    <li>
+        <a href="/emails">
+            <i class="icon-envelop"></i>
+            Manage Emails
+        </a>
+    </li>
+    <li>
+        <a href="/access">
+            <i class="icon-cog"></i>
+            Settings
+        </a>
+    </li>
+</ul>
         
