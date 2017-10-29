@@ -30,18 +30,23 @@ class AppController extends Controller
 
         // Grab the top miner, refinery and system.
         $top_payer = Payment::select(DB::raw('miner_id, SUM(amount_received) AS total'))->groupBy('miner_id')->orderBy('total', 'desc')->first();
-        $top_miner = Miner::where('eve_id', $top_payer->miner_id)->first();
-        $top_miner->total = $top_payer->total;
+        if (isset($top_payer))
+        {
+            $top_miner = Miner::where('eve_id', $top_payer->miner_id)->first();
+            $top_miner->total = $top_payer->total;
+        }
         $top_refinery = Refinery::orderBy('income', 'desc')->first();
         $top_refinery_system = Refinery::select(DB::raw('solar_system_id, SUM(income) AS total'))->groupBy('solar_system_id')->orderBy('total', 'desc')->first();
-        $top_system = SolarSystem::find($top_refinery_system->solar_system_id);
-        $top_system->total = $top_refinery_system->total;
-
+        if (isset($top_refinery_system))
+        {
+            $top_system = SolarSystem::find($top_refinery_system->solar_system_id);
+            $top_system->total = $top_refinery_system->total;
+        }
 
         return view('home', [
-            'top_miner' => $top_miner,
-            'top_refinery' => $top_refinery,
-            'top_system' => $top_system,
+            'top_miner' => ($top_miner) ? $top_miner : null,
+            'top_refinery' => ($top_refinery) $top_refinery : null,
+            'top_system' => ($top_system) ? $top_system : null,
             'miners' => Miner::where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->orderBy('amount_owed', 'desc')->get(),
             'ninjas' => Miner::whereNull('alliance_id')->orwhere('alliance_id', '<>', env('EVE_ALLIANCE_ID'))->get(),
             'total_amount_owed' => $total_amount_owed->total,
