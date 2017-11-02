@@ -4,6 +4,8 @@
 
 @section('content')
 
+    <div class="row">
+
     @foreach ($miners as $miner)
         <div class="col-4">
             @include('common.card', [
@@ -14,6 +16,12 @@
                 'amount' => $miner->total_payments
             ])
         </div>
+        @if (($loop->index + 1) % 3 == 0)
+            </div>
+            <div class="row">
+        @endif
     @endforeach
+
+    </div>
 
 @endsection
