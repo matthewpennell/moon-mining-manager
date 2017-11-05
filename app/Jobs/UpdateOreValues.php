@@ -38,7 +38,7 @@ class UpdateOreValues implements ShouldQueue
             {
                 $total_unit_cost += $material_values[$material->materialTypeID]->average_price * ($material->quantity * 0.9);
             }
-            $rate->value = $total_unit_cost;
+            $rate->value = $total_unit_cost / 100;
             $rate->save();
             Log::info('UpdateOreValues: calculated and saved unit cost for ore ' . $rate->type_id);
         }
