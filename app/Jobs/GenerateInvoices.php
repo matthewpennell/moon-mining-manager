@@ -120,7 +120,7 @@ class GenerateInvoices implements ShouldQueue
         $debtors = Miner::where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->get();
         Log::info('GenerateInvoices: found ' . count($debtors) . ' miners with an outstanding balance to be invoiced');
         $template = Template::where('name', 'weekly_invoice')->first();
-        $delay_counter = 1;
+        $delay_counter = 0;
 
         foreach ($debtors as $miner)
         {
@@ -136,8 +136,7 @@ class GenerateInvoices implements ShouldQueue
                 'body' => $template->body,
                 'recipients' => array(
                     array(
-                        //'recipient_id' => $miner->eve_id,
-                        'recipient_id' => '94560622',
+                        'recipient_id' => $miner->eve_id,
                         'recipient_type' => 'character'
                     )
                 ),
