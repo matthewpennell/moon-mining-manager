@@ -125,27 +125,31 @@ class GenerateInvoices implements ShouldQueue
         foreach ($debtors as $miner)
         {
 
+            // Grab the default template subject and body.
+            $subject = $template->subject;
+            $body = $template->body;
+
             // Replace placeholder elements in email template.
-            $template->subject = str_replace('{date}', date('Y-m-d'), $template->subject);
-            $template->subject = str_replace('{name}', $miner->name, $template->subject);
-            $template->subject = str_replace('{amount_owed}', $miner->amount_owed, $template->subject);
-            $template->body = str_replace('{date}', date('Y-m-d'), $template->body);
-            $template->body = str_replace('{name}', $miner->name, $template->body);
-            $template->body = str_replace('{amount_owed}', $miner->amount_owed, $template->body);
+            $subject = str_replace('{date}', date('Y-m-d'), $subject);
+            $subject = str_replace('{name}', $miner->name, $subject);
+            $subject = str_replace('{amount_owed}', $miner->amount_owed, $subject);
+            $body = str_replace('{date}', date('Y-m-d'), $body);
+            $body = str_replace('{name}', $miner->name, $body);
+            $body = str_replace('{amount_owed}', $miner->amount_owed, $body);
             $mail = array(
-                'body' => $template->body,
+                'body' => $body,
                 'recipients' => array(
                     array(
                         'recipient_id' => $miner->eve_id,
                         'recipient_type' => 'character'
                     )
                 ),
-                'subject' => $template->subject,
+                'subject' => $subject,
             );
 
             // Queue sending the evemail, spaced at 20-second intervals to avoid triggering the mailspam limiter (4/min).
             SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($delay_counter * 20));
-            Log::info('GenerateInvoices: dispatched job to send evemail in ' . ($delay_counter * 20) . ' seconds');
+            Log::info('GenerateInvoices: dispatched job to send mail in ' . ($delay_counter * 20) . ' seconds');
             $delay_counter++;
 
             // Write an invoice entry.
