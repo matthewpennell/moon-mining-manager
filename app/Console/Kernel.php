@@ -10,6 +10,7 @@ use App\Jobs\PollRefineries;
 use App\Jobs\UpdateMaterialValues;
 use App\Jobs\PollMiningObservers;
 use App\Jobs\GenerateInvoices;
+use App\Jobs\PollStructures;
 
 class Kernel extends ConsoleKernel
 {
@@ -31,7 +32,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
-        // Check for any new refineries that have been anchored.
+        // Poll all corporation structures to look for refineries.
+        // $schedule->job(new PollStructures)->dailyAt('00:00');
+
+        // Check for any newly active refineries.
         $schedule->job(new PollRefineries)->dailyAt('00:05');
 
         // Check for miners making payments to the corporation wallet.
