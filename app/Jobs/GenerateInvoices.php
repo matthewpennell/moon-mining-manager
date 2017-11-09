@@ -132,10 +132,10 @@ class GenerateInvoices implements ShouldQueue
             // Replace placeholder elements in email template.
             $subject = str_replace('{date}', date('Y-m-d'), $subject);
             $subject = str_replace('{name}', $miner->name, $subject);
-            $subject = str_replace('{amount_owed}', $miner->amount_owed, $subject);
+            $subject = str_replace('{amount_owed}', number_format($miner->amount_owed, 0), $subject);
             $body = str_replace('{date}', date('Y-m-d'), $body);
             $body = str_replace('{name}', $miner->name, $body);
-            $body = str_replace('{amount_owed}', $miner->amount_owed, $body);
+            $body = str_replace('{amount_owed}', number_format($miner->amount_owed, 0), $body);
             $mail = array(
                 'body' => $body,
                 'recipients' => array(
