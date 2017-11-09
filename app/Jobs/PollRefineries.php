@@ -33,7 +33,7 @@ class PollRefineries implements ShouldQueue
             'corporation_id' => $esi->corporation_id,
         ]);
 
-        Log::info('PollRefineries: found ' . count($mining_observers) . ' refineries');
+        Log::info('PollRefineries: found ' . count($mining_observers) . ' refineries with active asteroid fields');
 
         // Process the refineries list. For each entry, we want to check and see if it already exists 
         // in the database. If it doesn't, we create a new database entry for it.

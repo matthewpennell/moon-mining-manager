@@ -41,7 +41,7 @@ class PollRefinery implements ShouldQueue
         if ($page == 1)
         {
             // This raw curl request can be replaced with an $esi call once the Eseye library is updated to return response headers.
-            $url = 'https://esi.tech.ccp.is/latest/corporation/' . $esi->corporation_id . '/mining/observers/' . $id . '/?datasource=singularity&token=' . $esi->token;
+            $url = 'https://esi.tech.ccp.is/latest/corporation/' . $esi->corporation_id . '/mining/observers/' . $id . '/?datasource=' . env('ESEYE_DATASOURCE', 'tranquility') . '&token=' . $esi->token;
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -90,10 +90,11 @@ class PollRefinery implements ShouldQueue
         Log::info('PollRefinery: requesting mining activity log for refinery ' . $this->observer_id . ', page ' . $this->page);
 
         // Retrieve the mining activity log page for this refinery.
-        $activity_log = $esi->esi->invoke('get', '/corporation/{corporation_id}/mining/observers/{observer_id}/', [
+        $activity_log = $esi->esi->setQueryString([
+            'page' => $this->page,
+        ])->invoke('get', '/corporation/{corporation_id}/mining/observers/{observer_id}/', [
             'corporation_id' => $esi->corporation_id,
             'observer_id' => $this->observer_id,
-            'page' => $this->page,
         ]);
 
         Log::info('PollRefinery: received ' . count($activity_log) . ' mining records');
