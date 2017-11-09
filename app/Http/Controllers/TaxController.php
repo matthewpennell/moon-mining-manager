@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\TaxRate;
 use App\Type;
+use App\ReprocessedMaterial;
+use App\ReprocessedMaterialsHistory;
 use Ixudra\Curl\Facades\Curl;
 
 class TaxController extends Controller
@@ -15,6 +17,24 @@ class TaxController extends Controller
     {
         return view('taxes', [
             'tax_rates' => TaxRate::orderby('type_id')->get(),
+        ]);
+    }
+
+    /**
+     * Show the historical data for the average price of reprocessed materials.
+     */
+    public function showHistory()
+    {
+        $materials = ReprocessedMaterial::orderBy('MaterialTypeID')->get();
+        $history = [];
+        foreach ($materials as $material)
+        {
+            $history[$material->materialTypeID] = ReprocessedMaterialsHistory::where('type_id', $material->materialTypeID)->orderBy('updated_at', 'asc')->get();
+        }
+
+        return view('taxes.history', [
+            'materials' => $materials,
+            'history' => $history,
         ]);
     }
 

@@ -47,6 +47,7 @@ Route::middleware(['login'])->prefix('payment')->group(function () {
 // Tax management.
 Route::middleware(['login'])->prefix('taxes')->group(function () {
     Route::get('/', 'TaxController@showTaxRates');
+    Route::get('/history', 'TaxController@showHistory');
     Route::post('/update_value/{id}', 'TaxController@updateValue');
     Route::post('/update_rate/{id}', 'TaxController@updateTaxRate');
     Route::post('/update_master_rate', 'TaxController@updateMasterTaxRate');

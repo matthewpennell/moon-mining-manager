@@ -51,6 +51,13 @@ html, body {
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .chart-heading {
+        margin: 0 20px 20px;
+    }
+    canvas {
+        margin: 20px auto;
+        width: 90%;
+    }
 }
 
 .card-small {

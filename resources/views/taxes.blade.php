@@ -23,7 +23,7 @@
 
         <div class="col-6">
 
-            <div class="card-heading">Tax rate details</div>
+            <div class="card-heading">Tax rate details (<a href="/taxes/history">See history</a>)</div>
 
             <table>
                 <thead>

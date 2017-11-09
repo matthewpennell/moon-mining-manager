@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Classes\EsiConnection;
 use App\ReprocessedMaterial;
+use App\ReprocessedMaterialsHistory;
 use Illuminate\Support\Facades\Log;
 
 class UpdateMaterialValue implements ShouldQueue
@@ -71,6 +72,12 @@ class UpdateMaterialValue implements ShouldQueue
         $material->average_price = $weighted_average / $weighted_total;
         $material->save();
         Log::info('UpdateMaterialValue: calculated and saved the weighted average value for material ' . $material->materialTypeID);
+
+        // Save the new average value into the history table as well.
+        $history = new ReprocessedMaterialsHistory;
+        $history->type_id = $this->materialTypeID;
+        $history->average_price = $weighted_average / $weighted_total;
+        $history->save();
 
     }
 }
