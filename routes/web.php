@@ -27,6 +27,11 @@ Route::middleware(['login'])->prefix('access')->group(function () {
     Route::post('/blacklist/{id}', 'AppController@blacklistUser');
 });
 
+// Reports.
+Route::middleware(['login'])->prefix('reports')->group(function () {
+    Route::get('/', 'ReportsController@main');
+});
+
 // Miner reporting.
 Route::middleware(['login'])->prefix('miners')->group(function () {
     Route::get('/', 'MinerController@showMiners');
