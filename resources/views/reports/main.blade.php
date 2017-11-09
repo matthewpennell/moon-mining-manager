@@ -20,8 +20,8 @@
                 <tbody>
                     @foreach ($daily_mining as $row)
                         <tr>
-                            <td>{{ $row->order_year }}-{{ $row->order_month }}-{{ $row->order_day }}</td>
-                            <td class="numeric">{{ number_format($row->quantity, 0) }}</td>
+                            <td>{{ $row->order_year }}-{{ $row->order_month }}-{{ str_pad($row->order_day, 2, '0', STR_PAD_LEFT) }}</td>
+                            <td class="numeric">{{ number_format($row->quantity, 0) }} m<sup>3</sup></td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -43,7 +43,7 @@
                 <tbody>
                     @foreach ($daily_income as $row)
                         <tr>
-                            <td>{{ $row->order_year }}-{{ $row->order_month }}-{{ $row->order_day }}</td>
+                            <td>{{ $row->order_year }}-{{ $row->order_month }}-{{ str_pad($row->order_day, 2, '0', STR_PAD_LEFT) }}</td>
                             <td class="numeric">{{ number_format($row->amount, 0) }} ISK</td>
                         </tr>
                     @endforeach
