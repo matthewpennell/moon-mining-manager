@@ -78,6 +78,7 @@ class UpdateMaterialValue implements ShouldQueue
         $history->type_id = $this->materialTypeID;
         $history->average_price = $weighted_average / $weighted_total;
         $history->save();
-
+        Log::info('UpdateMaterialValue: saved the historical value for material ' . $material->materialTypeID);
+        
     }
 }
