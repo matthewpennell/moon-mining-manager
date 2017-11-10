@@ -71,14 +71,14 @@ class UpdateMaterialValue implements ShouldQueue
         // Calculate the weighted average value of this item and save it.
         $material->average_price = $weighted_average / $weighted_total;
         $material->save();
-        Log::info('UpdateMaterialValue: calculated and saved the weighted average value for material ' . $material->materialTypeID);
+        Log::info('UpdateMaterialValue: calculated and saved the weighted average value for material ' . $this->materialTypeID);
 
         // Save the new average value into the history table as well.
         $history = new ReprocessedMaterialsHistory;
         $history->type_id = $this->materialTypeID;
         $history->average_price = $weighted_average / $weighted_total;
         $history->save();
-        Log::info('UpdateMaterialValue: saved the historical value for material ' . $material->materialTypeID);
+        Log::info('UpdateMaterialValue: saved the historical value for material ' . $this->materialTypeID);
         
     }
 }
