@@ -11,7 +11,7 @@
             'link' => '/refinery/' . $refinery->observer_id,
             'size' => 'small',
             'avatar' => 'https://imageserver.eveonline.com/Render/35835_128.png',
-            'name' => $refinery->name . ' (' . $refinery->system->solarSystemName . ')', 
+            'name' => $refinery->name . ' (' . $refinery->system->solarSystemName . ')' . ($refinery->extraction_start_time ? ' <span class="refinery-active">ACTIVE</span>' : ''), 
             'amount' => $refinery->income
         ])
     @endforeach

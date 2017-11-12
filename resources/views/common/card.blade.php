@@ -4,7 +4,7 @@
     <div class="card card-{{ (isset($size)) ? $size : 'regular' }}">
 @endif
 <img src="{{ $avatar }}" class="avatar" alt="">
-<div class="primary">{{ $name }}</div>
+<div class="primary">{!! $name !!}</div>
 @if (isset($sub))
     <div class="secondary">{{ $sub }}</div>
 @endif
