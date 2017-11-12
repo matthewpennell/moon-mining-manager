@@ -26,7 +26,7 @@ class MiningActivity extends Model
      */
     public function refinery()
     {
-        return $this->belongsTo('App\Refinery');
+        return $this->belongsTo('App\Refinery', 'refinery_id', 'observer_id');
     }
 
     /**

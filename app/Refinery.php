@@ -14,7 +14,7 @@ class Refinery extends Model
      */
     public function mining_activity()
     {
-        return $this->hasMany('App\MiningActivity');
+        return $this->hasMany('App\MiningActivity', 'refinery_id', 'observer_id');
     }
 
     /**

@@ -49,6 +49,7 @@ class GenerateInvoices implements ShouldQueue
         // Create arrays to hold miner and refinery details. We'll write it back to the database when we're done.
         $miner_data = [];
         $refinery_data = [];
+        $miner_activity_data = [];
         
         // Grab all of the ore values and tax rates to refer to in calculations. This
         // returns an array keyed by type_id, so individual values/tax rates can be returned
@@ -72,10 +73,12 @@ class GenerateInvoices implements ShouldQueue
             if (isset($miner_data[$entry->miner_id]))
             {
                 $miner_data[$entry->miner_id] += $tax_amount;
+                $miner_activity_data[$entry->miner_id][] = 'Mining near ' . $entry->refinery->name . ' on ' . date('M j, Y', strtotime($entry->updated_at));
             }
             else
             {
                 $miner_data[$entry->miner_id] = $tax_amount;
+                $miner_activity_data[$entry->miner_id] = ['Mining near ' . $entry->refinery->name . ' on ' . date('M j, Y', strtotime($entry->updated_at))];
             }
 
             // Add the income for this entry to the refinery array.
@@ -99,8 +102,10 @@ class GenerateInvoices implements ShouldQueue
             {
                 $miner = Miner::where('eve_id', $key)->first();
                 $miner->amount_owed += $value;
+                $activity_log = implode("\n", $miner_activity_data[$key]);
+                $miner->activity_log = ($miner->activity_log == NULL) ? $activity_log : $miner->activity_log + $activity_log;
                 $miner->save();
-                Log::info('GenerateInvoices: updated stored amount owed by miner ' . $key);
+                Log::info('GenerateInvoices: updated stored amount owed and recent activity by miner ' . $key);
             }
         }
 
@@ -136,6 +141,7 @@ class GenerateInvoices implements ShouldQueue
             $body = str_replace('{date}', date('Y-m-d'), $body);
             $body = str_replace('{name}', $miner->name, $body);
             $body = str_replace('{amount_owed}', number_format($miner->amount_owed, 0), $body);
+            $body = str_replace('{activity_log}', $miner->activity_log, $body);
             $mail = array(
                 'body' => $body,
                 'recipients' => array(
