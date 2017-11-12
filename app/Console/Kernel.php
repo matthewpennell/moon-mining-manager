@@ -12,6 +12,7 @@ use App\Jobs\PollMiningObservers;
 use App\Jobs\GenerateInvoices;
 use App\Jobs\PollStructures;
 use App\Jobs\ArchiveReprocessedMaterialsHistory;
+use App\Jobs\PollExtractions;
 
 class Kernel extends ConsoleKernel
 {
@@ -34,10 +35,13 @@ class Kernel extends ConsoleKernel
     {
 
         // Poll all corporation structures to look for refineries.
-        // $schedule->job(new PollStructures)->dailyAt('00:00');
+        $schedule->job(new PollStructures)->dailyAt('00:00');
+
+        // Poll all refineries for information about upcoming extraction cycles.
+        $schedule->job(new PollExtractions)->dailyAt('00:10');
 
         // Check for any newly active refineries.
-        $schedule->job(new PollRefineries)->dailyAt('00:05');
+        $schedule->job(new PollRefineries)->dailyAt('00:20');
 
         // Check for miners making payments to the corporation wallet.
         $schedule->job(new PollWallet)->hourlyAt(30);
