@@ -47,7 +47,7 @@ class AppController extends Controller
             'top_miner' => (isset($top_miner)) ? $top_miner : null,
             'top_refinery' => (isset($top_refinery)) ? $top_refinery : null,
             'top_system' => (isset($top_system)) ? $top_system : null,
-            'miners' => Miner::where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->orderBy('amount_owed', 'desc')->get(),
+            'miners' => Miner::where('amount_owed', '>=', 1)->where('alliance_id', env('EVE_ALLIANCE_ID'))->orderBy('amount_owed', 'desc')->get(),
             'ninjas' => Miner::whereNull('alliance_id')->orwhere('alliance_id', '<>', env('EVE_ALLIANCE_ID'))->get(),
             'total_amount_owed' => $total_amount_owed->total,
             'refineries' => Refinery::orderBy('income', 'desc')->get(),
