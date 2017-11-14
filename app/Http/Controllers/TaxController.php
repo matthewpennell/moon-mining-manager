@@ -16,7 +16,7 @@ class TaxController extends Controller
     public function showTaxRates()
     {
         return view('taxes', [
-            'tax_rates' => TaxRate::orderby('type_id')->get(),
+            'tax_rates' => TaxRate::orderby('value', 'desc')->get(),
         ]);
     }
 

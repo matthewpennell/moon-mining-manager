@@ -1,6 +1,6 @@
 <div class="block">
 
-    <div class="card-heading">Income</div>
+    <div class="card-heading">Total income</div>
 
     <div class="card highlight">
         <span class="num">{{ number_format($total_income) }}</span> ISK
@@ -11,8 +11,9 @@
             'link' => '/refinery/' . $refinery->observer_id,
             'size' => 'small',
             'avatar' => 'https://imageserver.eveonline.com/Render/35835_128.png',
-            'name' => $refinery->name . ' (' . $refinery->system->solarSystemName . ')' . ($refinery->extraction_start_time ? ' <span class="refinery-active">ACTIVE</span>' : ''), 
-            'amount' => $refinery->income
+            'name' => $refinery->name . ' (' . $refinery->system->solarSystemName . ')', 
+            'amount' => $refinery->income,
+            'is_active' => $refinery->extraction_start_time,
         ])
     @endforeach
 

@@ -1,4 +1,4 @@
-<div class="card-heading">Debts</div>
+<div class="card-heading">Current outstanding debts</div>
 
 <!--<p><a href="/payment/new">Log a payment</a> received via alternative means</p>-->
 

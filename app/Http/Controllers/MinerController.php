@@ -19,7 +19,7 @@ class MinerController extends Controller
     {
 
         return view('miners.all', [
-            'miners' => Miner::all(),
+            'miners' => Miner::orderBy('name')->get(),
         ]);
         
     }

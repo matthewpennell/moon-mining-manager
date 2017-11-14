@@ -10,6 +10,7 @@
             <div class="col-4">
                 <div class="card-heading">Top miner</div>
                 @include('common.card', [
+                    'link' => '/miners/' . $top_miner->eve_id,
                     'avatar' => $top_miner->avatar,
                     'name' => $top_miner->name, 
                     'sub' => $top_miner->corporation->name, 

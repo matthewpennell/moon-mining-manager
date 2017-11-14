@@ -5,8 +5,10 @@
 @section('content')
 
     <div class="row">
-            
-        <div class="card-heading">Authorised users</div>
+        
+        <div class="col-12">
+            <div class="card-heading">Authorised users</div>
+        </div>
 
         @foreach ($whitelisted_users as $user)
             <div class="col-4">
@@ -17,7 +19,7 @@
                     <div class="inline-form">
                         <form method="post" action="/access/blacklist/{{ $user->eve_id }}">
                             {{ csrf_field() }}
-                            <button type="submit">Remove user</button>
+                            <button type="submit">Block user</button>
                         </form>
                     </div>
                 </div>
@@ -27,8 +29,10 @@
     </div>
 
     <div class="row">
-            
-        <div class="card-heading">Add new authorised user</div>
+
+        <div class="col-12">
+            <div class="card-heading">Add new authorised user</div>
+        </div>
 
         @foreach ($access_history as $user)
             <div class="col-4">
@@ -38,7 +42,7 @@
                     <div class="inline-form">
                         <form method="post" action="/access/whitelist/{{ $user->eve_id }}">
                             {{ csrf_field() }}
-                            <button type="submit">Add user</button>
+                            <button type="submit">Make admin user</button>
                         </form>
                     </div>
                 </div>
