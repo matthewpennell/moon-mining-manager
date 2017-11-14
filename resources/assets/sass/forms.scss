@@ -4,7 +4,8 @@ input, select, textarea {
     width: 100%;
 }
 
-.inline-form input {
+.inline-form input,
+.inline-form select {
     display: inline;
     width: auto;
 }

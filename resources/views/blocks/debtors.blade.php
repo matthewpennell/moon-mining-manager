@@ -1,6 +1,4 @@
-<div class="card-heading">Current outstanding debts</div>
-
-<!--<p><a href="/payment/new">Log a payment</a> received via alternative means</p>-->
+<div class="card-heading">Current outstanding debts (<a href="/payment/new">Manual payment</a>)</div>
 
 <div class="card highlight">
     <span class="num">{{ number_format($total_amount_owed) }}</span> ISK
