@@ -15,7 +15,7 @@ class ReportsController extends Controller
     public function main()
     {
 
-        $daily_mining = MiningActivity::select(DB::raw('SUM(quantity) AS quantity, DAY(updated_at) AS order_day, MONTH(updated_at) AS order_month, YEAR(updated_at) AS order_year'))
+        $daily_mining = MiningActivity::select(DB::raw('SUM(quantity) AS quantity, DAY(created_at) AS order_day, MONTH(created_at) AS order_month, YEAR(created_at) AS order_year'))
             ->groupBy('order_day', 'order_month', 'order_year')
             ->orderBy('order_year', 'desc')
             ->orderBy('order_month', 'desc')
