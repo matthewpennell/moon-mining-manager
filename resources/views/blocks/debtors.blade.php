@@ -11,7 +11,7 @@
         'link' => '/miners/' . $miner->eve_id,
         'size' => 'small',
         'avatar' => $miner->avatar,
-        'name' => $miner->name, 
+        'name' => ($miner->latest_payment) ? $miner->name . ' <span class="latest-payment">' . $miner->latest_payment . '</span>' : $miner->name,
         'amount' => -$miner->amount_owed
     ])
 @endforeach

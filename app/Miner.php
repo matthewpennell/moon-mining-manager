@@ -58,4 +58,13 @@ class Miner extends Model
         return DB::table('payments')->select('amount_received')->where('miner_id', $this->eve_id)->sum('amount_received');
     }
 
+    /**
+     * Return the date of the most recent payment made by this miner.
+     */
+    public function getLatestPaymentAttribute()
+    {
+        $latest_payment = DB::table('payments')->where('miner_id', $this->eve_id)->select('updated_at')->orderBy('updated_at', 'desc')->first();
+        return (isset($latest_payment)) ? date('M j', strtotime($latest_payment->updated_at)) : NULL;
+    }
+
 }
