@@ -121,8 +121,23 @@ class GenerateInvoices implements ShouldQueue
             }
         }
 
-        // For all miners in your alliance that currently owe an outstanding balance, generate and send an invoice.
-        $debtors = Miner::where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->get();
+        // Build the WHERE clause to filter by alliance and/or corporation membership.
+        $whitelist_where = [];
+        if (env('EVE_ALLIANCES_WHITELIST'))
+        {
+            $whitelist_where[] = 'alliance_id IN (' . env('EVE_ALLIANCES_WHITELIST') . ')';
+        }
+        if (env('EVE_CORPORATIONS_WHITELIST'))
+        {
+            $whitelist_where[] = 'corporation_id IN (' . env('EVE_CORPORATIONS_WHITELIST') . ')';
+        }
+        if (count($whitelist_where))
+        {
+            $whitelist_whereRaw = '(' . implode(' OR ', $whitelist_where) . ')';
+        }
+
+        // For all miners in your whitelisted alliances/corporations that currently owe an outstanding balance, generate and send an invoice.
+        $debtors = Miner::where('amount_owed', '>=', 1)->whereRaw($whitelist_whereRaw)->get();
         Log::info('GenerateInvoices: found ' . count($debtors) . ' miners with an outstanding balance to be invoiced');
         $template = Template::where('name', 'weekly_invoice')->first();
         $delay_counter = 0;

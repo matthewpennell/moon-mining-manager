@@ -24,8 +24,27 @@ class AppController extends Controller
     public function home()
     {
 
+        // Build the WHERE clause to filter by alliance and/or corporation membership.
+        $whitelist_where = [];
+        $blacklist_where = [];
+        if (env('EVE_ALLIANCES_WHITELIST'))
+        {
+            $whitelist_where[] = 'alliance_id IN (' . env('EVE_ALLIANCES_WHITELIST') . ')';
+            $blacklist_where[] = '(alliance_id NOT IN (' . env('EVE_ALLIANCES_WHITELIST') . ') OR alliance_id IS NULL)';
+        }
+        if (env('EVE_CORPORATIONS_WHITELIST'))
+        {
+            $whitelist_where[] = 'corporation_id IN (' . env('EVE_CORPORATIONS_WHITELIST') . ')';
+            $blacklist_where[] = 'corporation_id NOT IN (' . env('EVE_CORPORATIONS_WHITELIST') . ')';
+        }
+        if (count($whitelist_where))
+        {
+            $whitelist_whereRaw = '(' . implode(' OR ', $whitelist_where) . ')';
+            $blacklist_whereRaw = '(' . implode(' AND ', $blacklist_where) . ')';
+        }
+
         // Calculate the total currently owed and total income generated.
-        $total_amount_owed = DB::table('miners')->select(DB::raw('SUM(amount_owed) AS total'))->where('amount_owed', '>', 0)->where('alliance_id', env('EVE_ALLIANCE_ID'))->first();
+        $total_amount_owed = DB::table('miners')->select(DB::raw('SUM(amount_owed) AS total'))->where('amount_owed', '>', 0)->whereRaw($whitelist_whereRaw)->first();
         $total_income = DB::table('refineries')->select(DB::raw('SUM(income) AS total'))->first();
 
         // Grab the top miner, refinery and system.
@@ -47,8 +66,8 @@ class AppController extends Controller
             'top_miner' => (isset($top_miner)) ? $top_miner : null,
             'top_refinery' => (isset($top_refinery)) ? $top_refinery : null,
             'top_system' => (isset($top_system)) ? $top_system : null,
-            'miners' => Miner::where('amount_owed', '>=', 1)->where('alliance_id', env('EVE_ALLIANCE_ID'))->orderBy('amount_owed', 'desc')->get(),
-            'ninjas' => Miner::whereNull('alliance_id')->orwhere('alliance_id', '<>', env('EVE_ALLIANCE_ID'))->get(),
+            'miners' => Miner::where('amount_owed', '>=', 1)->whereRaw($whitelist_whereRaw)->orderBy('amount_owed', 'desc')->get(),
+            'ninjas' => Miner::whereRaw($blacklist_whereRaw)->get(),
             'total_amount_owed' => $total_amount_owed->total,
             'refineries' => Refinery::orderBy('income', 'desc')->get(),
             'total_income' => $total_income->total,
