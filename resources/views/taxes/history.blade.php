@@ -6,11 +6,10 @@
 
     <div class="row">
 
-        <div class="col-12">
-
-            @foreach ($materials as $material)
+        @foreach ($materials as $material)
+            <div class="col-4">
+                <div class="card-heading">{{ $material->type->typeName }}</div>
                 <div class="card">
-                    <div class="chart-heading">{{ $material->type->typeName }}</div>
                     <canvas id="chart-{{ $material->materialTypeID }}"></canvas>
                     <script>
                         window.addEventListener('load', function () {
@@ -57,9 +56,12 @@
                         });
                     </script>
                 </div>
-            @endforeach
-
-        </div>
+            </div>
+            @if ($loop->iteration % 3 == 0)
+                </div>
+                <div class="row">
+            @endif
+        @endforeach
 
     </div>
 
