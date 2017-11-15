@@ -7,6 +7,7 @@
     <div class="row">
 
         <div class="col-4">
+            <div class="card-heading">Miner</div>
             @include('common.card', [
                 'avatar' => $miner->avatar,
                 'name' => $miner->name, 
@@ -15,12 +16,14 @@
         </div>
 
         <div class="col-4">
+            <div class="card-heading">Total tax paid to date</div>
             <div class="card highlight">
                 <span class="num">{{ number_format($miner->total_payments) }}</span> ISK
             </div>
         </div>
 
         <div class="col-4">
+            <div class="card-heading">Current amount owed</div>
             <div class="card highlight negative">
                 <span class="num">{{ number_format($miner->amount_owed) }}</span> ISK
             </div>
