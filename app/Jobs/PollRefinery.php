@@ -22,7 +22,7 @@ class PollRefinery implements ShouldQueue
     public $tries = 10;
     private $observer_id;
     private $page;
-    private $total_pages;
+    private $total_pages = 1;
 
     /**
      * Create a new job instance.
@@ -31,34 +31,9 @@ class PollRefinery implements ShouldQueue
      */
     public function __construct($id, $page = 1)
     {
-
         $esi = new EsiConnection;
-
         $this->observer_id = $id;
         $this->page = $page;
-       
-        // If this is the first page request, we need to check for multiple pages and generate subsequent jobs.
-        if ($page == 1)
-        {
-            // This raw curl request can be replaced with an $esi call once the Eseye library is updated to return response headers.
-            $url = 'https://esi.tech.ccp.is/latest/corporation/' . $esi->corporation_id . '/mining/observers/' . $id . '/?datasource=' . env('ESEYE_DATASOURCE', 'tranquility') . '&token=' . $esi->token;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, "extractXPagesHeader"));
-            $body = curl_exec($ch);
-            if ($this->total_pages > 1)
-            {
-                Log::info('PollRefinery: found more than 1 page of mining data, queuing additional jobs for ' . $this->total_pages . ' total pages');
-                $delay_counter = 1;
-                for ($i = 2; $i <= $this->total_pages; $i++)
-                {
-                    PollRefinery::dispatch($refinery->observer_id, $i)->delay(Carbon::now()->addMinutes($delay_counter));
-                    $delay_counter++;
-                }
-            }
-        }
-        
     }
 
     /**
@@ -87,6 +62,28 @@ class PollRefinery implements ShouldQueue
 
         $esi = new EsiConnection;
 
+        // If this is the first page request, we need to check for multiple pages and generate subsequent jobs.
+        if ($this->page == 1)
+        {
+            // This raw curl request can be replaced with an $esi call once the Eseye library is updated to return response headers.
+            $url = 'https://esi.tech.ccp.is/latest/corporation/' . $esi->corporation_id . '/mining/observers/' . $id . '/?datasource=' . env('ESEYE_DATASOURCE', 'tranquility') . '&token=' . $esi->token;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, "extractXPagesHeader"));
+            $body = curl_exec($ch);
+            if ($this->total_pages > 1)
+            {
+                Log::info('PollRefinery: found more than 1 page of mining data, queuing additional jobs for ' . $this->total_pages . ' total pages');
+                $delay_counter = 1;
+                for ($i = 2; $i <= $this->total_pages; $i++)
+                {
+                    PollRefinery::dispatch($refinery->observer_id, $i)->delay(Carbon::now()->addMinutes($delay_counter));
+                    $delay_counter++;
+                }
+            }
+        }
+        
         Log::info('PollRefinery: requesting mining activity log for refinery ' . $this->observer_id . ', page ' . $this->page);
 
         // Retrieve the mining activity log page for this refinery.
