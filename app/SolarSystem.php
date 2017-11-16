@@ -20,5 +20,12 @@ class SolarSystem extends Model
         return $this->hasMany('App\Refinery');
     }
 
+    /**
+     * Get the region this system is part of.
+     */
+    public function region()
+    {
+        return $this->belongsTo('App\Region', 'regionID');
+    }
 
 }

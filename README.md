@@ -27,6 +27,7 @@ You will need to import the following EVE dump tables into your database. They c
 * invTypes
 * invTypeMaterials
 * mapSolarSystems
+* mapRegions
 
 ## License
 

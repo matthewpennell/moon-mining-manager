@@ -37,7 +37,7 @@
                 @include('common.card', [
                     'avatar' => 'https://imageserver.eveonline.com/Type/3802_64.png',
                     'name' => $top_system->solarSystemName, 
-                    'sub' => 'Catch', 
+                    'sub' => $top_system->region->regionName, 
                     'amount' => $top_system->total
                 ])
             </div>
