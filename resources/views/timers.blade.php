@@ -66,6 +66,10 @@
                 margin: 0 auto 10px;
             }
 
+            tr.past td {
+                opacity: 0.333;
+            }
+
         </style>
 
     </head>
@@ -90,7 +94,11 @@
             </thead>
             <tbody>
                 @foreach ($timers as $timer)
-                    <tr>
+                    <tr
+                        @if (strtotime($timer->natural_decay_time) < time())
+                            class="past"
+                        @endif
+                    >
                         <td>
                             <h2>{{ $timer->system->solarSystemName }}</h2>
                             <h3>{{ $timer->system->region->regionName }}</h3>
