@@ -96,7 +96,7 @@
                         </td>
                         <td>{{ $timer->name }}</td>
                         <td>
-                            @if ($timer->claimed_by)
+                            @if ($timer->claimed_by_primary || $timer->claimed_by_secondary)
                                 {{ date('H:i l jS F', strtotime($timer->chunk_arrival_time)) }}
                             @else
                                 {{ date('H:i l jS F', strtotime($timer->natural_decay_time)) }}
