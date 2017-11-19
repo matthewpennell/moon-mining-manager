@@ -14,7 +14,7 @@
 
     <body>
 
-        <a href="/sso">Login via SSO</a>
+        <a href="/admin-sso">Login as administrator via EVE SSO</a>
 
     </body>
 

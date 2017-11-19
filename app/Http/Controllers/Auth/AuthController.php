@@ -8,6 +8,7 @@ use Socialite;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Whitelist;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -21,11 +22,21 @@ class AuthController extends Controller
     }
 
     /**
-     * Redirect the user to the EVE Online SSO page and ask for permission to search corporation assets.
+     * Redirect the user to the EVE Online SSO page.
      *
      * @return Response
      */
     public function redirectToProvider()
+    {
+        return Socialite::driver($this->socialite_driver)->redirect();
+    }
+
+    /**
+     * Redirect the user to the EVE Online SSO page and ask for necessary permissions/scopes.
+     *
+     * @return Response
+     */
+    public function redirectToProviderForAdmin()
     {
         return Socialite::driver($this->socialite_driver)->scopes([
             'esi-industry.read_corporation_mining.v1',
@@ -47,9 +58,7 @@ class AuthController extends Controller
         // Find or create the user.
         $user = Socialite::driver($this->socialite_driver)->user();
         $authUser = $this->findOrCreateUser($user);
-
-        // Check if the user is whitelisted to access the app.
-        Whitelist::where('eve_id', $authUser->eve_id)->firstOrFail();
+        Log::info('AuthController: login attempt by ' . $authUser->name);
 
         $esi = new EsiConnection;
 
@@ -62,12 +71,28 @@ class AuthController extends Controller
         ]);
 
         // If an alliance is set, it must match the stored environment variable.
-        if ($corporation->alliance_id && $corporation->alliance_id == env('EVE_ALLIANCE_ID', NULL))
+        if (isset($corporation->alliance_id) && $corporation->alliance_id && $corporation->alliance_id == env('EVE_ALLIANCE_ID', NULL))
         {
             Auth::login($authUser, true);
+            Log::info('AuthController: successful login by ' . $authUser->name);
+        }
+        else
+        {
+            Log::info('AuthController: unsuccessful login by ' . $authUser->name . ', alliance match failed');
+            return redirect()->route('login');
         }
 
-        return redirect('/');
+        // Check if the user is whitelisted to access the administrator area.
+        $whitelist = Whitelist::where('eve_id', $authUser->eve_id)->first();
+        if (isset($whitelist))
+        {
+            Log::info('AuthController: successful administrator login by ' . $authUser->name);
+            return redirect('/');
+        }
+        else
+        {
+            return redirect('/timers');
+        }
     }
 
     /**

@@ -11,16 +11,22 @@
 |
 */
 
-// Master route.
-Route::get('/', 'AppController@home')->middleware('login');
-
-// Login page.
+// Login pages.
 Route::get('/login', function () {
     return view('login');
 })->name('login');
+Route::get('/admin', function () {
+    return view('admin-login');
+})->name('admin-login');
+
+// Public list of upcoming mining timers.
+Route::get('/timers', 'TimerController@home')->middleware('login');
+
+// Admin interface home.
+Route::get('/', 'AppController@home')->middleware('admin');
 
 // Access management.
-Route::middleware(['login'])->prefix('access')->group(function () {
+Route::middleware(['admin'])->prefix('access')->group(function () {
     Route::get('/', 'AppController@showAuthorisedUsers');
     Route::get('/new', 'AppController@showUserAccessHistory');
     Route::post('/whitelist/{id}', 'AppController@whitelistUser');
@@ -28,24 +34,24 @@ Route::middleware(['login'])->prefix('access')->group(function () {
 });
 
 // Reports.
-Route::middleware(['login'])->prefix('reports')->group(function () {
+Route::middleware(['admin'])->prefix('reports')->group(function () {
     Route::get('/', 'ReportsController@main');
 });
 
 // Miner reporting.
-Route::middleware(['login'])->prefix('miners')->group(function () {
+Route::middleware(['admin'])->prefix('miners')->group(function () {
     Route::get('/', 'MinerController@showMiners');
     Route::get('/{id}', 'MinerController@showMinerDetails');
 });
 
 // Payment management.
-Route::middleware(['login'])->prefix('payment')->group(function () {
+Route::middleware(['admin'])->prefix('payment')->group(function () {
     Route::get('/new', 'PaymentController@addNewPayment');
     Route::post('/new', 'PaymentController@insertNewPayment');
 });
 
 // Tax management.
-Route::middleware(['login'])->prefix('taxes')->group(function () {
+Route::middleware(['admin'])->prefix('taxes')->group(function () {
     Route::get('/', 'TaxController@showTaxRates');
     Route::get('/history', 'TaxController@showHistory');
     Route::post('/update_value/{id}', 'TaxController@updateValue');
@@ -55,13 +61,14 @@ Route::middleware(['login'])->prefix('taxes')->group(function () {
 });
 
 // Email template management.
-Route::middleware(['login'])->prefix('emails')->group(function () {
+Route::middleware(['admin'])->prefix('emails')->group(function () {
     Route::get('/', 'EmailController@showEmails');
     Route::post('/update', 'EmailController@updateEmails');
 });
 
 // Handle EVE SSO requests and callbacks.
 Route::get('/sso', 'Auth\AuthController@redirectToProvider');
+Route::get('/admin-sso', 'Auth\AuthController@redirectToProviderForAdmin');
 Route::get('/callback', 'Auth\AuthController@handleProviderCallback');
 
 // Logout.

@@ -7,7 +7,7 @@
     <div class="row">
         
         <div class="col-12">
-            <div class="card-heading">Authorised users</div>
+            <div class="card-heading">Administrators</div>
         </div>
 
         @foreach ($whitelisted_users as $user)
@@ -19,7 +19,7 @@
                     <div class="inline-form">
                         <form method="post" action="/access/blacklist/{{ $user->eve_id }}">
                             {{ csrf_field() }}
-                            <button type="submit">Block user</button>
+                            <button type="submit">Revoke admin access</button>
                         </form>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
     <div class="row">
 
         <div class="col-12">
-            <div class="card-heading">Add new authorised user</div>
+            <div class="card-heading">Users</div>
         </div>
 
         @foreach ($access_history as $user)
@@ -42,7 +42,7 @@
                     <div class="inline-form">
                         <form method="post" action="/access/whitelist/{{ $user->eve_id }}">
                             {{ csrf_field() }}
-                            <button type="submit">Make admin user</button>
+                            <button type="submit">Make administrator</button>
                         </form>
                     </div>
                 </div>
