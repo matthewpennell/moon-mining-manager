@@ -74,6 +74,8 @@
 
         <h1>Active Alliance Moon Mining Extraction Timers</h1>
 
+        <h1 id="current_time">{{ date('H:i:s') }}</h1>
+
         <table>
             <thead>
                 <tr>
@@ -124,6 +126,26 @@
                 @endforeach
             </tbody>
         </table>
+
+        <script>
+
+            window.onload = function () {
+                setInterval(function () {
+                    var x = new Date();
+                    var hour = x.getUTCHours(),
+                        minute = x.getUTCMinutes(),
+                        second = x.getUTCSeconds();
+                    document.getElementById('current_time').innerHTML = pad(hour) + ':' + pad(minute) + ':' + pad(second) + ' EVE';
+                }, 1000);
+            }
+
+            function pad(num) {
+                if (num == 0) return '00';
+                if (num > 9) return num;
+                return '0' + num;
+            }
+
+        </script>
 
 </body>
 
