@@ -116,17 +116,25 @@
                             <td class="admin">
                                 @if ($timer->claimed_by_primary)
                                     <img src="http://image.eveonline.com/Character/{{ $timer->claimed_by_primary }}_128.jpg" alt="" class="avatar">
-                                    <a href="/timers/clear/1/{{ $timer->observer_id }}">Remove</a>
+                                    @if (strtotime($timer->natural_decay_time) >= time())
+                                        <a href="/timers/clear/1/{{ $timer->observer_id }}">Remove</a>
+                                    @endif
                                 @else
-                                    <a href="/timers/claim/1/{{ $timer->observer_id }}">Claim</a>
+                                    @if (strtotime($timer->natural_decay_time) >= time())
+                                        <a href="/timers/claim/1/{{ $timer->observer_id }}">Claim</a>
+                                    @endif
                                 @endif
                             </td>
                             <td class="admin">
                                 @if ($timer->claimed_by_secondary)
                                     <img src="http://image.eveonline.com/Character/{{ $timer->claimed_by_secondary }}_128.jpg" alt="" class="avatar">
-                                    <a href="/timers/clear/2/{{ $timer->observer_id }}">Remove</a>
+                                    @if (strtotime($timer->natural_decay_time) >= time())
+                                        <a href="/timers/clear/2/{{ $timer->observer_id }}">Remove</a>
+                                    @endif
                                 @else
-                                    <a href="/timers/claim/2/{{ $timer->observer_id }}">Claim</a>
+                                    @if (strtotime($timer->natural_decay_time) >= time())
+                                        <a href="/timers/claim/2/{{ $timer->observer_id }}">Claim</a>
+                                    @endif
                                 @endif
                             </td>
                         @endif
