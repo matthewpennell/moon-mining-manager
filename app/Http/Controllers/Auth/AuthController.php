@@ -66,6 +66,14 @@ class AuthController extends Controller
         $character = $esi->esi->invoke('get', '/characters/{character_id}/', [
             'character_id' => $authUser->eve_id,
         ]);
+
+        // If this is a new login, save the corporation ID.
+        if (!isset($authUser->corporation_id) || $authUser->corporation_id == 0)
+        {
+            $authUser->corporation_id = $character->corporation_id;
+            $authUser->save();
+        }
+
         $corporation = $esi->esi->invoke('get', '/corporations/{corporation_id}/', [
             'corporation_id' => $character->corporation_id,
         ]);
@@ -113,6 +121,7 @@ class AuthController extends Controller
  
          return User::create([
              'eve_id' => $user->id,
+             'corporation_id' => 0,
              'name' => $user->name,
              'avatar' => $user->avatar,
              'token' => $user->token,

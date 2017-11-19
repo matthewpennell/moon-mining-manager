@@ -18,9 +18,52 @@
                 line-height: 20px;
             }
 
+            h1 {
+                text-align: center;
+                margin: 40px 0;
+            }
+
+            h2 {
+                font-size: 20px;
+                font-weight: bold;
+                margin: 0;
+            }
+
+            h3 {
+                font-size: 16px;
+                font-weight: normal;
+                margin: 0;
+            }
+
+            table {
+                width: 80%;
+                margin: 20px auto;
+                border-collapse: collapse;
+            }
+
             th, td {
                 text-align: left;
-                padding: 0 20px 10px 0;
+                padding: 10px;
+                border: 5px solid #eee;
+            }
+
+            th {
+                background: #eee;
+            }
+
+            .avatar {
+                width: 50px;
+                height: 50px;
+                border-radius: 50px;
+            }
+
+            .admin {
+                text-align: center;
+            }
+
+            .admin img {
+                display: block;
+                margin: 0 auto 10px;
             }
 
         </style>
@@ -36,19 +79,47 @@
                 <tr>
                     <th>System</th>
                     <th>Refinery name</th>
-                    <th>Chunk arrival time</th>
+                    <th>Detonation time</th>
+                    @if ($is_admin_corporation_member)
+                        <th class="admin">Primary</th>
+                        <th class="admin">Secondary</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
                 @foreach ($timers as $timer)
                     <tr>
                         <td>
-                            {{ $timer->system->solarSystemName }} 
-                            ({{ $timer->system->region->regionName }}) 
+                            <h2>{{ $timer->system->solarSystemName }}</h2>
+                            <h3>{{ $timer->system->region->regionName }}</h3>
                             <a href="http://evemaps.dotlan.net/map/{{ str_replace(' ', '_', $timer->system->region->regionName) }}/{{ $timer->system->solarSystemName }}">View on Dotlan</a>
                         </td>
                         <td>{{ $timer->name }}</td>
-                        <td>{{ date('H:i l jS F', strtotime($timer->chunk_arrival_time)) }}</td>
+                        <td>
+                            @if ($timer->claimed_by)
+                                {{ date('H:i l jS F', strtotime($timer->chunk_arrival_time)) }}
+                            @else
+                                {{ date('H:i l jS F', strtotime($timer->natural_decay_time)) }}
+                            @endif
+                        </td>
+                        @if ($is_admin_corporation_member)
+                            <td class="admin">
+                                @if ($timer->claimed_by_primary)
+                                    <img src="http://image.eveonline.com/Character/{{ $timer->claimed_by_primary }}_128.jpg" alt="" class="avatar">
+                                    <a href="/timers/clear/1/{{ $timer->observer_id }}">Remove</a>
+                                @else
+                                    <a href="/timers/claim/1/{{ $timer->observer_id }}">Claim</a>
+                                @endif
+                            </td>
+                            <td class="admin">
+                                @if ($timer->claimed_by_secondary)
+                                    <img src="http://image.eveonline.com/Character/{{ $timer->claimed_by_secondary }}_128.jpg" alt="" class="avatar">
+                                    <a href="/timers/clear/2/{{ $timer->observer_id }}">Remove</a>
+                                @else
+                                    <a href="/timers/claim/2/{{ $timer->observer_id }}">Claim</a>
+                                @endif
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

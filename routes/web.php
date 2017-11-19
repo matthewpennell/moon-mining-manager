@@ -20,7 +20,11 @@ Route::get('/admin', function () {
 })->name('admin-login');
 
 // Public list of upcoming mining timers.
-Route::get('/timers', 'TimerController@home')->middleware('login');
+Route::middleware(['login'])->prefix('timers')->group(function () {
+    Route::get('/', 'TimerController@home');
+    Route::get('/claim/{claim}/{refinery}', 'TimerController@claim');
+    Route::get('/clear/{claim}/{refinery}', 'TimerController@clear');
+});
 
 // Admin interface home.
 Route::get('/', 'AppController@home')->middleware('admin');

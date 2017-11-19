@@ -24,6 +24,12 @@
         </a>
     </li>
     <li>
+        <a href="/timers">
+            <i class="icon-calendar"></i>
+            Timers
+        </a>
+    </li>
+    <li>
         <a href="/taxes">
             <i class="icon-coin-dollar"></i>
             Taxes
