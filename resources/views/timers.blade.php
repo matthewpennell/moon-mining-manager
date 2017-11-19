@@ -18,9 +18,14 @@
                 line-height: 20px;
             }
 
+            .logo {
+                display: block;
+                margin: 10px auto;
+            }
+
             h1 {
                 text-align: center;
-                margin: 40px 0;
+                margin: 20px 0 40px;
             }
 
             h2 {
@@ -75,6 +80,8 @@
     </head>
 
     <body>
+
+        <img src="https://wiki.braveineve.com/lib/tpl/vector/user/logo.png" alt="Brave Collective" class="logo">
 
         <h1>Active Alliance Moon Mining Extraction Timers</h1>
 
