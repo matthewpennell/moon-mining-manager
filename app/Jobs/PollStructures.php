@@ -109,9 +109,9 @@ class PollStructures implements ShouldQueue
                     $refinery->observer_type = 'structure';
                     $refinery->save();
                     Log::info('PollStructures: created new refinery record for ' . $structure->structure_id);
-                    // Create a new job to fill in the parts we don't know from this response.
-                    PollStructureData::dispatch($structure->structure_id);
                 }
+                // Create a new job to fetch or update the parts we don't get from this response.
+                PollStructureData::dispatch($structure->structure_id);
             }
         }
 
