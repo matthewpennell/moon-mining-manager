@@ -87,6 +87,10 @@ class PollStructures implements ShouldQueue
             'corporation_id' => $esi->corporation_id,
         ]);
 
+        Log::info('PollStructures: found structure data', [
+            'structures' => $structures
+        ]);
+
         // Loop through all the structures, looking for Athanors or Tataras.
         $refineries = array(
             35835, // Athanor
