@@ -115,8 +115,12 @@
                         <td>
                             @if ($timer->claimed_by_primary || $timer->claimed_by_secondary)
                                 {{ date('H:i l jS F', strtotime($timer->chunk_arrival_time)) }}
+                                <br>
+                                <a href="http://time.nakamura-labs.com/?#{{ strtotime($timer->chunk_arrival_time) }}">Timezone conversion</a>
                             @else
                                 {{ date('H:i l jS F', strtotime($timer->natural_decay_time)) }}
+                                <br>
+                                <a href="http://time.nakamura-labs.com/?#{{ strtotime($timer->natural_decay_time) }}">Timezone conversion</a>
                             @endif
                         </td>
                         @if ($is_admin_corporation_member)
