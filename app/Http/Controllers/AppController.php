@@ -100,14 +100,14 @@ class AppController extends Controller
     {
         if ($id == NULL)
         {
-            return redirect('/access/new');
+            return redirect('/access');
         }
         $user = Auth::user();
         $whitelist = new Whitelist;
         $whitelist->eve_id = $id;
         $whitelist->added_by = $user->eve_id;
         $whitelist->save();
-        return redirect('/access/new');
+        return redirect('/access');
     }
 
     /**

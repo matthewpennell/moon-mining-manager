@@ -17,7 +17,7 @@ class TimerController extends Controller
 
         return view('timers', [
             'is_admin_corporation_member' => (Auth::user()->corporation_id == env('EVE_ADMIN_CORPORATION', NULL)) ? TRUE : FALSE,
-            'timers' => Refinery::where('name', 'LIKE', '% BRAVE %')->whereNotNull('extraction_start_time')->orderBy('chunk_arrival_time')->get(),
+            'timers' => Refinery::where('name', 'LIKE', '%BRAVE%')->whereNotNull('extraction_start_time')->orderBy('chunk_arrival_time')->get(),
         ]);
 
     }

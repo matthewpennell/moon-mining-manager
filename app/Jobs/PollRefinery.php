@@ -66,7 +66,7 @@ class PollRefinery implements ShouldQueue
         if ($this->page == 1)
         {
             // This raw curl request can be replaced with an $esi call once the Eseye library is updated to return response headers.
-            $url = 'https://esi.tech.ccp.is/latest/corporation/' . $esi->corporation_id . '/mining/observers/' . $id . '/?datasource=' . env('ESEYE_DATASOURCE', 'tranquility') . '&token=' . $esi->token;
+            $url = 'https://esi.tech.ccp.is/latest/corporation/' . $esi->corporation_id . '/mining/observers/' . $this->observer_id . '/?datasource=' . env('ESEYE_DATASOURCE', 'tranquility') . '&token=' . $esi->token;
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -78,7 +78,7 @@ class PollRefinery implements ShouldQueue
                 $delay_counter = 1;
                 for ($i = 2; $i <= $this->total_pages; $i++)
                 {
-                    PollRefinery::dispatch($refinery->observer_id, $i)->delay(Carbon::now()->addMinutes($delay_counter));
+                    PollRefinery::dispatch($this->observer_id, $i)->delay(Carbon::now()->addMinutes($delay_counter));
                     $delay_counter++;
                 }
             }
