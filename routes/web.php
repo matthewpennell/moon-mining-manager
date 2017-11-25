@@ -48,6 +48,15 @@ Route::middleware(['admin'])->prefix('miners')->group(function () {
     Route::get('/{id}', 'MinerController@showMinerDetails');
 });
 
+// Renter management.
+Route::middleware(['admin'])->prefix('renters')->group(function () {
+    Route::get('/', 'RenterController@showRenters');
+    Route::get('/new', 'RenterController@addNewRenter');
+    Route::post('/new', 'RenterController@saveNewRenter');
+    Route::get('/{id}', 'RenterController@editRenter');
+    Route::post('/{id}', 'RenterController@updateRenter');
+});
+
 // Payment management.
 Route::middleware(['admin'])->prefix('payment')->group(function () {
     Route::get('/new', 'PaymentController@addNewPayment');

@@ -18,6 +18,12 @@
         </a>
     </li>
     <li>
+        <a href="/renters">
+            <i class="icon-rocket"></i>
+            Renters
+        </a>
+    </li>
+    <li>
         <a href="/reports">
             <i class="icon-stats-dots"></i>
             Reports
