@@ -25,4 +25,20 @@ class Refinery extends Model
         return $this->belongsTo('App\SolarSystem', 'solar_system_id');
     }
 
+    /**
+     * Get the user record for the primary detonation character.
+     */
+    public function primary()
+    {
+        return $this->belongsTo('App\User', 'claimed_by_primary', 'eve_id');
+    }
+
+    /**
+     * Get the user record for the secondary detonation character.
+     */
+    public function secondary()
+    {
+        return $this->belongsTo('App\User', 'claimed_by_secondary', 'eve_id');
+    }
+
 }

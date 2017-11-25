@@ -126,7 +126,8 @@
                         @if ($is_admin_corporation_member)
                             <td class="admin">
                                 @if ($timer->claimed_by_primary)
-                                    <img src="http://image.eveonline.com/Character/{{ $timer->claimed_by_primary }}_128.jpg" alt="" class="avatar">
+                                    <img src="{{ $timer->primary->avatar }}" alt="" class="avatar">
+                                    {{ $timer->primary->name }}
                                     @if (strtotime($timer->natural_decay_time) >= time())
                                         <a href="/timers/clear/1/{{ $timer->observer_id }}">Remove</a>
                                     @endif
@@ -138,7 +139,8 @@
                             </td>
                             <td class="admin">
                                 @if ($timer->claimed_by_secondary)
-                                    <img src="http://image.eveonline.com/Character/{{ $timer->claimed_by_secondary }}_128.jpg" alt="" class="avatar">
+                                    <img src="{{ $timer->secondary->avatar }}" alt="" class="avatar">
+                                    {{ $timer->secondary->name }}
                                     @if (strtotime($timer->natural_decay_time) >= time())
                                         <a href="/timers/clear/2/{{ $timer->observer_id }}">Remove</a>
                                     @endif
