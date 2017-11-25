@@ -44,8 +44,25 @@ class RenterController extends Controller
         {
             return redirect('/renters');
         }
+
+        // Retrieve more detailed information about the named character.
+        $renter = Renter::find($id);
+        $esi = new EsiConnection;
+        $character = $esi->esi->invoke('get', '/characters/{character_id}/', [
+            'character_id' => $renter->character_id,
+        ]);
+        $portrait = $esi->esi->invoke('get', '/characters/{character_id}/portrait/', [
+            'character_id' => $renter->character_id,
+        ]);
+        $character->portrait = $portrait->px128x128;
+        $corporation = $esi->esi->invoke('get', '/corporations/{corporation_id}/', [
+            'corporation_id' => $character->corporation_id,
+        ]);
+        $character->corporation = $corporation->corporation_name;
+        $renter->character = $character;
+
         return view('renters.edit', [
-            'renter' => Renter::find($id),
+            'renter' => $renter,
             'refineries' => Refinery::all(),
         ]);
     }

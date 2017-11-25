@@ -15,7 +15,7 @@
                     <tr>
                         <th>Moon</th>
                         <th>Rental contact</th>
-                        <th>Details</th>
+                        <th>Notes</th>
                         <th class="numeric">Monthly fee</th>
                         <th class="numeric">Start date</th>
                         <th>Edit</th>

@@ -26,6 +26,9 @@ Route::middleware(['login'])->prefix('timers')->group(function () {
     Route::get('/clear/{claim}/{refinery}', 'TimerController@clear');
 });
 
+// Search interface.
+Route::get('/search', 'SearchController@search');
+
 // Admin interface home.
 Route::get('/', 'AppController@home')->middleware('admin');
 

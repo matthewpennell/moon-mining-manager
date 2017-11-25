@@ -94,3 +94,25 @@ a.card:hover {
 .information {
     padding: 20px;
 }
+
+.character-card {
+    display: none;
+    height: 100px;
+    padding-top: 20px;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px #bbb;
+    img {
+        height: 100px;
+        width: 100px;
+        float: left;
+        margin: -20px 10px 0 0;
+    }
+    .character-name {
+        font-size: 20px;
+        width: 50%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

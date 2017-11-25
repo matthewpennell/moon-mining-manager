@@ -1,13 +1,23 @@
+form {
+    .card > div {
+        margin: 0 0 20px;
+    }
+    span {
+        font-size: 12px;
+    }
+}
+
 input, select, textarea {
     display: block;
     padding: 10px;
     width: 100%;
 }
 
-.inline-form input,
-.inline-form select {
-    display: inline;
-    width: auto;
+.inline-form {
+    input, select {
+        display: inline;
+        width: auto;
+    } 
 }
 
 textarea {

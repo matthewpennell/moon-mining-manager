@@ -36,8 +36,14 @@
                         </select>
                     </div>
                     <div>
-                        <label for="character_id">Character</label>
-                        <input type="text" id="character_id" name="character_id" value="{{ $renter->character_id }}">
+                        <label for="character">Character</label>
+                        <input type="text" id="character" placeholder="Start typing to search by character name..." value="{{ $renter->character->name }}">
+                        <input type="hidden" id="character_id" name="character_id" value="{{ $renter->character_id }}">
+                        <div class="character-card">
+                            <img src="{{ $renter->character->portrait }}" alt="">
+                            <div class="character-name">{{ $renter->character->name }}</div>
+                            <div class="character-corporation">{{ $renter->character->corporation }}</div>
+                        </div>
                     </div>
                     <div>
                         <label for="refinery_id">Refinery to be rented</label>
@@ -58,11 +64,11 @@
                         <textarea id="notes" name="notes">{{ $renter->notes }}</textarea>
                     </div>
                     <div>
-                        <label for="start_date">Contract start date</label>
+                        <label for="start_date">Contract start date (yyyy-mm-dd)</label>
                         <input type="text" id="start_date" name="start_date" value="{{ $renter->start_date }}">
                     </div>
                     <div>
-                        <label for="end_date">Contract end date</label>
+                        <label for="end_date">Contract end date (yyyy-mm-dd)</label>
                         <input type="text" id="end_date" name="end_date" value="{{ $renter->end_date }}" placeholder="{{ date('Y-m-d') }}">
                     </div>
                     <div class="form-actions">
@@ -75,5 +81,33 @@
         </div>
 
     </form>
+
+    <script>
+    
+        window.addEventListener('load', function () {
+            $('.character-card').fadeIn();
+            $('#character').on('keyup', function () {
+                if (this.value.length < 4) {
+                    $('.character-card').fadeOut();
+                    return;
+                }
+                $.get('/search', {
+                    'q': this.value
+                }, function (data) {
+                    if (data) {
+                        $('#character_id').val(data.id);
+                        $('#character').val(data.name);
+                        $('.character-card img').attr('src', data.portrait);
+                        $('.character-name').text(data.name);
+                        $('.character-corporation').text(data.corporation);
+                        $('.character-card').fadeIn();
+                    } else {
+                        $('.character-card').fadeOut();
+                    }
+                });
+            });
+        });
+    
+    </script>
 
 @endsection
