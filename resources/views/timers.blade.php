@@ -71,6 +71,10 @@
                 margin: 0 auto 10px;
             }
 
+            .admin a {
+                display: block;
+            }
+
             tr.past td {
                 opacity: 0.333;
             }
