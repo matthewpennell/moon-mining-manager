@@ -69,6 +69,7 @@ class RenterController extends Controller
             'type' => 'required',
             'character_id' => 'required|numeric',
             'refinery_id' => 'nullable|numeric',
+            'monthly_rental_fee' => 'required|numeric',
             'start_date' => 'required|date',
         ]);
 
@@ -78,6 +79,7 @@ class RenterController extends Controller
         $renter->character_id = $request->character_id;
         $renter->refinery_id = $request->refinery_id;
         $renter->notes = $request->notes;
+        $renter->monthly_rental_fee = $request->monthly_rental_fee;
         $renter->start_date = $request->start_date;
         $renter->save();
 
@@ -93,6 +95,7 @@ class RenterController extends Controller
             'type' => 'required',
             'character_id' => 'required|numeric',
             'refinery_id' => 'nullable|numeric',
+            'monthly_rental_fee' => 'required|numeric',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
         ]);
@@ -103,6 +106,7 @@ class RenterController extends Controller
         $renter->character_id = $request->character_id;
         $renter->refinery_id = $request->refinery_id;
         $renter->notes = $request->notes;
+        $renter->monthly_rental_fee = $request->monthly_rental_fee;
         $renter->start_date = $request->start_date;
         $renter->save();
 

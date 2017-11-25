@@ -6,7 +6,7 @@
 
     <div class="row">
 
-        <div class="col-8">
+        <div class="col-12">
 
             <div class="card-heading">All current renters <a href="/renters/new">[Add new]</a></div>
             
@@ -16,6 +16,7 @@
                         <th>Moon</th>
                         <th>Rental contact</th>
                         <th>Details</th>
+                        <th class="numeric">Monthly fee</th>
                         <th class="numeric">Start date</th>
                         <th>Edit</th>
                     </tr>
@@ -32,6 +33,7 @@
                             </td>
                             <td>{{ $renter->character->name }}</td>
                             <td>{{ $renter->notes }}</td>
+                            <td class="numeric">{{ number_format($renter->monthly_rental_fee, 0) }} ISK</td>
                             <td class="numeric">{{ date('jS F Y', strtotime($renter->start_date)) }}</td>
                             <td><a href="/renters/{{ $renter->id }}">Edit details</td>
                         </tr>

@@ -50,6 +50,10 @@
                         <span>(if not yet dropped, enter details below)</span>
                     </div>
                     <div>
+                        <label for="monthly_rental_fee">Monthly rental fee</label>
+                        <input type="text" id="monthly_rental_fee" name="monthly_rental_fee" value="{{ $renter->monthly_rental_fee }}">
+                    </div>
+                    <div>
                         <label for="notes">Notes</label>
                         <textarea id="notes" name="notes">{{ $renter->notes }}</textarea>
                     </div>
