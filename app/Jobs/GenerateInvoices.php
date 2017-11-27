@@ -26,16 +26,6 @@ class GenerateInvoices implements ShouldQueue
     public $tries = 10;
 
     /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Execute the job.
      *
      * @return void
@@ -103,7 +93,7 @@ class GenerateInvoices implements ShouldQueue
                 $miner = Miner::where('eve_id', $key)->first();
                 $miner->amount_owed += $value;
                 $activity_log = implode("\n", $miner_activity_data[$key]);
-                $miner->activity_log = ($miner->activity_log == NULL) ? $activity_log : $miner->activity_log + $activity_log;
+                $miner->activity_log = ($miner->activity_log == NULL) ? $activity_log : $miner->activity_log . $activity_log;
                 $miner->save();
                 Log::info('GenerateInvoices: updated stored amount owed and recent activity by miner ' . $key);
             }
