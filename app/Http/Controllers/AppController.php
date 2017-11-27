@@ -45,7 +45,7 @@ class AppController extends Controller
 
         // Calculate the total currently owed and total income generated.
         $total_amount_owed = DB::table('miners')->select(DB::raw('SUM(amount_owed) AS total'))->where('amount_owed', '>', 0)->whereRaw($whitelist_whereRaw)->first();
-        $total_income = DB::table('refineries')->select(DB::raw('SUM(income) AS total'))->first();
+        $total_income = DB::table('payments')->select(DB::raw('SUM(amount_received) AS total'))->first();
 
         // Grab the top miner, refinery and system.
         $top_payer = Payment::select(DB::raw('miner_id, SUM(amount_received) AS total'))->groupBy('miner_id')->orderBy('total', 'desc')->first();
