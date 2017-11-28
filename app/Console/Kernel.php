@@ -13,6 +13,7 @@ use App\Jobs\GenerateInvoices;
 use App\Jobs\PollStructures;
 use App\Jobs\ArchiveReprocessedMaterialsHistory;
 use App\Jobs\PollExtractions;
+use App\Jobs\ProcessMiningActivity;
 
 class Kernel extends ConsoleKernel
 {
@@ -54,6 +55,9 @@ class Kernel extends ConsoleKernel
         
         // Update the stored prices for materials and ores.
         $schedule->job(new UpdateMaterialValues)->dailyAt('05:00');
+        
+        // Process any new mining activity.
+        $schedule->job(new ProcessMiningActivity)->dailyAt('06:00');
         
         // Archive old price history records.
         $schedule->job(new ArchiveReprocessedMaterialsHistory)->dailyAt('06:55');

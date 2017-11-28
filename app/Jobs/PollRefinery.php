@@ -136,11 +136,11 @@ class PollRefinery implements ShouldQueue
         Log::info('PollRefinery: inserted up to ' . count($new_mining_activity_records) . ' new mining activity records');
         
         // Check if this miner is already known.
+        $delay_counter = 1;
         foreach ($miner_ids as $miner_id)
         {
             $miner = Miner::where('eve_id', $miner_id)->first();
             // If not, create a job to add the new miner entry.
-            $delay_counter = 1;
             if (!isset($miner))
             {
                 Log::info('PollRefinery: unknown miner found, queuing job to retrieve details');
