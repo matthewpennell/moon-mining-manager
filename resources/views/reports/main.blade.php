@@ -19,14 +19,18 @@
                             type: 'bar',
                             data: {
                                 labels: [
-                                    @foreach ($daily_mining as $row)
-                                        '{{ date('m-d', strtotime($row->order_year . '-' . $row->order_month . '-' . str_pad($row->order_day, 2, '0', STR_PAD_LEFT))) }}',
+                                    @foreach ($dates as $row)
+                                        '{{ $row }}',
                                     @endforeach
                                 ],
                                 datasets: [{
                                     data: [
-                                        @foreach ($daily_mining as $row)
-                                            '{{ $row->quantity }}',
+                                        @foreach ($dates as $row)
+                                            @if (isset($mining[$row]))
+                                                '{{ $mining[$row] }}',
+                                            @else
+                                                '0',
+                                            @endif
                                         @endforeach
                                     ],
                                     backgroundColor: '#ffc6ce',
@@ -77,14 +81,18 @@
                             type: 'bar',
                             data: {
                                 labels: [
-                                    @foreach ($daily_income as $row)
-                                        '{{ date('m-d', strtotime($row->order_year . '-' . $row->order_month . '-' . str_pad($row->order_day, 2, '0', STR_PAD_LEFT))) }}',
+                                    @foreach ($dates as $row)
+                                        '{{ $row }}',
                                     @endforeach
                                 ],
                                 datasets: [{
                                     data: [
-                                        @foreach ($daily_income as $row)
-                                            '{{ $row->amount }}',
+                                        @foreach ($dates as $row)
+                                            @if (isset($payments[$row]))
+                                                '{{ $payments[$row] }}',
+                                            @else
+                                                '0',
+                                            @endif
                                         @endforeach
                                     ],
                                     backgroundColor: '#ffc6ce',
