@@ -6,49 +6,115 @@
 
     <div class="row">
 
-        <div class="col-6">
+        <div class="col-12">
 
             <div class="card-heading">Daily mining ledger</div>
             
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th class="numeric">Amount mined</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($daily_mining as $row)
-                        <tr>
-                            <td>{{ $row->order_year }}-{{ $row->order_month }}-{{ str_pad($row->order_day, 2, '0', STR_PAD_LEFT) }}</td>
-                            <td class="numeric">{{ number_format($row->quantity, 0) }} m<sup>3</sup></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="card">
+                <canvas id="chart-mining"></canvas>
+                <script>
+                    window.addEventListener('load', function () {
+                        var ctx = document.getElementById("chart-mining").getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: [
+                                    @foreach ($daily_mining as $row)
+                                        '{{ date('m-d', strtotime($row->order_year . '-' . $row->order_month . '-' . str_pad($row->order_day, 2, '0', STR_PAD_LEFT))) }}',
+                                    @endforeach
+                                ],
+                                datasets: [{
+                                    data: [
+                                        @foreach ($daily_mining as $row)
+                                            '{{ $row->quantity }}',
+                                        @endforeach
+                                    ],
+                                    backgroundColor: '#ffc6ce',
+                                    borderColor: 'd9cacc',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: false,
+                                maintainAspectRatio: true,
+                                legend: {
+                                    display: false
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        time: {
+                                            unit: 'day'
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    });
+                </script>
+            </div>
 
         </div>
 
-        <div class="col-6">
+    </div>
+
+    <div class="row">
+
+        <div class="col-12">
 
             <div class="card-heading">Daily income ledger</div>
             
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th class="numeric">Income</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($daily_income as $row)
-                        <tr>
-                            <td>{{ $row->order_year }}-{{ $row->order_month }}-{{ str_pad($row->order_day, 2, '0', STR_PAD_LEFT) }}</td>
-                            <td class="numeric">{{ number_format($row->amount, 0) }} ISK</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="card">
+                <canvas id="chart-income"></canvas>
+                <script>
+                    window.addEventListener('load', function () {
+                        var ctx = document.getElementById("chart-income").getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: [
+                                    @foreach ($daily_income as $row)
+                                        '{{ date('m-d', strtotime($row->order_year . '-' . $row->order_month . '-' . str_pad($row->order_day, 2, '0', STR_PAD_LEFT))) }}',
+                                    @endforeach
+                                ],
+                                datasets: [{
+                                    data: [
+                                        @foreach ($daily_income as $row)
+                                            '{{ $row->amount }}',
+                                        @endforeach
+                                    ],
+                                    backgroundColor: '#ffc6ce',
+                                    borderColor: 'd9cacc',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: false,
+                                maintainAspectRatio: true,
+                                legend: {
+                                    display: false
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        time: {
+                                            unit: 'day'
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    });
+                </script>
+            </div>
 
         </div>
 
