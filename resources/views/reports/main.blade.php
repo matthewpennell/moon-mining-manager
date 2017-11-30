@@ -52,9 +52,19 @@
                                     }],
                                     yAxes: [{
                                         ticks: {
-                                            beginAtZero: true
+                                            beginAtZero: true,
+                                            callback: function (value) {
+                                                return value.toFixed(0).replace(/(\d)(?=(\d{3})+$)/g, '$1,');;
+                                            }
                                         }
                                     }]
+                                },
+                                tooltips: {
+                                    callbacks: {
+                                        label: function(tooltipItem, data) {
+                                            return tooltipItem.yLabel.toFixed(0).replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+                                        }
+                                    }
                                 }
                             }
                         });
@@ -114,9 +124,19 @@
                                     }],
                                     yAxes: [{
                                         ticks: {
-                                            beginAtZero: true
+                                            beginAtZero: true,
+                                            callback: function (value) {
+                                                return value.toFixed(0).replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+                                            }
                                         }
                                     }]
+                                },
+                                tooltips: {
+                                    callbacks: {
+                                        label: function(tooltipItem, data) {
+                                            return tooltipItem.yLabel.toFixed(0).replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+                                        }
+                                    }
                                 }
                             }
                         });
