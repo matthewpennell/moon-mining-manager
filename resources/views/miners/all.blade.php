@@ -7,7 +7,7 @@
     <div class="row">
 
         <div class="col-12">
-            <table>
+            <table id="miners">
                 <thead>
                     <th>Miner</th>
                     <th>Corporation</th>
@@ -20,9 +20,13 @@
                         <tr>
                             <td>{{ $miner->name }}</td>
                             <td>{{ $miner->corporation->name }}</td>
-                            <td class="numeric">{{ number_format($miner->amount_owed, 0) }} ISK</td>
-                            <td class="numeric">{{ number_format($miner->total_payments, 0) }} ISK</td>
-                            <td>{{ $miner->latest_payment }}</td>
+                            <td class="numeric">{{ number_format($miner->amount_owed, 0) }}</td>
+                            <td class="numeric">{{ number_format($miner->total_payments, 0) }}</td>
+                            <td>
+                                @if (isset($miner->latest_payment))
+                                    {{ date('M j', strtotime($miner->latest_payment)) }}
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -30,5 +34,13 @@
         </div>
 
     </div>
+
+    <script>
+    
+        window.addEventListener('load', function () {
+            $('#miners').tablesorter();
+        });
+    
+    </script>
 
 @endsection
