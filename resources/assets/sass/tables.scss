@@ -3,6 +3,20 @@ table {
     width: 100%;
 }
 
+#miners a {
+    text-decoration: none;
+    color: $text;
+}
+
+#miners tr:hover td {
+    background: $highlight;
+    color: #fff;
+    cursor: pointer;
+    a {
+        color: #fff;
+    }
+}
+
 th, td {
     background: #fff;
     padding: 10px;

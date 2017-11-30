@@ -39,6 +39,9 @@
     
         window.addEventListener('load', function () {
             $('#miners').tablesorter();
+            $('#miners tr').on('click', function () {
+                $(this).find('a')[0].click();
+            });
         });
     
     </script>
