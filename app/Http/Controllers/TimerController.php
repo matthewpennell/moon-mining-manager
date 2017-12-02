@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Refinery;
 use App\Whitelist;
+use Illuminate\Support\Facades\Log;
 
 class TimerController extends Controller
 {
@@ -90,6 +91,7 @@ class TimerController extends Controller
             }
         }
         $refinery->save();
+        Log::info('TimerController: detonation for refinery ' . $refinery->observer_id . ' claimed by ' . Auth::user()->name);
         return redirect('/timers');
 
     }
@@ -124,6 +126,7 @@ class TimerController extends Controller
             $refinery->custom_detonation_time = NULL;
         }
         $refinery->save();
+        Log::info('TimerController: detonation for refinery ' . $refinery->observer_id . ' no longer claimed by ' . Auth::user()->name);
         return redirect('/timers');
 
     }
