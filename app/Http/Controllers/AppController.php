@@ -84,13 +84,32 @@ class AppController extends Controller
     public function showAuthorisedUsers()
     {
 
-        return view('users', [
-            'whitelisted_users' => Whitelist::all(),
+        return view('settings', [
+            'admin_users' => Whitelist::where('is_admin', TRUE)->get(),
+            'whitelisted_users' => Whitelist::where('is_admin', FALSE)->get(),
             'access_history' => User::whereNotIn('eve_id', function ($q) {
                 $q->select('eve_id')->from('whitelist');
             })->get(),
         ]);
         
+    }
+
+    /**
+     * Whitelist a new user.
+     */
+    public function makeUserAdmin($id = NULL)
+    {
+        if ($id == NULL)
+        {
+            return redirect('/access');
+        }
+        $user = Auth::user();
+        $whitelist = new Whitelist;
+        $whitelist->eve_id = $id;
+        $whitelist->is_admin = TRUE;
+        $whitelist->added_by = $user->eve_id;
+        $whitelist->save();
+        return redirect('/access');
     }
 
     /**

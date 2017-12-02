@@ -36,6 +36,7 @@ Route::get('/', 'AppController@home')->middleware('admin');
 Route::middleware(['admin'])->prefix('access')->group(function () {
     Route::get('/', 'AppController@showAuthorisedUsers');
     Route::get('/new', 'AppController@showUserAccessHistory');
+    Route::post('/admin/{id}', 'AppController@makeUserAdmin');
     Route::post('/whitelist/{id}', 'AppController@whitelistUser');
     Route::post('/blacklist/{id}', 'AppController@blacklistUser');
 });

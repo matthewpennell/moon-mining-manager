@@ -23,7 +23,10 @@ class CheckAdminLogin
             return redirect()->route('login');
         }
         $user = Auth::user();
-        $whitelist = Whitelist::where('eve_id', $user->eve_id)->first();
+        $whitelist = Whitelist::where([
+            ['eve_id', $user->eve_id],
+            ['is_admin', TRUE],
+        ])->first();
         if (!isset($whitelist))
         {
             return redirect()->route('login');
