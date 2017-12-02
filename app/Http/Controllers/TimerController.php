@@ -25,7 +25,14 @@ class TimerController extends Controller
         foreach ($refineries as $refinery)
         {
             // Set the original expected detonation time.
-            $refinery->detonation_time = $refinery->natural_decay_time;
+            if (isset($refinery->claimed_by_primary) || isset($refinery->claimed_by_secondary))
+            {
+                $refinery->detonation_time = $refinery->chunk_arrival_time;
+            }
+            else
+            {
+                $refinery->detonation_time = $refinery->natural_decay_time;
+            }
             if ($refinery->custom_detonation_time != NULL)
             {
                 // Found a custom detonation time, replace the original time with the new time.
@@ -35,6 +42,10 @@ class TimerController extends Controller
                 if ($refinery->detonation_time > $refinery->natural_decay_time)
                 {
                     $refinery->detonation_time = date('Y-m-d H:i:s', strtotime($refinery->detonation_time . ' -1 days'));
+                }
+                elseif ($refinery->detonation_time < $refinery->chunk_arrival_time)
+                {
+                    $refinery->detonation_time = date('Y-m-d H:i:s', strtotime($refinery->detonation_time . ' +1 days'));
                 }
             }
         }
@@ -65,7 +76,7 @@ class TimerController extends Controller
         if ($claim == 2)
         {
             $refinery->claimed_by_secondary = Auth::user()->eve_id;
-            if ($refinery->custom_detonation_time == NULL)
+            if (isset($request->detonation) && $refinery->custom_detonation_time == NULL)
             {
                 $refinery->custom_detonation_time = $request->detonation;
             }
@@ -73,7 +84,10 @@ class TimerController extends Controller
         else
         {
             $refinery->claimed_by_primary = Auth::user()->eve_id;
-            $refinery->custom_detonation_time = $request->detonation;
+            if (isset($request->detonation))
+            {
+                $refinery->custom_detonation_time = $request->detonation;
+            }
         }
         $refinery->save();
         return redirect('/timers');
