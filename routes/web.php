@@ -22,7 +22,7 @@ Route::get('/admin', function () {
 // Public list of upcoming mining timers.
 Route::middleware(['login'])->prefix('timers')->group(function () {
     Route::get('/', 'TimerController@home');
-    Route::get('/claim/{claim}/{refinery}', 'TimerController@claim');
+    Route::post('/claim/{claim}/{refinery}', 'TimerController@claim');
     Route::get('/clear/{claim}/{refinery}', 'TimerController@clear');
 });
 

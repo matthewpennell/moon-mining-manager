@@ -56,6 +56,12 @@
                 background: #eee;
             }
 
+            td form label, td form input {
+                display: block;
+                margin: 0 auto;
+                text-align: center;
+            }
+
             .avatar {
                 width: 50px;
                 height: 50px;
@@ -118,7 +124,7 @@
                         <td>{{ $timer->name }}</td>
                         <td>
                             @if ($timer->claimed_by_primary || $timer->claimed_by_secondary)
-                                {{ date('H:i l jS F', strtotime($timer->chunk_arrival_time)) }}
+                                {{ date('H:i l jS F', strtotime($timer->detonation_time)) }}
                                 <br>
                                 <a href="http://time.nakamura-labs.com/?#{{ strtotime($timer->chunk_arrival_time) }}" target="_blank">Timezone conversion</a>
                             @else
@@ -137,7 +143,12 @@
                                     @endif
                                 @else
                                     @if (strtotime($timer->natural_decay_time) >= time())
-                                        <a href="/timers/claim/1/{{ $timer->observer_id }}">Claim</a>
+                                        <form method="post" action="/timers/claim/1/{{ $timer->observer_id }}">
+                                            {{ csrf_field() }}
+                                            <label for="detonation">Enter detonation time ({{ date('H:i', strtotime($timer->chunk_arrival_time)) }}-{{ date('H:i', strtotime($timer->natural_decay_time)) }})</label>
+                                            <input id="detonation" name="detonation" type="text" size="10">
+                                            <button type="submit">Claim detonation</button>
+                                        </form>
                                     @endif
                                 @endif
                             </td>
@@ -150,7 +161,12 @@
                                     @endif
                                 @else
                                     @if (strtotime($timer->natural_decay_time) >= time())
-                                        <a href="/timers/claim/2/{{ $timer->observer_id }}">Claim</a>
+                                        <form method="post" action="/timers/claim/2/{{ $timer->observer_id }}">
+                                            {{ csrf_field() }}
+                                            <label for="detonation">Enter detonation time  ({{ date('H:i', strtotime($timer->chunk_arrival_time)) }}-{{ date('H:i', strtotime($timer->natural_decay_time)) }})</label>
+                                            <input id="detonation" name="detonation" type="text" size="10">
+                                            <button type="submit">Claim detonation</button>
+                                        </form>
                                     @endif
                                 @endif
                             </td>
