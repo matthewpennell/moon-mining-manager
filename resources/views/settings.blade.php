@@ -41,6 +41,10 @@
                     <div class="primary">{{ $user->user->name }}</div>
                     <div class="secondary">Added by {{ $user->whitelister->name }}</div>
                     <div class="inline-form">
+                        <form method="post" action="/access/admin/{{ $user->eve_id }}">
+                            {{ csrf_field() }}
+                            <button type="submit">Make administrator</button>
+                        </form>
                         <form method="post" action="/access/blacklist/{{ $user->eve_id }}">
                             {{ csrf_field() }}
                             <button type="submit">Revoke whitelisted status</button>
