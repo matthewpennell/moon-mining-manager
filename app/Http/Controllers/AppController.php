@@ -104,8 +104,13 @@ class AppController extends Controller
             return redirect('/access');
         }
         $user = Auth::user();
-        $whitelist = new Whitelist;
-        $whitelist->eve_id = $id;
+        // Check if this user is already in the whitelist table.
+        $whitelist = Whitelist::where('eve_id', $id)->first();
+        if (!isset($whitelist))
+        {
+            $whitelist = new Whitelist;
+            $whitelist->eve_id = $id;
+        }
         $whitelist->is_admin = TRUE;
         $whitelist->added_by = $user->eve_id;
         $whitelist->save();
