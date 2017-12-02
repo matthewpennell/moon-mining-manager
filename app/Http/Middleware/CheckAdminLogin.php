@@ -29,7 +29,19 @@ class CheckAdminLogin
         ])->first();
         if (!isset($whitelist))
         {
-            return redirect()->route('login');
+            // Not an admin, check if they are a whitelisted manager.
+            $whitelist = Whitelist::where([
+                ['eve_id', $user->eve_id],
+                ['is_admin', FALSE],
+            ])->first();
+            if (isset($whitelist))
+            {
+                return redirect('/timers');
+            }
+            else
+            {
+                return redirect()->route('login');
+            }
         }
         return $next($request);
     }

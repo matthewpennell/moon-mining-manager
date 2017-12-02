@@ -97,7 +97,7 @@
                     <th>System</th>
                     <th>Refinery name</th>
                     <th>Detonation time</th>
-                    @if ($is_admin_corporation_member)
+                    @if ($is_whitelisted_user)
                         <th class="admin">Primary</th>
                         <th class="admin">Secondary</th>
                     @endif
@@ -127,7 +127,7 @@
                                 <a href="http://time.nakamura-labs.com/?#{{ strtotime($timer->natural_decay_time) }}" target="_blank">Timezone conversion</a>
                             @endif
                         </td>
-                        @if ($is_admin_corporation_member)
+                        @if ($is_whitelisted_user)
                             <td class="admin">
                                 @if ($timer->claimed_by_primary)
                                     <img src="{{ $timer->primary->avatar }}" alt="" class="avatar">

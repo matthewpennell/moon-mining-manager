@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Refinery;
+use App\Whitelist;
 
 class TimerController extends Controller
 {
@@ -14,9 +15,11 @@ class TimerController extends Controller
      */
     public function home()
     {
+        // Retrieve the current user's whitelisted status.
+        $whitelist = Whitelist::where('eve_id', Auth::user()->eve_id)->first();
 
         return view('timers', [
-            'is_admin_corporation_member' => (Auth::user()->corporation_id == env('EVE_ADMIN_CORPORATION', NULL)) ? TRUE : FALSE,
+            'is_whitelisted_user' => (isset($whitelist)) ? TRUE : FALSE,
             'timers' => Refinery::where('name', 'LIKE', '%BRAVE%')->whereNotNull('extraction_start_time')->orderBy('chunk_arrival_time')->get(),
         ]);
 
@@ -28,8 +31,11 @@ class TimerController extends Controller
     public function claim($claim = 1, $refinery = NULL)
     {
 
+        // Retrieve the current user's whitelisted status.
+        $whitelist = Whitelist::where('eve_id', Auth::user()->eve_id)->first();
+
         // If no refinery provided or the user is not authorised to perform this action, return to the list.
-        if ($refinery == NULL || Auth::user()->corporation_id != env('EVE_ADMIN_CORPORATION', NULL))
+        if ($refinery == NULL || !isset($whitelist))
         {
             return redirect('/timers');
         }
@@ -54,8 +60,11 @@ class TimerController extends Controller
     public function clear($claim = 1, $refinery = NULL)
     {
 
+        // Retrieve the current user's whitelisted status.
+        $whitelist = Whitelist::where('eve_id', Auth::user()->eve_id)->first();
+
         // If no refinery provided or the user is not authorised to perform this action, return to the list.
-        if ($refinery == NULL || Auth::user()->corporation_id != env('EVE_ADMIN_CORPORATION', NULL))
+        if ($refinery == NULL || !isset($whitelist))
         {
             return redirect('/timers');
         }
