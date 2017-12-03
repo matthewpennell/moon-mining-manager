@@ -14,6 +14,7 @@ use App\Jobs\PollStructures;
 use App\Jobs\ArchiveReprocessedMaterialsHistory;
 use App\Jobs\PollExtractions;
 use App\Jobs\ProcessMiningActivity;
+use App\Jobs\GenerateRentalInvoices;
 
 class Kernel extends ConsoleKernel
 {
@@ -64,6 +65,9 @@ class Kernel extends ConsoleKernel
 
         // Send weekly invoices.
         $schedule->job(new GenerateInvoices)->weekly()->mondays()->at('07:00');
+
+        // Send monthly rental invoices.
+        $schedule->job(new GenerateRentalInvoices)->monthlyOn(1, '09:00');
 
     }
 

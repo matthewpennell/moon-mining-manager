@@ -12,6 +12,7 @@
                 <ul>
                     <li><strong>{date}</strong> - the current date</li>
                     <li><strong>{name}</strong> - the name of the recipient</li>
+                    <li><strong>{refinery}</strong> - the name of a rented refinery</li>
                     <li><strong>{amount_owed}</strong> - the total amount currently owed by the recipient</li>
                     <li><strong>{activity_log}</strong> - a list of mining activity by the recipient</li>
                 </ul>
