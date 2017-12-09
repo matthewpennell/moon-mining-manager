@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Refinery;
+use App\Miner;
+use App\Invoice;
+use App\MiningActivity;
+use App\Payment;
 use App\Whitelist;
 use Illuminate\Support\Facades\Log;
 
@@ -16,8 +20,26 @@ class TimerController extends Controller
      */
     public function home()
     {
+
+        // Grab a reference to the currently logged-in user.
+        $user = Auth::user();
+
+        // Find their Miner record, if it exists.
+        $miner = Miner::where('eve_id', $user->eve_id)->first();
+
+        if (isset($miner))
+        {
+            // Build an aggregate activity log of all this miner's activities.
+            $invoices = Invoice::where('miner_id', $miner->eve_id)->get()->keyBy('created_at')->toArray();
+            $mining_activities = MiningActivity::where('miner_id', $miner->eve_id)->get()->keyBy('created_at')->toArray();
+            $payments = Payment::where('miner_id', $miner->eve_id)->get()->keyBy('created_at')->toArray();
+            $activity_log = array_merge($invoices, $mining_activities, $payments);
+            // Sort the log by reverse chronological order.
+            krsort($activity_log);
+        }
+
         // Retrieve the current user's whitelisted status.
-        $whitelist = Whitelist::where('eve_id', Auth::user()->eve_id)->first();
+        $whitelist = Whitelist::where('eve_id', $user->eve_id)->first();
 
         // Retrieve all refineries with active extraction periods.
         $refineries = Refinery::where('name', 'LIKE', '%BRAVE%')->whereNotNull('extraction_start_time')->orderBy('chunk_arrival_time')->get();
@@ -52,6 +74,8 @@ class TimerController extends Controller
         }
 
         return view('timers', [
+            'miner' => (isset($miner)) ? $miner : NULL,
+            'activity_log' => (isset($activity_log)) ? $activity_log : NULL,
             'is_whitelisted_user' => (isset($whitelist)) ? TRUE : FALSE,
             'timers' => $refineries,
         ]);

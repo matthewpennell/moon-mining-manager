@@ -12,10 +12,18 @@
 
         <style>
 
+            * {
+                box-sizing: border-box;
+            }
+
             body {
                 font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif;
                 font-size: 14px;
                 line-height: 20px;
+            }
+
+            body.bar {
+                padding-top: 100px;
             }
 
             .logo {
@@ -85,11 +93,105 @@
                 opacity: 0.333;
             }
 
+            .miner-bar {
+                background: #242626;
+                color: #fff;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100px;
+                width: 100%;
+            }
+
+            .miner-identity,
+            .miner-amount-owed,
+            .miner-total-income,
+            .miner-activity-log {
+                float: left;
+                width: 25%;
+            }
+
+            .miner-identity {
+                font-weight: bold;
+                font-size: 20px;
+                overflow: hidden;
+                padding: 30px 0 0 110px;
+            }
+
+            .miner-identity img {
+                width: 100px;
+                height: 100px;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            .miner-bar a {
+                display: block;
+                color: #fff;
+                font-size: 12px;
+                font-weight: normal;
+            }
+
+            .miner-bar a:hover {
+                text-decoration: none;
+                color: #cad9d7;
+            }
+
+            .miner-bar .heading {
+                text-transform: uppercase;
+                font-size: 12px;
+                display: block;
+                margin: 20px 0 10px;
+            }
+
+            .miner-bar .numeric {
+                font-size: 30px;
+            }
+
+            .mining-activity {
+                width: 500px;
+                margin: 20px auto;
+            }
+
+            .mining-activity ul {
+                list-style: none;
+                padding: 0;
+            }
+
         </style>
 
     </head>
 
-    <body>
+    <body
+        @if ($miner)
+            class="bar"
+        @endif
+    >
+
+        @if ($miner)
+            <div class="miner-bar">
+                <div class="miner-identity">
+                    <img src="{{ $miner->avatar }}" alt="">
+                    {{ $miner->name }}
+                    <a href="/logout">Logout</a>
+                </div>
+                <div class="miner-amount-owed">
+                    <span class="heading">Current amount owed:</span>
+                    <span class="numeric">{{ number_format($miner->amount_owed, 0) }}</span> ISK
+                </div>
+                <div class="miner-total-income">
+                    <span class="heading">Total payments to date:</span>
+                    <span class="numeric">{{ number_format($miner->total_payments, 0) }}</span> ISK
+                </div>
+                @if ($activity_log)
+                    <div class="miner-activity-log">
+                        <span class="heading">Activity record:</span>
+                        <a href="#activity-log" id="show-log">View my mining activity log</a>
+                    </div>
+                @endif
+            </div>
+        @endif
 
         <img src="https://wiki.braveineve.com/lib/tpl/vector/user/logo.png" alt="Brave Collective" class="logo">
 
@@ -176,9 +278,35 @@
             </tbody>
         </table>
 
+        @if ($activity_log)
+            <div class="mining-activity">
+                <h2>Your mining activity log</h2>
+                <ul id="activity-log">
+                    @foreach ($activity_log as $date => $event)
+                        <li>
+                            {{ date('Y-m-d', strtotime($date)) }} - 
+                            @if (isset($event['amount']))
+                                Invoice sent for {{ number_format($event['amount']) }} ISK
+                            @endif
+                            @if (isset($event['quantity']))
+                                @php
+                                    $refinery = App\Refinery::where('observer_id', $event['refinery_id'])->first();
+                                @endphp
+                                Mining recorded in {{ $refinery->system->solarSystemName }} ({{ number_format($event['quantity'], 0) }} units)
+                            @endif
+                            @if (isset($event['amount_received']))
+                                Payment received for {{ number_format($event['amount_received']) }} ISK
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <script>
 
             window.onload = function () {
+
                 setInterval(function () {
                     var x = new Date();
                     var hour = x.getUTCHours(),
@@ -186,6 +314,7 @@
                         second = x.getUTCSeconds();
                     document.getElementById('current_time').innerHTML = pad(hour) + ':' + pad(minute) + ':' + pad(second) + ' EVE';
                 }, 1000);
+
             }
 
             function pad(num) {
