@@ -8,9 +8,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Miner;
-use App\Refinery;
-use App\MiningActivity;
-use App\Payment;
 use App\Template;
 use App\Invoice;
 use App\Jobs\SendEvemail;
@@ -47,34 +44,6 @@ class GenerateInvoice implements ShouldQueue
         // Retrieve the miner record.
         $miner = Miner::where('eve_id', $this->id)->first();
         
-        // Retrieve all of this miner's mining activity, invoices and payments.
-        $invoices = Invoice::where('miner_id', $miner->eve_id)->get()->keyBy('created_at')->toArray();
-        $mining_activities = MiningActivity::where('miner_id', $miner->eve_id)->get()->keyBy('created_at')->toArray();
-        $payments = Payment::where('miner_id', $miner->eve_id)->get()->keyBy('created_at')->toArray();
-        $combined = array_merge($invoices, $mining_activities, $payments);
-
-        // Sort the log by reverse chronological order.
-        krsort($combined);
-
-        // Loop through the combined list, creating each record into a human-readable line in the activity log.
-        $activity_log = [];
-        foreach ($combined as $date => $event)
-        {
-            if (isset($event['amount']))
-            {
-                $activity_log[] = date('Y-m-d', strtotime($date)) . ' - Invoice sent for ' . number_format($event['amount']) . ' ISK';
-            }
-            if (isset($event['quantity']))
-            {
-                $refinery = Refinery::where('observer_id', $event['refinery_id'])->first();
-                $activity_log[] = date('Y-m-d', strtotime($date)) . ' - Mining recorded in ' . $refinery->system->solarSystemName . ' (' . $event['quantity'] . ' units)';
-            }
-            if (isset($event['amount_received']))
-            {
-                $activity_log[] = date('Y-m-d', strtotime($date)) . ' - Payment received for ' . number_format($event['amount_received']) . ' ISK';
-            }
-        }
-
         // Pick up the invoice template to apply text substitutions.
         $template = Template::where('name', 'weekly_invoice')->first();
         
@@ -89,7 +58,6 @@ class GenerateInvoice implements ShouldQueue
         $body = str_replace('{date}', date('Y-m-d'), $body);
         $body = str_replace('{name}', $miner->name, $body);
         $body = str_replace('{amount_owed}', number_format($miner->amount_owed, 0), $body);
-        $body = str_replace('{activity_log}', implode("\n", $activity_log), $body);
         $mail = array(
             'body' => $body,
             'recipients' => array(
