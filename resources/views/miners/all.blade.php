@@ -20,8 +20,8 @@
                         <tr>
                             <td><a href="/miners/{{ $miner->eve_id }}">{{ $miner->name }}</a></td>
                             <td>{{ $miner->corporation->name }}</td>
-                            <td class="numeric">{{ number_format($miner->amount_owed, 0) }}</td>
-                            <td class="numeric">{{ number_format($miner->total_payments, 0) }}</td>
+                            <td class="numeric">{{ number_format($miner->amount_owed, 0) == '-0' ? '0' : number_format($miner->amount_owed, 0) }}</td>
+                            <td class="numeric">{{ number_format($miner->total_payments, 0) == '-0' ? '0' : number_format($miner->total_payments, 0) }}</td>
                             <td>
                                 @if (isset($miner->latest_payment))
                                     {{ date('M j, Y', strtotime($miner->latest_payment)) }}
