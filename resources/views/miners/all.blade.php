@@ -24,7 +24,7 @@
                             <td class="numeric">{{ number_format($miner->total_payments, 0) }}</td>
                             <td>
                                 @if (isset($miner->latest_payment))
-                                    {{ date('M j', strtotime($miner->latest_payment)) }}
+                                    {{ date('M j, Y', strtotime($miner->latest_payment)) }}
                                 @endif
                             </td>
                         </tr>
