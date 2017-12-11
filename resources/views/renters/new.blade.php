@@ -39,6 +39,7 @@
                         <label for="character">Character</label>
                         <input type="text" id="character" placeholder="Start typing to search by character name...">
                         <input type="hidden" id="character_id" name="character_id">
+                        <div class="search-response"></div>
                         <div class="character-card">
                             <img src="" alt="">
                             <div class="character-name"></div>
@@ -89,7 +90,8 @@
                 $.get('/search', {
                     'q': this.value
                 }, function (data) {
-                    if (data) {
+                    if (typeof data == 'object') {
+                        $('.search-response').text('');
                         $('#character_id').val(data.id);
                         $('#character').val(data.name);
                         $('.character-card img').attr('src', data.portrait);
@@ -98,6 +100,7 @@
                         $('.character-card').fadeIn();
                     } else {
                         $('.character-card').fadeOut();
+                        $('.search-response').text(data);
                     }
                 });
             });

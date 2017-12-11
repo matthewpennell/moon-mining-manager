@@ -16,7 +16,7 @@ class SearchController extends Controller
             'search' => $request->q,
         ])->invoke('get', '/search/');
 
-        if (count($result->character) == 1)
+        if (isset($result) && isset($result->character) && count($result->character) == 1)
         {
             $character = $esi->esi->invoke('get', '/characters/{character_id}/', [
                 'character_id' => $result->character[0],
@@ -36,5 +36,10 @@ class SearchController extends Controller
         {
             return $character;
         }
+        else
+        {
+            return 'No matches found...';
+        }
+
     }
 }
