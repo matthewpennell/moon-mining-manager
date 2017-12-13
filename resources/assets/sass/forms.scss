@@ -48,6 +48,10 @@ button {
     margin: 10px 0;
 }
 
-.search-options {
-    display: none;
+.character-search {
+    display: flex;
+    button {
+        white-space: nowrap;
+        margin-left: 10px;
+    }
 }

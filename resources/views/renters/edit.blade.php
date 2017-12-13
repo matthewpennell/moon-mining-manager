@@ -37,10 +37,12 @@
                     </div>
                     <div>
                         <label for="character">Character</label>
-                        <input type="text" id="character" placeholder="Start typing to search by character name..." value="{{ $renter->character->name }}">
+                        <div class="character-search" style="display: flex;">
+                            <input type="text" id="character" placeholder="Start typing to search by character name..." value="{{ $renter->character->name }}">
+                            <button class="search">Find character</button>
+                        </div>
                         <input type="hidden" id="character_id" name="character_id" value="{{ $renter->character_id }}">
                         <div class="search-response"></div>
-                        <select class="search-options"></select>
                         <div class="character-card">
                             <img src="{{ $renter->character->portrait }}" alt="">
                             <div class="character-name">{{ $renter->character->name }}</div>
@@ -87,48 +89,31 @@
     <script>
     
         window.addEventListener('load', function () {
-            $('#character').on('keyup', function () {
-                if (this.value.length < 4) {
-                    $('.character-card').fadeOut();
-                    return;
-                }
-                $.get('/search', {
-                    'q': this.value
-                }, function (data) {
-                    console.log(typeof data);
-                    if (typeof data == 'string') {
-                        $('.character-card, .search-options').fadeOut();
-                        $('.search-response').fadeIn().text(data);
-                    } else {
-                        if (data.length > 1) {
-                            $('.search-response').text('Multiple options found, select one:');
-                            $('.search-options').empty().append('<option>Select character:</option>').fadeIn();
-                            for (var i = 0; i < data.length; i++) {
-                                var option = $('<option data-id="' + data[i].id + '" data-name="' + data[i].name + '" data-portrait="' + data[i].portrait + '" data-corporation="' + data[i].corporation + '">' + data[i].name + ' (' + data[i].corporation + ')</option>');
-                                $('.search-options').append(option);
-                            }
-                        } else {
-                            $('.search-response, .search-options').fadeOut();
-                            $('#character_id').val(data[0].id);
-                            $('#character').val(data[0].name);
-                            $('.character-card img').attr('src', data[0].portrait);
-                            $('.character-name').text(data[0].name);
-                            $('.character-corporation').text(data[0].corporation);
-                            $('.character-card').fadeIn();
-                        }
-                    }
-                });
-            });
-            $('.search-options').on('change', function () {
-                var option = $(this).find('option:selected');
-                $('#character_id').val(option.data('id'));
-                $('#character').val(option.data('name'));
-                $('.character-card img').attr('src', option.data('portrait'));
-                $('.character-name').text(option.data('name'));
-                $('.character-corporation').text(option.data('corporation'));
-                $('.character-card').fadeIn();
+            doSearch();
+            $('.search').on('click', function (e) {
+                doSearch();
+                e.preventDefault();
             });
         });
+
+        function doSearch() {
+            $.get('/search', {
+                'q': $('#character').val()
+            }, function (data) {
+                if (typeof data == 'string') {
+                    $('.character-card').fadeOut();
+                    $('.search-response').fadeIn().text(data);
+                } else {
+                    $('.search-response, .search-options').fadeOut();
+                    $('#character_id').val(data.id);
+                    $('#character').val(data.name);
+                    $('.character-card img').attr('src', data.portrait);
+                    $('.character-name').text(data.name);
+                    $('.character-corporation').text(data.corporation);
+                    $('.character-card').fadeIn();
+                }
+            });
+        }
     
     </script>
 
