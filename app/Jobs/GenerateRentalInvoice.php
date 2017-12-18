@@ -98,6 +98,7 @@ class GenerateRentalInvoice implements ShouldQueue
                 )
             ),
             'subject' => $subject,
+            'approved_cost' => 5000,
         );
 
         // Queue sending the evemail, spaced at 20-second intervals to avoid triggering the mailspam limiter (4/min).
