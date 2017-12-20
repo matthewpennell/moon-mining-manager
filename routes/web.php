@@ -44,6 +44,8 @@ Route::middleware(['admin'])->prefix('access')->group(function () {
 // Reports.
 Route::middleware(['admin'])->prefix('reports')->group(function () {
     Route::get('/', 'ReportsController@main');
+    Route::get('/fix', 'ReportsController@fix');
+    Route::get('/regenerate', 'ReportsController@regenerate');
 });
 
 // Miner reporting.

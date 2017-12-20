@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\MiningActivity;
 use App\Payment;
+use App\Miner;
 use Illuminate\Support\Facades\DB;
+use App\Jobs\RegenerateInvoices;
+use Illuminate\Support\Facades\Log;
 
 class ReportsController extends Controller
 {
@@ -68,6 +71,44 @@ class ReportsController extends Controller
             'payments' => $payments,
         ]);
 
+    }
+
+    /**
+     * Manual triggering of the job to regenerate invoices after an error.
+     */
+    public function fix()
+    {
+
+        // Build the WHERE clause to filter by alliance and/or corporation membership.
+        $whitelist_where = [];
+        if (env('EVE_ALLIANCES_WHITELIST'))
+        {
+            $whitelist_where[] = 'alliance_id IN (' . env('EVE_ALLIANCES_WHITELIST') . ')';
+        }
+        if (env('EVE_CORPORATIONS_WHITELIST'))
+        {
+            $whitelist_where[] = 'corporation_id IN (' . env('EVE_CORPORATIONS_WHITELIST') . ')';
+        }
+        if (count($whitelist_where))
+        {
+            $whitelist_whereRaw = '(' . implode(' OR ', $whitelist_where) . ')';
+        }
+
+        // Figure out the date of the last Monday when invoices should have been generated, and find miners that should have been sent an invoice but weren't.
+        $last_monday = date('Y-m-d', strtotime('Monday this week'));
+        $miners = Miner::select('eve_id', 'name')->where('amount_owed', '>=', 1)->whereRaw($whitelist_whereRaw)->whereRaw('eve_id NOT IN (SELECT miner_id FROM invoices WHERE DATE(created_at) = "' . $last_monday . '")')->get();
+        
+        return view('reports.fix', [
+            'last_monday' => $last_monday,
+            'miners' => $miners,
+        ]);
+    }
+
+    public function regenerate()
+    {
+        RegenerateInvoices::dispatch();
+        Log::info('ReportsController: dispatched job to regenerate invoices');
+        return redirect('/reports');
     }
 
 }
