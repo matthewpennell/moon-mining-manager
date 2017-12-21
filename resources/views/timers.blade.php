@@ -293,6 +293,9 @@
                                     $refinery = App\Refinery::where('observer_id', $event['refinery_id'])->first();
                                 @endphp
                                 Mining recorded in {{ $refinery->system->solarSystemName }} ({{ number_format($event['quantity'], 0) }} units)
+                                @if (isset($event['tax_amount']))
+                                    ~ {{ number_format($event['tax_amount']) }} ISK
+                                @endif
                             @endif
                             @if (isset($event['amount_received']))
                                 Payment received for {{ number_format($event['amount_received']) }} ISK
