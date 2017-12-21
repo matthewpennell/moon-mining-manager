@@ -70,6 +70,10 @@ class ProcessMiningActivity implements ShouldQueue
             {
                 $refinery_data[$entry->refinery_id] = $tax_amount;
             }
+
+            // Save the tax amount for the specific mining entry.
+            $entry->tax_amount = $tax_amount;
+            $entry->save();
         }
 
         // Set processed = 1 for all the records we just processed.

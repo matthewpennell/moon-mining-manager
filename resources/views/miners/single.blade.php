@@ -67,7 +67,11 @@
                                     {{ number_format($activity['amount_received']) }} ISK
                                 @endif
                                 @if (isset($activity['quantity']))
-                                    -
+                                    @if (isset($activity['tax_amount']))
+                                        {{ number_format($activity['tax_amount']) }} ISK
+                                    @else
+                                        -
+                                    @endif
                                 @endif
                             </td>
                             <td>{{ date('g:ia, jS F Y', strtotime($date)) }}</td>
