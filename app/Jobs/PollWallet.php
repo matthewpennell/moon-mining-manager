@@ -21,6 +21,17 @@ class PollWallet implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $tries = 10;
+    private $from_id;
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct($from_id = NULL)
+    {
+        $this->from_id = $from_id;
+    }
 
     /**
      * Execute the job.
@@ -32,11 +43,32 @@ class PollWallet implements ShouldQueue
         
         $esi = new EsiConnection;
 
+        if ($this->from_id != NULL)
+        {
+            Log::info('PollWallet: Retrieving transactions earlier than ' . $this->from_id);
+        }
+        else
+        {
+            Log::info('PollWallet: Retrieving most recent transactions');
+        }
+
         // Request the transactions from the master wallet division.
-        $transactions = $esi->esi->invoke('get', '/corporations/{corporation_id}/wallets/{division}/journal/', [
-            'corporation_id' => $esi->corporation_id,
-            'division' => 1, // master wallet
-        ]);
+        if ($this->from_id)
+        {
+            $transactions = $esi->esi->setQueryString([
+                'from_id' => $this->from_id,
+            ])->invoke('get', '/corporations/{corporation_id}/wallets/{division}/journal/', [
+                'corporation_id' => $esi->corporation_id,
+                'division' => 1, // master wallet
+            ]);
+        }
+        else
+        {
+            $transactions = $esi->esi->invoke('get', '/corporations/{corporation_id}/wallets/{division}/journal/', [
+                'corporation_id' => $esi->corporation_id,
+                'division' => 1, // master wallet
+            ]);
+        }
 
         Log::info('PollWallet: retrieved ' . count($transactions) . ' transactions from the corporation wallet');
 
@@ -44,6 +76,8 @@ class PollWallet implements ShouldQueue
 
         foreach ($transactions as $transaction)
         {
+            $ref_id = $transaction->ref_id;
+            $date = date('Y-m-d', strtotime($transaction->date));
             if ($transaction->ref_type == 'player_donation')
             {
 
@@ -152,6 +186,18 @@ class PollWallet implements ShouldQueue
                     }
                 }
             }
+
+        }
+
+        // If the last transaction date is not earlier than a specified date, request the next page of wallet results.
+        if (isset($date) && $date > '2017-12-15')
+        {
+            Log::info('PollWallet: Date ' . $date . ' is greater than 2017-12-15, repolling for any earlier than ' . $ref_id);
+            PollWallet::dispatch($ref_id);
+        }
+        else
+        {
+            Log::info('PollWallet: No more wallet transactions to be found or date reached');
         }
 
     }
