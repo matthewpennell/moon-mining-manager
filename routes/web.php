@@ -43,7 +43,10 @@ Route::middleware(['admin'])->prefix('access')->group(function () {
 
 // Reports.
 Route::middleware(['admin'])->prefix('reports')->group(function () {
-    Route::get('/', 'ReportsController@main');
+    Route::get('/{year?}/{month?}', 'ReportsController@main')->where([
+        'year' => '[0-9]{4}',
+        'month' => '[0-9]{2}'
+    ]);
     Route::get('/fix', 'ReportsController@fix');
     Route::get('/regenerate', 'ReportsController@regenerate');
 });

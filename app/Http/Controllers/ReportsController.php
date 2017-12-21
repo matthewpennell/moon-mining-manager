@@ -15,16 +15,19 @@ class ReportsController extends Controller
     /**
      * Default report view. Show a table of dates with amount mined per day.
      */
-    public function main()
+    public function main($year = NULL, $month = NULL)
     {
 
-        // Grab all mining activity and payments since all time.
-        $mining_activity = MiningActivity::all();
-        $payment_activity = Payment::all();
+        if (!isset($year)) $year = date('Y');
+        if (!isset($month)) $month = date('m');
 
-        // Find the first and last dates of recorded mining activity.
-        $first_date = date('Y-m-d', strtotime(MiningActivity::orderBy('created_at', 'asc')->first()->created_at));
-        $last_date = date('Y-m-d', strtotime(MiningActivity::orderBy('created_at', 'desc')->first()->created_at));
+        // Grab all mining activity and payments in the specified month.
+        $mining_activity = MiningActivity::whereRaw('YEAR(created_at) = ' . $year . ' AND MONTH(created_at) = ' . $month)->get();
+        $payment_activity = Payment::whereRaw('YEAR(created_at) = ' . $year . ' AND MONTH(created_at) = ' . $month)->get();
+
+        // Set the first and last dates of the selected month.
+        $first_date = $year . '-' . $month . '-01';
+        $last_date = $year . '-' . $month . '-' . date('t', strtotime($first_date));
 
         // Make an array of the entire date range.
         $date = $first_date;
@@ -66,6 +69,8 @@ class ReportsController extends Controller
         }
 
         return view('reports.main', [
+            'year' => $year,
+            'month' => $month,
             'dates' => $dates,
             'mining' => $mining,
             'payments' => $payments,

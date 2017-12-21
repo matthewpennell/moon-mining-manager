@@ -116,3 +116,15 @@ a.card:hover {
         text-overflow: ellipsis;
     }
 }
+
+.report-navigation {
+    margin: 20px 0;
+    text-align: center;
+    a {
+        text-decoration: none;
+        color: #333;
+        &:hover {
+            color: $highlight;
+        }
+    }
+}
