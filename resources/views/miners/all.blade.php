@@ -13,7 +13,8 @@
                     <th>Corporation</th>
                     <th class="numeric">Amount owed</th>
                     <th class="numeric">Total payments</th>
-                    <th>Last payment</th>
+                    <th>Last invoice date</th>
+                    <th>Last payment date</th>
                 </thead>
                 <tbody>
                     @foreach ($miners as $miner)
@@ -22,6 +23,11 @@
                             <td>{{ $miner->corporation->name }}</td>
                             <td class="numeric">{{ number_format($miner->amount_owed, 0) == '-0' ? '0' : number_format($miner->amount_owed, 0) }}</td>
                             <td class="numeric">{{ number_format($miner->total_payments, 0) == '-0' ? '0' : number_format($miner->total_payments, 0) }}</td>
+                            <td>
+                                @if (isset($miner->latest_invoice))
+                                    {{ date('M j, Y', strtotime($miner->latest_invoice)) }}
+                                @endif
+                            </td>
                             <td>
                                 @if (isset($miner->latest_payment))
                                     {{ date('M j, Y', strtotime($miner->latest_payment)) }}

@@ -67,4 +67,13 @@ class Miner extends Model
         return (isset($latest_payment)) ? $latest_payment->updated_at : NULL;
     }
 
+    /**
+     * Return the date of the most recent invoice sent to this miner.
+     */
+    public function getLatestInvoiceAttribute()
+    {
+        $latest_invoice = DB::table('invoices')->where('miner_id', $this->eve_id)->select('updated_at')->orderBy('updated_at', 'desc')->first();
+        return (isset($latest_invoice)) ? $latest_invoice->updated_at : NULL;
+    }
+
 }

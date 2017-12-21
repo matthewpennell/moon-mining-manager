@@ -188,7 +188,7 @@ class PollWallet implements ShouldQueue
             }
 
         }
-/* FIX SCRIPT FOR UNPROCESSED WALLET TRANSACTIONS
+/* FIX SCRIPT FOR UNPROCESSED WALLET TRANSACTIONS, IF NEEDED UPDATE THE DATE TO THE LAST WORKING WALLET IMPORT.
         // If the last transaction date is not earlier than a specified date, request the next page of wallet results.
         if (isset($date) && $date > '2017-12-15')
         {
