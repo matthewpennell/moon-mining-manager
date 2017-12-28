@@ -282,23 +282,23 @@
             <div class="mining-activity">
                 <h2>Your mining activity log</h2>
                 <ul id="activity-log">
-                    @foreach ($activity_log as $date => $event)
+                    @foreach ($activity_log as $event)
                         <li>
-                            {{ date('Y-m-d', strtotime($date)) }} - 
-                            @if (isset($event['amount']))
-                                Invoice sent for {{ number_format($event['amount']) }} ISK
+                            {{ date('Y-m-d', strtotime($event->created_at)) }} - 
+                            @if (isset($event->amount))
+                                Invoice sent for {{ number_format($event->amount) }} ISK
                             @endif
-                            @if (isset($event['quantity']))
+                            @if (isset($event->quantity))
                                 @php
-                                    $refinery = App\Refinery::where('observer_id', $event['refinery_id'])->first();
+                                    $refinery = App\Refinery::where('observer_id', $event->refinery_id)->first();
                                 @endphp
-                                Mining recorded in {{ $refinery->system->solarSystemName }} ({{ number_format($event['quantity'], 0) }} units)
-                                @if (isset($event['tax_amount']))
-                                    ~ {{ number_format($event['tax_amount']) }} ISK
+                                Mining recorded in {{ $refinery->system->solarSystemName }} ({{ number_format($event->quantity, 0) }} units)
+                                @if (isset($event->tax_amount))
+                                    ~ {{ number_format($event->tax_amount) }} ISK
                                 @endif
                             @endif
-                            @if (isset($event['amount_received']))
-                                Payment received for {{ number_format($event['amount_received']) }} ISK
+                            @if (isset($event->amount_received))
+                                Payment received for {{ number_format($event->amount_received) }} ISK
                             @endif
                         </li>
                     @endforeach

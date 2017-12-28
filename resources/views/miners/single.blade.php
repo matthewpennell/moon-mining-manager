@@ -46,35 +46,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($activity_log as $date => $activity)
+                    @foreach ($activity_log as $activity)
                         <tr>
                             <td>
-                                @if (isset($activity['amount']))
+                                @if (isset($activity->amount))
                                     Invoice sent
                                 @endif
-                                @if (isset($activity['quantity']))
-                                    Mining
+                                @if (isset($activity->quantity))
+                                    Mining {{ $activity->type->typeName }} ({{ number_format($activity->quantity, 0) }} units)
                                 @endif
-                                @if (isset($activity['amount_received']))
+                                @if (isset($activity->amount_received))
                                     Payment received
                                 @endif
                             </td>
                             <td class="numeric">
-                                @if (isset($activity['amount']))
-                                    {{ number_format($activity['amount']) }} ISK
+                                @if (isset($activity->amount))
+                                    {{ number_format($activity->amount) }} ISK
                                 @endif
-                                @if (isset($activity['amount_received']))
-                                    {{ number_format($activity['amount_received']) }} ISK
+                                @if (isset($activity->amount_received))
+                                    {{ number_format($activity->amount_received) }} ISK
                                 @endif
-                                @if (isset($activity['quantity']))
-                                    @if (isset($activity['tax_amount']))
-                                        {{ number_format($activity['tax_amount']) }} ISK
+                                @if (isset($activity->quantity))
+                                    @if (isset($activity->tax_amount))
+                                        {{ number_format($activity->tax_amount) }} ISK
                                     @else
                                         -
                                     @endif
                                 @endif
                             </td>
-                            <td>{{ date('g:ia, jS F Y', strtotime($date)) }}</td>
+                            <td>{{ date('g:ia, jS F Y', strtotime($activity->created_at)) }}</td>
                         </tr>
                     @endforeach
                 </tbody>

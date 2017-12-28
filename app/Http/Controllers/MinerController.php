@@ -30,26 +30,49 @@ class MinerController extends Controller
     public function showMinerDetails($id = NULL)
     {
 
-        // If no current logged in user, show the login page.
+        // If no user id supplied, redirect to the miners list.
         if ($id == NULL)
         {
-            return redirect('/');
+            return redirect('/miners');
         }
 
-        // Build an aggregate activity log of all this miner's activities.
-        $invoices = Invoice::where('miner_id', $id)->get()->keyBy('created_at')->toArray();
-        $mining_activities = MiningActivity::where('miner_id', $id)->get()->keyBy('created_at')->toArray();
-        $payments = Payment::where('miner_id', $id)->get()->keyBy('created_at')->toArray();
-        $activity_log = array_merge($invoices, $mining_activities, $payments);
+        // Retrieve all history of the miner's mining, invoices and payments.
+        $mining_activities = MiningActivity::where('miner_id', $id)->get();
+        $invoices = Invoice::where('miner_id', $id)->get();
+        $payments = Payment::where('miner_id', $id)->get();
 
-        // Sort the log by reverse chronological order.
-        krsort($activity_log);
+        // Loop through each collection and add them to a master array.
+        $activity_log = [];
+        foreach ($mining_activities as $mining_activity)
+        {
+            $activity_log[] = $mining_activity;
+        }
+        foreach ($invoices as $invoice)
+        {
+            $activity_log[] = $invoice;
+        }
+        foreach ($payments as $payment)
+        {
+            $activity_log[] = $payment;
+        }
+
+        // Sort the log into reverse chronological order.
+        usort($activity_log, [$this, "sortByDate"]);
 
         return view('miners.single', [
             'miner' => Miner::where('eve_id', $id)->first(),
             'activity_log' => $activity_log,
         ]);
 
+    }
+
+    private function sortByDate($a, $b)
+    {
+        if ($a->created_at == $b->created_at)
+        {
+            return 0;
+        }
+        return ($a->created_at > $b->created_at) ? -1 : 1;
     }
 
 }
