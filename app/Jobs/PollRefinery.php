@@ -112,8 +112,8 @@ class PollRefinery implements ShouldQueue
                 'refinery_id' => $this->observer_id,
                 'type_id' => $log_entry->type_id,
                 'quantity' => $log_entry->quantity,
-                'created_at' => $log_entry->last_updated . ' 00:00:00',
-                'updated_at' => $log_entry->last_updated . ' 00:00:00',
+                'created_at' => $log_entry->last_updated . ' 23:59:59',
+                'updated_at' => $log_entry->last_updated . ' 23:59:59',
             ];
 
             // Store the miner.
