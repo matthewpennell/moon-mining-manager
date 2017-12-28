@@ -74,7 +74,12 @@
                                     @endif
                                 @endif
                             </td>
-                            <td>{{ date('g:ia, jS F Y', strtotime($activity->created_at)) }}</td>
+                            <td>
+                                @if (isset($activity->quantity))
+                                    {{ date('jS F Y', strtotime($activity->created_at)) }}</td>
+                                @else
+                                    {{ date('g:ia, jS F Y', strtotime($activity->created_at)) }}</td>
+                                @endif
                         </tr>
                     @endforeach
                 </tbody>
