@@ -49,8 +49,16 @@ class SendEvemail implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        SendEvemail::dispatch($this->mail)->delay(Carbon::now()->addMinutes(10));
-        Log::info('SendEvemail: re-queued job to send mail in 10 minutes');
+        // Check what type of exception was thrown. We want to ignore CSPA charge related errors, since they will never send successfully.
+        if (stristr($exception->getEsiResponse()->error, 'ContactCostNotApproved') === FALSE)
+        {
+            SendEvemail::dispatch($this->mail)->delay(Carbon::now()->addMinutes(15));
+            Log::info('SendEvemail: re-queued job to send mail in 15 minutes');
+        }
+        else
+        {
+            Log::info('SendEvemail: bounceback due to ContactCostNotApproved, dumping email job');
+        }
     }
 
 }
