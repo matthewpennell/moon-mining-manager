@@ -70,8 +70,12 @@ class GenerateRentalInvoice implements ShouldQueue
             $invoice_amount += $additional_rent_to_charge;
         }
 
+        // Round the amount so we don't have issues comparing payments without cents.
+        $invoice_amount = round($invoice_amount);
+
         // Update the amount this renter currently owes.
         $renter->amount_owed += $invoice_amount;
+        Log::info('GenerateRentalInvoice: updated stored amount owed by renter ' . $character->name . ' for refinery ' . $refinery->name . ' to ' . $renter->amount_owed);
         $renter->save();
 
         // Pick up the renter invoice template to apply text substitutions.
