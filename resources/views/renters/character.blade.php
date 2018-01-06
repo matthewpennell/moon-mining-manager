@@ -43,7 +43,7 @@
                         <tr>
                             <td>
                                 @if (isset($activity->amount))
-                                    {{ $activity->refinery->name }} invoice sent
+                                    <em>{{ $activity->refinery->name }}</em> invoice sent
                                 @endif
                                 @if (isset($activity->amount_received))
                                     Payment received
