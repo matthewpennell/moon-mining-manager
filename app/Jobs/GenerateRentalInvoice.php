@@ -119,7 +119,7 @@ class GenerateRentalInvoice implements ShouldQueue
         $invoice->amount = $invoice_amount;
         $invoice->save();
 
-        Log::info('GenerateInvoice: saved new invoice for renter ' . $renter->character_id . ' at refinery ' . $renter->refinery_id . ' for amount ' . $invoice_amount);
+        Log::info('GenerateRentalInvoice: saved new invoice for renter ' . $renter->character_id . ' at refinery ' . $renter->refinery_id . ' for amount ' . $invoice_amount);
 
     }
 
