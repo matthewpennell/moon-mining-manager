@@ -17,6 +17,7 @@
                         <th>Rental contact</th>
                         <th>Notes</th>
                         <th class="numeric">Monthly fee</th>
+                        <th class="numeric">Currently owed</th>
                         <th class="numeric">Start date</th>
                         <th>Edit</th>
                     </tr>
@@ -34,6 +35,7 @@
                             <td><a href="/renters/character/{{ $renter->character_id }}">{{ $renter->character->name }}</a></td>
                             <td>{{ $renter->notes }}</td>
                             <td class="numeric">{{ number_format($renter->monthly_rental_fee, 0) }} ISK</td>
+                            <td class="numeric">{{ number_format($renter->amount_owed, 0) }} ISK</td>
                             <td class="numeric">{{ date('jS F Y', strtotime($renter->start_date)) }}</td>
                             <td><a href="/renters/{{ $renter->id }}">Edit details</td>
                         </tr>
