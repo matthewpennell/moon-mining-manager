@@ -11,6 +11,7 @@ use App\Jobs\SendEvemail;
 use App\Template;
 use App\Refinery;
 use App\Renter;
+use App\RentalInvoice;
 use Carbon\Carbon;
 use App\Classes\EsiConnection;
 use Illuminate\Support\Facades\Log;
@@ -110,6 +111,14 @@ class GenerateRentalInvoice implements ShouldQueue
         Log::info('GenerateRentalInvoice: dispatched job to send mail in ' . $this->mail_delay . ' seconds', [
             'mail' => $mail,
         ]);
+
+        // Write an invoice entry.
+        $invoice = new RentalInvoice;
+        $invoice->renter_id = $renter->character_id;
+        $invoice->amount = $invoice_amount;
+        $invoice->save();
+
+        Log::info('GenerateInvoice: saved new invoice for renter ' . $renter->character_id . ' for amount ' . $invoice_amount);
 
     }
 

@@ -11,6 +11,7 @@ use App\Classes\EsiConnection;
 use App\Miner;
 use App\Renter;
 use App\Payment;
+use App\RentalPayment;
 use App\Template;
 use App\Jobs\SendEvemail;
 use Carbon\Carbon;
@@ -91,10 +92,18 @@ class PollWallet implements ShouldQueue
                 // First check if the payment comes from a recognised renter and is exactly the right amount.
                 if (isset($renter))
                 {
+
+                    // Record this transaction in the rental_payments table.
+                    $payment = new RentalPayment;
+                    $payment->renter_id = $transaction->first_party_id;
+                    $payment->ref_id = $transaction->ref_id;
+                    $payment->amount_received = $transaction->amount;
+                    $payment->save();
+
                     // Clear their outstanding debt.
                     $renter->amount_owed = 0;
                     $renter->save();
-                    Log::info('PollWallet: found a player donation from a recognised renter ' . $renter->character_id);
+                    Log::info('PollWallet: saved a new payment from renter ' . $miner->eve_id . ' for ' . $transaction->amount);
 
                     // Retrieve the name of the character.
                     $character = $esi->esi->invoke('get', '/characters/{character_id}/', [

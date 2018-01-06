@@ -26,12 +26,12 @@
                         <tr>
                             <td>
                                 @if (isset($renter->refinery_id))
-                                    {{ $renter->refinery->name }} ({{ $renter->refinery->system->solarSystemName }})
+                                    <a href="/renters/refinery/{{ $renter->refinery_id }}">{{ $renter->refinery->name }} ({{ $renter->refinery->system->solarSystemName }})</a>
                                 @else
                                     N/A
                                 @endif
                             </td>
-                            <td>{{ $renter->character->name }}</td>
+                            <td><a href="/renters/character/{{ $renter->character_id }}">{{ $renter->character->name }}</a></td>
                             <td>{{ $renter->notes }}</td>
                             <td class="numeric">{{ number_format($renter->monthly_rental_fee, 0) }} ISK</td>
                             <td class="numeric">{{ date('jS F Y', strtotime($renter->start_date)) }}</td>

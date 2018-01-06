@@ -64,6 +64,8 @@ Route::middleware(['admin'])->prefix('renters')->group(function () {
     Route::post('/new', 'RenterController@saveNewRenter');
     Route::get('/{id}', 'RenterController@editRenter');
     Route::post('/{id}', 'RenterController@updateRenter');
+    Route::get('/refinery/{id}', 'RenterController@refineryDetails');
+    Route::get('/character/{id}', 'RenterController@renterDetails');
 });
 
 // Payment management.

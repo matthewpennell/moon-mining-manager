@@ -1,31 +1,34 @@
 @extends('layouts.master')
 
-@section('title', 'Miner Details')
+@section('title', 'Refinery Details')
 
 @section('content')
 
     <div class="row">
 
         <div class="col-4">
-            <div class="card-heading">Miner</div>
+            <div class="card-heading">Refinery</div>
             @include('common.card', [
-                'avatar' => $miner->avatar,
-                'name' => $miner->name, 
-                'sub' => $miner->corporation->name
+                'avatar' => 'https://imageserver.eveonline.com/Render/35835_128.png',
+                'name' => $renter->refinery->name, 
+                'sub' => $renter->refinery->system->solarSystemName
             ])
         </div>
 
         <div class="col-4">
-            <div class="card-heading">Total tax paid to date</div>
-            <div class="card highlight">
-                <span class="num">{{ number_format($miner->total_payments) }}</span> ISK
-            </div>
+            <div class="card-heading">Rented by</div>
+            @include('common.card', [
+                'link' => '/renters/character/' . $renter->character_id,
+                'avatar' => $renter->character->avatar->px128x128,
+                'name' => $renter->character->name, 
+                'sub' => $renter->character->corporation->name
+            ])
         </div>
 
         <div class="col-4">
-            <div class="card-heading">Current amount owed</div>
-            <div class="card highlight negative">
-                <span class="num">{{ number_format($miner->amount_owed) }}</span> ISK
+            <div class="card-heading">Monthly rent</div>
+            <div class="card highlight">
+                <span class="num">{{ number_format($renter->monthly_rental_fee) }}</span> ISK
             </div>
         </div>
 
@@ -52,9 +55,6 @@
                                 @if (isset($activity->amount))
                                     Invoice sent
                                 @endif
-                                @if (isset($activity->quantity))
-                                    Mining {{ $activity->type->typeName }} ({{ number_format($activity->quantity, 0) }} units)
-                                @endif
                                 @if (isset($activity->amount_received))
                                     Payment received
                                 @endif
@@ -66,20 +66,9 @@
                                 @if (isset($activity->amount_received))
                                     {{ number_format($activity->amount_received) }} ISK
                                 @endif
-                                @if (isset($activity->quantity))
-                                    @if (isset($activity->tax_amount))
-                                        {{ number_format($activity->tax_amount) }} ISK
-                                    @else
-                                        -
-                                    @endif
-                                @endif
                             </td>
                             <td>
-                                @if (isset($activity->quantity))
-                                    {{ date('jS F Y', strtotime($activity->created_at)) }}
-                                @else
-                                    {{ date('g:ia, jS F Y', strtotime($activity->created_at)) }}
-                                @endif
+                                {{ date('g:ia, jS F Y', strtotime($activity->created_at)) }}
                             </td>
                         </tr>
                     @endforeach
