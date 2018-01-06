@@ -89,13 +89,14 @@ class PollWallet implements ShouldQueue
                 ])->first();
                 $miner = Miner::where('eve_id', $transaction->first_party_id)->first();
                 
-                // First check if the payment comes from a recognised renter and is exactly the right amount.
+                // First check if the payment comes from a recognised renter and is exactly the right amount for an outstanding refinery balance.
                 if (isset($renter))
                 {
 
                     // Record this transaction in the rental_payments table.
                     $payment = new RentalPayment;
                     $payment->renter_id = $transaction->first_party_id;
+                    $payment->refinery_id = $renter->refinery_id;
                     $payment->ref_id = $transaction->ref_id;
                     $payment->amount_received = $transaction->amount;
                     $payment->save();
@@ -103,7 +104,7 @@ class PollWallet implements ShouldQueue
                     // Clear their outstanding debt.
                     $renter->amount_owed = 0;
                     $renter->save();
-                    Log::info('PollWallet: saved a new payment from renter ' . $miner->eve_id . ' for ' . $transaction->amount);
+                    Log::info('PollWallet: saved a new payment from renter ' . $renter->character_id . ' at refinery ' . $renter->refinery_id . ' for ' . $transaction->amount);
 
                     // Retrieve the name of the character.
                     $character = $esi->esi->invoke('get', '/characters/{character_id}/', [
