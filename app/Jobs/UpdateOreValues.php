@@ -36,7 +36,7 @@ class UpdateOreValues implements ShouldQueue
             
             foreach ($materials as $material)
             {
-                $total_unit_cost += $material_values[$material->materialTypeID]->average_price * ($material->quantity * 0.9);
+                $total_unit_cost += $material_values[$material->materialTypeID]->average_price * ($material->quantity * 0.86);
             }
             $rate->value = $total_unit_cost / 100;
             $rate->save();
