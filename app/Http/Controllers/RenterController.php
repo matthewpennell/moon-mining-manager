@@ -161,7 +161,7 @@ class RenterController extends Controller
         $corporation = $esi->esi->invoke('get', '/corporations/{corporation_id}/', [
             'corporation_id' => $character->corporation_id,
         ]);
-        $character->corporation = $corporation->corporation_name;
+        $character->corporation = $corporation->name;
         $renter->character = $character;
 
         return view('renters.edit', [
