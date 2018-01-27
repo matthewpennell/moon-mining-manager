@@ -70,9 +70,9 @@ class GenerateInvoice implements ShouldQueue
             'approved_cost' => 5000,
         );
 
-        // Queue sending the evemail, spaced at 20-second intervals to avoid triggering the mailspam limiter (4/min).
-        SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($this->mail_delay));
-        Log::info('GenerateInvoice: dispatched job to send mail in ' . $this->mail_delay . ' seconds', [
+        // Queue sending the evemail, spaced at 1-minute intervals to avoid triggering the mailspam limiter (4/min) or database lockups.
+        SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($this->mail_delay * 60));
+        Log::info('GenerateInvoice: dispatched job to send mail in ' . $this->mail_delay . ' minutes', [
             'mail' => $mail,
         ]);
 
