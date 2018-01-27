@@ -228,6 +228,7 @@ class RenterController extends Controller
         $renter->notes = $request->notes;
         $renter->monthly_rental_fee = $request->monthly_rental_fee;
         $renter->start_date = $request->start_date;
+        $renter->end_date = $request->end_date;
         $renter->save();
 
         return redirect('/renters');
