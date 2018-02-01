@@ -42,7 +42,7 @@ class SendEvemail implements ShouldQueue
         $esi->esi->invoke('post', '/characters/{character_id}/mail/', [
             'character_id' => $esi->character_id,
         ]);
-        Log::info('SendEvemail: sent evemail');
+        Log::info('SendEvemail: sent evemail to character ' . $this->mail['recipients'][0]['recipient_id']);
     }
 
     /**

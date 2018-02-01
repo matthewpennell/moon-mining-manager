@@ -106,9 +106,9 @@ class GenerateRentalInvoice implements ShouldQueue
             'approved_cost' => 5000,
         );
 
-        // Queue sending the evemail, spaced at 20-second intervals to avoid triggering the mailspam limiter (4/min).
-        SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($this->mail_delay));
-        Log::info('GenerateRentalInvoice: dispatched job to send mail in ' . $this->mail_delay . ' seconds', [
+        // Queue sending the evemail, spaced at 1 minute intervals to avoid triggering the mailspam limiter (4/min).
+        SendEvemail::dispatch($mail)->delay(Carbon::now()->addMinutes($this->mail_delay));
+        Log::info('GenerateRentalInvoice: dispatched job to send mail in ' . $this->mail_delay . ' minutes', [
             'mail' => $mail,
         ]);
 
