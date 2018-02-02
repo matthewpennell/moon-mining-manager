@@ -22,6 +22,13 @@
             </div>
         </div>
 
+        <div class="col-4">
+            <div class="card-heading">Total rental currently due</div>
+            <div class="card highlight">
+                <span class="num">{{ number_format($total_rent_due) }}</span> ISK
+            </div>
+        </div>
+
     </div>
 
     <div class="row">

@@ -133,6 +133,7 @@ class RenterController extends Controller
             'renter' => $renter,
             'activity_log' => $activity_log,
             'total_rent_paid' => DB::table('rental_payments')->select(DB::raw('SUM(amount_received) AS total'))->where('renter_id', $id)->first()->total,
+            'total_rent_due' => DB::table('renters')->select(DB::raw('SUM(amount_owed) AS total'))->where('character_id', $id)->first()->total,
             'rentals' => Renter::where('character_id', $id)->whereNotNull('refinery_id')->get(),
         ]);
 
