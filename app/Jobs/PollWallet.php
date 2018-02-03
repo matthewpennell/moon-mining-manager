@@ -73,7 +73,7 @@ class PollWallet implements ShouldQueue
 
         Log::info('PollWallet: retrieved ' . count($transactions) . ' transactions from the corporation wallet');
 
-        $delay_counter = 0;
+        $delay_counter = 1;
 
         foreach ($transactions as $transaction)
         {
@@ -135,8 +135,8 @@ class PollWallet implements ShouldQueue
                         'approved_cost' => 5000,
                     );
         
-                    // Queue sending the evemail, spaced at 20-second intervals to avoid triggering the mailspam limiter (4/min).
-                    SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($delay_counter * 20));
+                    // Queue sending the evemail, spaced at 1-minute intervals to avoid triggering the mailspam limiter (4/min).
+                    SendEvemail::dispatch($mail)->delay(Carbon::now()->addMinutes($delay_counter));
                     $delay_counter++;
                     Log::info('PollWallet: queued job to send rental receipt evemail');
                 }
@@ -187,8 +187,8 @@ class PollWallet implements ShouldQueue
                             'subject' => $template->subject,
                         );
             
-                        // Queue sending the evemail, spaced at 20-second intervals to avoid triggering the mailspam limiter (4/min).
-                        SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($delay_counter * 20));
+                        // Queue sending the evemail, spaced at 1 minute intervals to avoid triggering the mailspam limiter (4/min).
+                        SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($delay_counter));
                         $delay_counter++;
 
                         Log::info('PollWallet: queued job to send tax receipt evemail');
