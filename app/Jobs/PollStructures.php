@@ -92,6 +92,7 @@ class PollStructures implements ShouldQueue
             35835, // Athanor
             35836, // Tatara
         );
+        $delay_counter = 1;
         foreach ($structures as $structure)
         {
             if (in_array($structure->type_id, $refineries))
@@ -107,7 +108,8 @@ class PollStructures implements ShouldQueue
                     Log::info('PollStructures: created new refinery record for ' . $structure->structure_id);
                 }
                 // Create a new job to fetch or update the parts we don't get from this response.
-                PollStructureData::dispatch($structure->structure_id);
+                PollStructureData::dispatch($structure->structure_id)->delay(Carbon::now()->addMinutes($delay_counter));
+                $delay_counter++;
             }
         }
 
