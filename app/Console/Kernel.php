@@ -15,6 +15,7 @@ use App\Jobs\ArchiveReprocessedMaterialsHistory;
 use App\Jobs\PollExtractions;
 use App\Jobs\ProcessMiningActivity;
 use App\Jobs\GenerateRentalInvoices;
+use App\Jobs\CorporationChecks;
 
 class Kernel extends ConsoleKernel
 {
@@ -68,6 +69,9 @@ class Kernel extends ConsoleKernel
 
         // Send monthly rental invoices.
         $schedule->job(new GenerateRentalInvoices)->monthlyOn(1, '09:00');
+
+        // Monthly check of miner corporation membership.
+        $schedule->job(new CorporationChecks)->monthlyOn(15, '23:00');
 
     }
 
