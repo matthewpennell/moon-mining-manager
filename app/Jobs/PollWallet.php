@@ -188,10 +188,9 @@ class PollWallet implements ShouldQueue
                         );
             
                         // Queue sending the evemail, spaced at 1 minute intervals to avoid triggering the mailspam limiter (4/min).
-                        SendEvemail::dispatch($mail)->delay(Carbon::now()->addSeconds($delay_counter));
+                        SendEvemail::dispatch($mail)->delay(Carbon::now()->addMinutes($delay_counter));
+                        Log::info('PollWallet: queued job to send tax receipt evemail in ' . $delay_counter . ' minutes');
                         $delay_counter++;
-
-                        Log::info('PollWallet: queued job to send tax receipt evemail');
                 
                     }
                 }
