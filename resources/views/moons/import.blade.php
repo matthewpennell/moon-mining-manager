@@ -8,7 +8,7 @@
 
         <div class="col-12">
             <div class="card-heading">Existing Moon Data (<a href="/moons/calculate">Calculate monthly rents</a>)</div>
-            <table>
+            <table id="moons">
                 <thead>
                     <tr>
                         <th>Region</th>
@@ -59,5 +59,13 @@
         </div>
 
     </div>
+
+    <script>
+    
+        window.addEventListener('load', function () {
+            $('#moons').tablesorter();
+        });
+    
+    </script>
 
 @endsection
