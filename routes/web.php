@@ -72,6 +72,7 @@ Route::middleware(['admin'])->prefix('renters')->group(function () {
 Route::middleware(['admin'])->prefix('moons')->group(function () {
     Route::get('/', 'MoonImportController@index');
     Route::post('/import', 'MoonImportController@import');
+    Route::get('/calculate', 'MoonImportController@calculate');
 });
 
 // Payment management.

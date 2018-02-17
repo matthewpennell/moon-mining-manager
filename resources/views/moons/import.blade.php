@@ -7,7 +7,7 @@
     <div class="row">
 
         <div class="col-12">
-            <div class="card-heading">Existing Moon Data</div>
+            <div class="card-heading">Existing Moon Data (<a href="/moons/calculate">Calculate monthly rents</a>)</div>
             <table>
                 <thead>
                     <tr>
@@ -26,11 +26,11 @@
                             <td>Planet {{ $moon->planet }}, Moon {{ $moon->moon }}</td>
                             <td>
                                 {{ $moon->mineral_1->typeName }} ({{ $moon->mineral_1_percent }}%)
-                                {{ $moon->mineral_2->typeName }} ({{ $moon->mineral_2_percent }}%)
+                                &#0183; {{ $moon->mineral_2->typeName }} ({{ $moon->mineral_2_percent }}%)
                                 @if ($moon->mineral_3_type_id)
-                                    {{ $moon->mineral_3->typeName }} ({{ $moon->mineral_3_percent }}%)
+                                &#0183; {{ $moon->mineral_3->typeName }} ({{ $moon->mineral_3_percent }}%)
                                     @if ($moon->mineral_4_type_id)
-                                        {{ $moon->mineral_4->typeName }} ({{ $moon->mineral_4_percent }}%)
+                                        &#0183; {{ $moon->mineral_4->typeName }} ({{ $moon->mineral_4_percent }}%)
                                     @endif
                                 @endif
                             </td>
