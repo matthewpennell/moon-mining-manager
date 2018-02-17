@@ -84,7 +84,6 @@ class MoonImportController extends Controller
         $moons = Moon::all();
         foreach ($moons as $moon)
         {
-echo $moon->region->regionName . ', ' . $moon->system->solarSystemName . ' - Planet ' . $moon->planet . ' Moon ' . $moon->moon . ':<br>';
             // Set the monthly rental value to zero.
             $monthly_rental_fee = 0;
 
@@ -102,9 +101,8 @@ echo $moon->region->regionName . ', ' . $moon->system->solarSystemName . ' - Pla
             // Save the updated rental fee.
             $moon->monthly_rental_fee = $monthly_rental_fee;
             $moon->save();
-echo 'Saved monthly rental fee of ' . number_format($monthly_rental_fee, 0) . ' ISK<br><br>';
         }
-die();
+
         // Redirect back to the moon list.
         return redirect('/moons');
 
@@ -130,10 +128,12 @@ die();
     
             // Calculate the tax rate to apply (premium applied in the Impass pocket).
             $tax_rate = (SolarSystem::find($solar_system_id)->constellationID == 20000383) ? 10 : 7;
+
+            // For non-moon ores, apply a 50% discount.
+            $discount = (in_array($type->groupID, [1884, 1920, 1921, 1922, 1923])) ? 1 : 0.5;
     
             // Calculate the tax value to be charged for the volume of this ore that can be mined.
-            echo 'For ' . $type->typeName . ' found a value of ' . $ore_value . ' and a volume of ' . number_format($ore_volume, 0) . ' (' . $percent . '% of total). Tax rate is ' . $tax_rate . '%, so taxable value is ' . number_format($ore_value * $units * $tax_rate / 100, 0) . ' ISK.<br>';
-            return $ore_value * $units * $tax_rate / 100;
+            return $ore_value * $units * $tax_rate / 100 * $discount;
         }
         else
         {
