@@ -81,8 +81,9 @@ class SendEvemail implements ShouldQueue
         elseif (stristr($exception->getEsiResponse()->error, 'MailStopSpamming'))
         {
             // If we triggered the anti-spam rate limiter, we want to try again in a few hours.
-            SendEvemail::dispatch($this->mail)->delay(Carbon::now()->addHours(3));
-            Log::info('SendEvemail: bounceback due to MailStopSpamming, re-queued job to send mail in 3 hours');
+            $delay = rand(120, 180);
+            SendEvemail::dispatch($this->mail)->delay(Carbon::now()->addMinutes($delay));
+            Log::info('SendEvemail: bounceback due to MailStopSpamming, re-queued job to send mail in 2-3 hours');
         }
         else
         {
