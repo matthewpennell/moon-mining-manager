@@ -34,7 +34,7 @@
                                     @endif
                                 @endif
                             </td>
-                            <td class="numeric">{{ number_format($moon->monthly_rental_fee, 0) }} ISK</td>
+                            <td class="numeric">{{ number_format($moon->monthly_rental_fee, 0) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
