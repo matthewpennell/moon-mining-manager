@@ -68,6 +68,12 @@ Route::middleware(['admin'])->prefix('renters')->group(function () {
     Route::get('/character/{id}', 'RenterController@renterDetails');
 });
 
+// Moon composition importer.
+Route::middleware(['admin'])->prefix('moons')->group(function () {
+    Route::get('/', 'MoonImportController@index');
+    Route::post('/import', 'MoonImportController@import');
+});
+
 // Payment management.
 Route::middleware(['admin'])->prefix('payment')->group(function () {
     Route::get('/new', 'PaymentController@addNewPayment');

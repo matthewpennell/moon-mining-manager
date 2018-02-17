@@ -28,4 +28,12 @@ class SolarSystem extends Model
         return $this->belongsTo('App\Region', 'regionID');
     }
 
+    /**
+     * Get the moons that are in this solar system.
+     */
+    public function moons()
+    {
+        return $this->hasMany('App\Moon');
+    }
+
 }

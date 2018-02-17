@@ -15,4 +15,5 @@ class Renter extends Model
     {
         return $this->hasOne('App\Refinery', 'observer_id', 'refinery_id');
     }
+
 }

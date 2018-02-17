@@ -17,4 +17,9 @@ class Region extends Model
         return $this->hasMany('App\SolarSystem', 'regionID');
     }
 
+    public function moons()
+    {
+        return $this->hasMany('App\Moon');
+    }
+
 }
