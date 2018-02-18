@@ -60,6 +60,15 @@
                         <span>(if not yet dropped, enter details below)</span>
                     </div>
                     <div>
+                        <label for="moon_id">Location</label>
+                        <select id="moon_id" name="moon_id">
+                            <option value="">Select moon</option>
+                            @foreach ($moons as $moon)
+                                <option value="{{ $moon->id }}">{{ $moon->system->solarSystemName }} - P {{ $moon->planet }} M {{ $moon->moon }} ({{ $moon->region->regionName }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
                         <label for="monthly_rental_fee">Monthly rental fee</label>
                         <input type="text" id="monthly_rental_fee" name="monthly_rental_fee">
                     </div>

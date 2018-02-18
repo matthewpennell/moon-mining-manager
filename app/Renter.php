@@ -16,4 +16,14 @@ class Renter extends Model
         return $this->hasOne('App\Refinery', 'observer_id', 'refinery_id');
     }
 
+    /**
+     * Get the moon where this refinery is located.
+     */
+    public function moon()
+    {
+        return $this->hasOne('App\Moon', 'id', 'moon_id');
+    }
+
+
+
 }

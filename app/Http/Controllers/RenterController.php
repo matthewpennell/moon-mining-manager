@@ -8,6 +8,7 @@ use App\Renter;
 use App\Refinery;
 use App\RentalInvoice;
 use App\RentalPayment;
+use App\Moon;
 use App\Classes\EsiConnection;
 
 class RenterController extends Controller
@@ -165,9 +166,13 @@ class RenterController extends Controller
         $character->corporation = $corporation->name;
         $renter->character = $character;
 
+        // Pull all the moon data.
+        $moons = Moon::orderBy('region_id')->orderBy('solar_system_id')->orderBy('planet')->orderBy('moon')->get();
+
         return view('renters.edit', [
             'renter' => $renter,
             'refineries' => Refinery::all(),
+            'moons' => $moons,
         ]);
     }
 
@@ -176,6 +181,9 @@ class RenterController extends Controller
      */
     public function addNewRenter()
     {
+        // Pull all the moon data.
+        $moons = Moon::orderBy('region_id')->orderBy('solar_system_id')->orderBy('planet')->orderBy('moon')->get();
+
         return view('renters.new', [
             'refineries' => Refinery::all(),
         ]);
@@ -190,6 +198,7 @@ class RenterController extends Controller
             'type' => 'required',
             'character_id' => 'required|numeric',
             'refinery_id' => 'nullable|numeric',
+            'moon_id' => 'nullable|numeric',
             'monthly_rental_fee' => 'required|numeric',
             'start_date' => 'required|date',
         ]);
@@ -199,6 +208,7 @@ class RenterController extends Controller
         $renter->type = $request->type;
         $renter->character_id = $request->character_id;
         $renter->refinery_id = $request->refinery_id;
+        $renter->moon_id = $request->moon_id;
         $renter->notes = $request->notes;
         $renter->monthly_rental_fee = $request->monthly_rental_fee;
         $renter->start_date = $request->start_date;
@@ -216,6 +226,7 @@ class RenterController extends Controller
             'type' => 'required',
             'character_id' => 'required|numeric',
             'refinery_id' => 'nullable|numeric',
+            'moon_id' => 'nullable|numeric',
             'monthly_rental_fee' => 'required|numeric',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
@@ -226,6 +237,7 @@ class RenterController extends Controller
         $renter->type = $request->type;
         $renter->character_id = $request->character_id;
         $renter->refinery_id = $request->refinery_id;
+        $renter->moon_id = $request->moon_id;
         $renter->notes = $request->notes;
         $renter->monthly_rental_fee = $request->monthly_rental_fee;
         $renter->start_date = $request->start_date;

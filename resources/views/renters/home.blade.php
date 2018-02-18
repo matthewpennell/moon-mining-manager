@@ -13,7 +13,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Moon</th>
+                        <th>Location</th>
+                        <th>Refinery name</th>
                         <th>Rental contact</th>
                         <th>Notes</th>
                         <th class="numeric">Monthly fee</th>
@@ -26,6 +27,13 @@
                 <tbody>
                     @foreach ($renters as $renter)
                         <tr>
+                            <td>
+                                @if (isset($renter->moon_id))
+                                    {{ $renter->moon->system->solarSystemName }} - Planet {{ $renter->moon->planet }}, Moon {{ $renter->moon->moon }}
+                                @else
+                                    N/A
+                                @endif
+                            </td>
                             <td>
                                 @if (isset($renter->refinery_id))
                                     <a href="/renters/refinery/{{ $renter->refinery_id }}">{{ $renter->refinery->name }} ({{ $renter->refinery->system->solarSystemName }})</a>
