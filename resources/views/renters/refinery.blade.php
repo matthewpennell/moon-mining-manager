@@ -11,7 +11,7 @@
             @include('common.card', [
                 'avatar' => 'https://imageserver.eveonline.com/Render/35835_128.png',
                 'name' => $renter->refinery->name, 
-                'sub' => $renter->refinery->system->solarSystemName
+                'sub' => 'P' . $renter->moon->planet . '-M' . $renter->moon->moon . ', ' . $renter->refinery->system->solarSystemName . ', ' . $renter->moon->region->regionName
             ])
         </div>
 

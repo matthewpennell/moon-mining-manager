@@ -84,7 +84,13 @@
                 <tbody>
                     @foreach ($rentals as $rental)
                         <tr>
-                            <td><a href="/renters/refinery/{{$rental->refinery_id }}">{{ $rental->refinery->name }}</a></td>
+                            <td>
+                                <a href="/renters/refinery/{{$rental->refinery_id }}">{{ $rental->refinery->name }}</a>
+                                @if (isset($rental->moon_id))
+                                    <br>
+                                    P{{ $rental->moon->planet }}-M{{ $rental->moon->moon }}, {{ $rental->moon->system->solarSystemName }}, {{ $rental->moon->region->regionName }}
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
