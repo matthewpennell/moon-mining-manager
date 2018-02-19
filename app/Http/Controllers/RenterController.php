@@ -186,6 +186,7 @@ class RenterController extends Controller
 
         return view('renters.new', [
             'refineries' => Refinery::all(),
+            'moons' => $moons,
         ]);
     }
 
