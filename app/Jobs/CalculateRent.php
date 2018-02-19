@@ -1,90 +1,44 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Jobs;
 
-use Illuminate\Http\Request;
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\DB;
 use App\Moon;
-use App\Region;
-use App\SolarSystem;
-use App\Miner;
-use App\Type;
 use App\TaxRate;
+use App\Type;
+use App\SolarSystem;
 use App\Jobs\UpdateReprocessedMaterials;
 use App\Jobs\UpdateMaterialValues;
 use Illuminate\Support\Facades\Log;
 
-class MoonImportController extends Controller
+class CalculateRent implements ShouldQueue
 {
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 10;
     protected $total_ore_volume = 14000000; // 14m m3 represents a thirty day mining cycle, approximately
 
-    public function index()
-    {
-        $moons = Moon::orderBy('region_id')->orderBy('solar_system_id')->orderBy('planet')->orderBy('moon')->get();
-        return view('moons.import', [
-            'moons' => $moons,
-        ]);
-    }
-
-    public function import(Request $request)
-    {
-
-        // Convert the dump of spreadsheet data into a structured array.
-        $data = [];
-        $lines = explode("\n", $request->input('data'));
-        foreach ($lines as $line)
-        {
-            $data[] = explode("\t", $line);
-        }
-
-        // Loop through each row and process it into the database.
-        foreach ($data as $row)
-        {
-            $moon = new Moon;
-            $moon->region_id = Region::where('regionName', $row[0])->first()->regionID;
-            $moon->solar_system_id = SolarSystem::where('solarSystemName', $row[1])->first()->solarSystemID;
-            $moon->planet = $row[2];
-            $moon->moon = $row[3];
-            /*
-            if ($row[4])
-            {
-                $moon->renter_id = Miner::where('name', $row[4])->first()->eve_id;
-            }
-            */
-            $moon->mineral_1_type_id = Type::where('typeName', $row[5])->first()->typeID;
-            $moon->mineral_1_percent = str_replace(',', '.', $row[6]);
-            $moon->mineral_2_type_id = Type::where('typeName', $row[7])->first()->typeID;
-            $moon->mineral_2_percent = str_replace(',', '.', $row[8]);
-            if ($row[9])
-            {
-                $moon->mineral_3_type_id = Type::where('typeName', $row[9])->first()->typeID;
-                $moon->mineral_3_percent = str_replace(',', '.', $row[10]);
-            }
-            if ($row[11])
-            {
-                $moon->mineral_4_type_id = Type::where('typeName', $row[11])->first()->typeID;
-                $moon->mineral_4_percent = str_replace(',', '.', $row[12]);
-            }
-            $moon->monthly_rental_fee = 0;
-            $moon->previous_monthly_rental_fee = 0;
-            $moon->save();
-        }
-
-        // Redirect back to the list.
-        return redirect('/moons');
-
-    }
-
     /**
-     * Calculate the monthly rental fee for every moon, based on its mineral composition.
+     * Execute the job.
+     *
+     * @return void
      */
-    public function calculate()
+    public function handle()
     {
 
         // Grab all of the moon records and loop through them.
         $moons = Moon::all();
         foreach ($moons as $moon)
         {
+
+            // Save the current month's rental fee.
+            $moon->previous_monthly_rental_fee = $moon->monthly_rental_fee;
+
             // Set the monthly rental value to zero.
             $monthly_rental_fee = 0;
 
@@ -102,11 +56,15 @@ class MoonImportController extends Controller
             // Save the updated rental fee.
             $moon->monthly_rental_fee = $monthly_rental_fee;
             $moon->save();
+            Log::info('CalculateRent: updated stored monthly rental fee for moon ' . $moon->id . ' to ' . $monthly_rental_fee);
+
+            // Update the monthly rent figure if this moon is currently rented.
+            DB::table('renters')->where('moon_id', $moon->id)->update([
+                'monthly_rental_fee' => $monthly_rental_fee,
+            ]);
+
         }
-
-        // Redirect back to the moon list.
-        return redirect('/moons');
-
+        
     }
 
     private function calculateOreTaxValue($type_id, $percent, $solar_system_id)
@@ -146,7 +104,7 @@ class MoonImportController extends Controller
             $tax_rate->tax_rate = 7;
             $tax_rate->updated_by = 0;
             $tax_rate->save();
-            Log::info('MoonImportController: unknown ore ' . $type_id . ' found, new tax rate record created');
+            Log::info('CalculateRent: unknown ore ' . $type_id . ' found, new tax rate record created');
             // Queue the jobs to update the ore values rather than waiting for the next scheduled job.
             UpdateReprocessedMaterials::dispatch();
             UpdateMaterialValues::dispatch();

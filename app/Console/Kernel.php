@@ -16,6 +16,7 @@ use App\Jobs\PollExtractions;
 use App\Jobs\ProcessMiningActivity;
 use App\Jobs\GenerateRentalInvoices;
 use App\Jobs\CorporationChecks;
+use App\Jobs\CalculateRent;
 
 class Kernel extends ConsoleKernel
 {
@@ -72,6 +73,9 @@ class Kernel extends ConsoleKernel
 
         // Monthly check of miner corporation membership.
         $schedule->job(new CorporationChecks)->monthlyOn(15, '23:00');
+
+        // Monthly recalculation of moon rental fees.
+        $schedule->job(new CalculateRent)->monthlyOn(25, '14:00');
 
     }
 
