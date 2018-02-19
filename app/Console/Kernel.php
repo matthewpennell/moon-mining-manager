@@ -17,6 +17,7 @@ use App\Jobs\ProcessMiningActivity;
 use App\Jobs\GenerateRentalInvoices;
 use App\Jobs\CorporationChecks;
 use App\Jobs\CalculateRent;
+use App\Jobs\GenerateRentNotifications;
 
 class Kernel extends ConsoleKernel
 {
@@ -76,6 +77,9 @@ class Kernel extends ConsoleKernel
 
         // Monthly recalculation of moon rental fees.
         $schedule->job(new CalculateRent)->monthlyOn(25, '14:00');
+
+        // Monthly notification of updated moon rental fees.
+        $schedule->job(new GenerateRentNotifications)->monthlyOn(25, '22:00');
 
     }
 
