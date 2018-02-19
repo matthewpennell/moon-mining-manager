@@ -16,6 +16,7 @@
                         <th>Planet/Moon</th>
                         <th>Mineral composition</th>
                         <th class="numeric">Monthly fee</th>
+                        <th class="numeric">Last month</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +36,7 @@
                                 @endif
                             </td>
                             <td class="numeric">{{ number_format($moon->monthly_rental_fee, 0) }}</td>
+                            <td class="numeric">{{ number_format($moon->previous_monthly_rental_fee, 0) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
