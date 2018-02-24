@@ -71,17 +71,16 @@
 
         <h1>Alliance Moons</h1>
 
-        <p>Click on table headings to sort. To inquire about renting a moon, please evemail <a href="https://zkillboard.com/character/93533671/">Metric Candy</a>.</p>
+        <p>Click on table headings to sort. To inquire about renting a moon, please evemail <a href="https://zkillboard.com/character/93533671/">Metric Candy</a> quoting the relevant moon ID.</p>
 
         <div class="row">
 
             <table id="moons">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Region</th>
                         <th>System</th>
-                        <th>P</th>
-                        <th>M</th>
                         <th>Mineral #1</th>
                         <th>Mineral #2</th>
                         <th>Mineral #3</th>
@@ -96,10 +95,9 @@
                                 class="rented"
                             @endif
                         >
+                            <td>{{ $moon->id }}</td>
                             <td>{{ $moon->region->regionName }}</td>
                             <td class="nobreak">{{ $moon->system->solarSystemName }}</td>
-                            <td>{{ $moon->planet }}</td>
-                            <td>{{ $moon->moon }}</td>
                             <td>{{ $moon->mineral_1->typeName }} ({{ $moon->mineral_1_percent }}%)</td>
                             <td>{{ $moon->mineral_2->typeName }} ({{ $moon->mineral_2_percent }}%)</td>
                             <td>

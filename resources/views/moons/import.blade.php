@@ -11,9 +11,11 @@
             <table id="moons">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Region</th>
                         <th>System</th>
-                        <th>Planet/Moon</th>
+                        <th>P</th>
+                        <th>M</th>
                         <th>Mineral composition</th>
                         <th class="numeric">Monthly fee</th>
                         <th class="numeric">Last month</th>
@@ -22,9 +24,11 @@
                 <tbody>
                     @foreach ($moons as $moon)
                         <tr>
+                            <td>{{ $moon->id }}</td>
                             <td>{{ $moon->region->regionName }}</td>
                             <td>{{ $moon->system->solarSystemName }}</td>
-                            <td>Planet {{ $moon->planet }}, Moon {{ $moon->moon }}</td>
+                            <td>{{ $moon->planet }}</td>
+                            <td>{{ $moon->moon }}</td>
                             <td>
                                 {{ $moon->mineral_1->typeName }} ({{ $moon->mineral_1_percent }}%)
                                 &#0183; {{ $moon->mineral_2->typeName }} ({{ $moon->mineral_2_percent }}%)

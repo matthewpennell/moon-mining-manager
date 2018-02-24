@@ -74,13 +74,11 @@ Route::middleware(['login'])->prefix('moons')->group(function () {
 });
 
 // Moon composition importer.
-/*
-Route::middleware(['admin'])->prefix('moons')->group(function () {
+Route::middleware(['admin'])->prefix('moonadmin')->group(function () {
     Route::get('/', 'MoonImportController@index');
     Route::post('/import', 'MoonImportController@import');
     Route::get('/calculate', 'MoonImportController@calculate');
 });
-*/
 
 // Payment management.
 Route::middleware(['admin'])->prefix('payment')->group(function () {
