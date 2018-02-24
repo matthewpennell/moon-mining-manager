@@ -37,7 +37,7 @@
             }
 
             table {
-                width: 80%;
+                width: 90%;
                 margin: 20px auto;
                 border-collapse: collapse;
             }
@@ -55,6 +55,10 @@
             .rented td {
                 text-decoration: line-through;
                 opacity: 0.333;
+            }
+
+            .nobreak {
+                white-space: nowrap;
             }
 
         </style>
@@ -76,6 +80,8 @@
                     <tr>
                         <th>Region</th>
                         <th>System</th>
+                        <th>P</th>
+                        <th>M</th>
                         <th>Mineral #1</th>
                         <th>Mineral #2</th>
                         <th>Mineral #3</th>
@@ -91,7 +97,9 @@
                             @endif
                         >
                             <td>{{ $moon->region->regionName }}</td>
-                            <td>{{ $moon->system->solarSystemName }}</td>
+                            <td class="nobreak">{{ $moon->system->solarSystemName }}</td>
+                            <td>{{ $moon->planet }}</td>
+                            <td>{{ $moon->moon }}</td>
                             <td>{{ $moon->mineral_1->typeName }} ({{ $moon->mineral_1_percent }}%)</td>
                             <td>{{ $moon->mineral_2->typeName }} ({{ $moon->mineral_2_percent }}%)</td>
                             <td>
