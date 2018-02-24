@@ -24,6 +24,13 @@ class Moon extends Model
     }
 
     /**
+     * Find any active renter.
+     */
+    public function renter() {
+        return $this->hasOne('App\Renter');
+    }
+
+    /**
      * Get the mineral type object for each of the possible mineral types.
      */
     public function mineral_1()

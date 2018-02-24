@@ -68,12 +68,19 @@ Route::middleware(['admin'])->prefix('renters')->group(function () {
     Route::get('/character/{id}', 'RenterController@renterDetails');
 });
 
+// Public list of available moons.
+Route::middleware(['login'])->prefix('moons')->group(function () {
+    Route::get('/', 'MoonController@index');
+});
+
 // Moon composition importer.
+/*
 Route::middleware(['admin'])->prefix('moons')->group(function () {
     Route::get('/', 'MoonImportController@index');
     Route::post('/import', 'MoonImportController@import');
     Route::get('/calculate', 'MoonImportController@calculate');
 });
+*/
 
 // Payment management.
 Route::middleware(['admin'])->prefix('payment')->group(function () {
