@@ -71,7 +71,7 @@
 
         <h1>Alliance Moons</h1>
 
-        <p>Click on table headings to sort.</p>
+        <p>Click on table headings to sort. To inquire about renting a moon, please evemail <a href="https://zkillboard.com/character/93533671/">Metric Candy</a>.</p>
 
         <div class="row">
 
