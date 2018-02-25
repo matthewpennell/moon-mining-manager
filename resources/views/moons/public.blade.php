@@ -91,7 +91,7 @@
                 <tbody>
                     @foreach ($moons as $moon)
                         <tr
-                            @if (isset($moon->renter))
+                            @if (isset($moon->renter) || $moon->alliance_owned == 1)
                                 class="rented"
                             @endif
                         >

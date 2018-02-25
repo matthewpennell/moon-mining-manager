@@ -22,6 +22,10 @@ th, td {
     padding: 10px;
 }
 
+.rented td {
+    background: #ddd;
+}
+
 th {
     background: $bg_dark;
     color: #fff;

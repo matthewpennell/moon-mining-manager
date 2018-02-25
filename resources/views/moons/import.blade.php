@@ -23,7 +23,11 @@
                 </thead>
                 <tbody>
                     @foreach ($moons as $moon)
-                        <tr>
+                        <tr
+                        @if (isset($moon->renter) || $moon->alliance_owned == 1)
+                            class="rented"
+                        @endif
+                        >
                             <td>{{ $moon->id }}</td>
                             <td>{{ $moon->region->regionName }}</td>
                             <td>{{ $moon->system->solarSystemName }}</td>
