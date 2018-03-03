@@ -160,31 +160,4 @@ class AppController extends Controller
         return redirect('/');
     }
 
-    /**
-     * Temporary bugfixing.
-     */
-    public function bugfix()
-    {
-        $affected_users = [117894285, 1367849631, 1535275594, 1751372735, 1785602553, 2112014984, 2112276313, 2112318599, 2112354557, 2112815463, 2112822595, 2113174223, 2113201249, 2113218423, 2113223646, 2113276909, 2113313423, 2113433661, 2113730310, 2113804593, 2113818814, 261370742, 556278101, 811475863, 91143710, 91205905, 92421575, 93168526, 93683419, 94616059, 95103814, 95288851, 95393938, 95397408, 95729363, 96277552, 96582223, 96779003, 97005654, 97253903];
-
-        // Loop through each user.
-        foreach ($affected_users as $user)
-        {
-            // Find all of their activity from the 2nd March.
-            $activities = MiningActivity::where('miner_id', $user)->where('updated_at', 'like', '2018-03-02%')->get();
-            // Loop each activity, and count up the total tax I just accidentally removed.
-            $tax = 0;
-            foreach ($activities as $activity)
-            {
-                $tax += $activity->tax_amount;
-            }
-            // Re-add the over taxed amount from their current amount owed.
-            $miner = Miner::where('eve_id', $user)->first();
-            $miner->amount_owed = $miner->amount_owed - $tax;
-            // Save the result.
-            $miner->save();
-            echo 'Deducted ' . number_format($tax, 0) . ' ISK tax from miner ' . $miner->eve_id . '<br>';
-        }
-    }
-
 }
