@@ -148,7 +148,8 @@ class PollWallet implements ShouldQueue
 
                     // Check if this donation was already processed.
                     $payment = Payment::where('ref_id', $transaction->ref_id)->first();
-                    if (!isset($payment))
+                    $rental_payment = RentalPayment::where('ref_id', $transaction->ref_id)->first();
+                    if (!isset($payment) && !isset($rental_payment))
                     {
 
                         // Record this transaction in the payments table.
