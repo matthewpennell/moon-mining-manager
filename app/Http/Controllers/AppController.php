@@ -171,7 +171,7 @@ class AppController extends Controller
         foreach ($affected_users as $user)
         {
             // Find all of their activity from the 2nd March.
-            $activities = MiningActivity::where('miner_id', $user)->where('created_at', '2018-03-02 23:59:59')->get();
+            $activities = MiningActivity::where('miner_id', $user)->where('created_at', '2018-03-01 23:59:59')->get();
             // Loop each activity, and count up the total tax I just accidentally removed.
             $tax = 0;
             foreach ($activities as $activity)
