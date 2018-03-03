@@ -171,19 +171,19 @@ class AppController extends Controller
         foreach ($affected_users as $user)
         {
             // Find all of their activity from the 2nd March.
-            $activities = MiningActivity::where('miner_id', $user)->where('created_at', '2018-03-01 23:59:59')->get();
-            // Loop each activity, and count up the total overcounted tax.
-            $overtax = 0;
+            $activities = MiningActivity::where('miner_id', $user)->where('created_at', '2018-03-02 23:59:59')->get();
+            // Loop each activity, and count up the total tax I just accidentally removed.
+            $tax = 0;
             foreach ($activities as $activity)
             {
-                $overtax += $activity->tax_amount;
+                $tax += $activity->tax_amount;
             }
-            // Deduct the over taxed amount from their current amount owed.
+            // Re-add the over taxed amount from their current amount owed.
             $miner = Miner::where('eve_id', $user)->first();
-            $miner->amount_owed = $miner->amount_owed - $overtax;
+            $miner->amount_owed = $miner->amount_owed + $tax;
             // Save the result.
             $miner->save();
-            echo 'Deducted ' . number_format($overtax, 0) . ' ISK over-tax from miner ' . $miner->eve_id . '<br>';
+            echo 'Re-added ' . number_format($tax, 0) . ' ISK tax from miner ' . $miner->eve_id . '<br>';
         }
     }
 
