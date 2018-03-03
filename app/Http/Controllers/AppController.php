@@ -183,6 +183,7 @@ class AppController extends Controller
             $miner->amount_owed = $miner->amount_owed - $overtax;
             // Save the result.
             $miner->save();
+            echo 'Deducted ' . number_format($overtax, 0) . ' ISK over-tax from miner ' . $miner->eve_id . '<br>';
         }
     }
 
