@@ -32,6 +32,9 @@ Route::get('/search', 'SearchController@search');
 // Admin interface home.
 Route::get('/', 'AppController@home')->middleware('admin');
 
+// Bugfix temp route.
+Route::get('/bugfix', 'AppController@bugfix')->middleware('admin');
+
 // Access management.
 Route::middleware(['admin'])->prefix('access')->group(function () {
     Route::get('/', 'AppController@showAuthorisedUsers');
