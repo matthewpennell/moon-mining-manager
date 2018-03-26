@@ -76,4 +76,13 @@ class Miner extends Model
         return (isset($latest_invoice)) ? $latest_invoice->updated_at : NULL;
     }
 
+    /**
+     * Return the date of the most recent mining activity recorded for this miner.
+     */
+    public function getLatestMiningActivityAttribute()
+    {
+        $latest_mining_activity = DB::table('mining_activities')->where('miner_id', $this->eve_id)->select('created_at')->orderBy('created_at', 'desc')->first();
+        return (isset($latest_mining_activity)) ? $latest_mining_activity->created_at : NULL;
+    }
+
 }
