@@ -10,7 +10,7 @@
 
             <div class="card-heading">All current renters <a href="/renters/new">[Add new]</a></div>
             
-            <table>
+            <table id="renters">
                 <thead>
                     <tr>
                         <th>Location</th>
@@ -43,12 +43,12 @@
                             </td>
                             <td><a href="/renters/character/{{ $renter->character_id }}">{{ $renter->character->name }}</a></td>
                             <td>{{ $renter->notes }}</td>
-                            <td class="numeric">{{ number_format($renter->monthly_rental_fee, 0) }} ISK</td>
-                            <td class="numeric">{{ number_format($renter->amount_owed, 0) }} ISK</td>
-                            <td class="numeric">{{ date('jS F Y', strtotime($renter->start_date)) }}</td>
+                            <td class="numeric">{{ number_format($renter->monthly_rental_fee, 0) }}</td>
+                            <td class="numeric">{{ number_format($renter->amount_owed, 0) }}</td>
+                            <td class="numeric">{{ date('M j, Y', strtotime($renter->start_date)) }}</td>
                             <td class="numeric">
                                 @if (isset($renter->end_date))
-                                    {{ date('jS F Y', strtotime($renter->end_date)) }}
+                                    {{ date('M j, Y', strtotime($renter->end_date)) }}
                                 @else
                                     -
                                 @endif
@@ -62,5 +62,13 @@
         </div>
 
     </div>
+
+    <script>
+        
+        window.addEventListener('load', function () {
+            $('#renters').tablesorter();
+        });
+    
+    </script>
 
 @endsection
