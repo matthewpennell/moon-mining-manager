@@ -73,6 +73,8 @@
 
         <p>Click on table headings to sort. To inquire about renting a moon, please evemail <a href="https://zkillboard.com/character/93533671/">Metric Candy</a> quoting the relevant moon ID.</p>
 
+        <p>For more information on the Brave moon rental program, please consult <a href="https://wiki.braveineve.com/member/alliance/industry/moon-rental" target="_blank">this wiki page</a>.</p>
+
         <div class="row">
 
             <table id="moons">
