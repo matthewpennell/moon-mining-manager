@@ -18,6 +18,12 @@
         </a>
     </li>
     <li>
+        <a href="/moonadmin">
+            <i class="icon-">&#9789;</i>
+            Moons
+        </a>
+    </li>
+    <li>
         <a href="/renters">
             <i class="icon-rocket"></i>
             Renters
