@@ -14,16 +14,14 @@
 
             * {
                 box-sizing: border-box;
+                margin: 0;
+                padding: 0;
             }
 
             body {
                 font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif;
                 font-size: 14px;
                 line-height: 20px;
-            }
-
-            body.bar {
-                padding-top: 100px;
             }
 
             .logo {
@@ -93,11 +91,44 @@
                 opacity: 0.333;
             }
 
+            /* Menu */
+
+            .public-menu {
+                background: #242626;
+                color: #fff;
+                height: 50px;
+            }
+
+            .bar .public-menu {
+                margin-bottom: 100px;
+            }
+
+            .public-menu li {
+                list-style: none;
+            }
+
+            .public-menu a {
+                float: right;
+                font-weight: bold;
+                padding: 0 20px;
+                color: #fff;
+                line-height: 50px;
+                text-decoration: none;
+            }
+
+            .public-menu a:hover {
+                text-decoration: none;
+                background: #cad9d7;
+                color: #242626;
+            }
+
+            /* Miner menu */
+
             .miner-bar {
                 background: #242626;
                 color: #fff;
                 position: fixed;
-                top: 0;
+                top: 50px;
                 left: 0;
                 height: 100px;
                 width: 100%;
@@ -169,12 +200,13 @@
         @endif
     >
 
+        @include('common.public-nav', ['page' => 'timers'])
+
         @if ($miner)
             <div class="miner-bar">
                 <div class="miner-identity">
                     <img src="{{ $miner->avatar }}" alt="">
                     {{ $miner->name }}
-                    <a href="/logout">Logout</a>
                 </div>
                 <div class="miner-amount-owed">
                     <span class="heading">Current amount owed:</span>

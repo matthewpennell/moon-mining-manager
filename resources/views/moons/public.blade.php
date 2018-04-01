@@ -14,6 +14,8 @@
 
             * {
                 box-sizing: border-box;
+                margin: 0;
+                padding: 0;
             }
 
             body {
@@ -61,11 +63,40 @@
                 white-space: nowrap;
             }
 
+            /* Menu */
+
+            .public-menu {
+                background: #242626;
+                color: #fff;
+                height: 50px;
+            }
+
+            .public-menu li {
+                list-style: none;
+            }
+
+            .public-menu a {
+                float: right;
+                font-weight: bold;
+                padding: 0 20px;
+                color: #fff;
+                line-height: 50px;
+                text-decoration: none;
+            }
+
+            .public-menu a:hover {
+                text-decoration: none;
+                background: #cad9d7;
+                color: #242626;
+            }
+
         </style>
 
     </head>
 
     <body>
+
+        @include('common.public-nav', ['page' => 'timers'])
 
         <img src="https://wiki.braveineve.com/lib/tpl/vector/user/logo.png" alt="Brave Collective" class="logo">
 
