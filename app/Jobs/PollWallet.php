@@ -198,7 +198,9 @@ class PollWallet implements ShouldQueue
             }
 
         }
-/* FIX SCRIPT FOR UNPROCESSED WALLET TRANSACTIONS, IF NEEDED UPDATE THE DATE TO THE LAST WORKING WALLET IMPORT.*/
+
+        /* FIX SCRIPT FOR UNPROCESSED WALLET TRANSACTIONS, IF NEEDED UPDATE THE DATE TO THE LAST WORKING WALLET IMPORT.
+
         // If the last transaction date is not earlier than a specified date, request the next page of wallet results.
         if (isset($date) && $date > '2018-04-25')
         {
@@ -209,7 +211,9 @@ class PollWallet implements ShouldQueue
         {
             Log::info('PollWallet: No more wallet transactions to be found or date reached');
         }
-//*/
+
+        // ENDFIX */
+
     }
 
 }
