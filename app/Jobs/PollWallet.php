@@ -77,7 +77,7 @@ class PollWallet implements ShouldQueue
 
         foreach ($transactions as $transaction)
         {
-            $ref_id = $transaction->id;
+            $ref_id = $transaction->ref_id;
             $date = date('Y-m-d', strtotime($transaction->date));
             if ($transaction->ref_type == 'player_donation')
             {
@@ -97,7 +97,7 @@ class PollWallet implements ShouldQueue
                     $payment = new RentalPayment;
                     $payment->renter_id = $transaction->first_party_id;
                     $payment->refinery_id = $renter->refinery_id;
-                    $payment->ref_id = $ref_id;
+                    $payment->ref_id = $transaction->ref_id;
                     $payment->amount_received = $transaction->amount;
                     $payment->save();
 
@@ -147,15 +147,15 @@ class PollWallet implements ShouldQueue
                     Log::info('PollWallet: found a player donation from a recognised miner ' . $miner->eve_id);
 
                     // Check if this donation was already processed.
-                    $payment = Payment::where('ref_id', $ref_id)->first();
-                    $rental_payment = RentalPayment::where('ref_id', $ref_id)->first();
+                    $payment = Payment::where('ref_id', $transaction->ref_id)->first();
+                    $rental_payment = RentalPayment::where('ref_id', $transaction->ref_id)->first();
                     if (!isset($payment) && !isset($rental_payment))
                     {
 
                         // Record this transaction in the payments table.
                         $payment = new Payment;
                         $payment->miner_id = $transaction->first_party_id;
-                        $payment->ref_id = $ref_id;
+                        $payment->ref_id = $transaction->ref_id;
                         $payment->amount_received = $transaction->amount;
                         $payment->save();
 
@@ -198,18 +198,18 @@ class PollWallet implements ShouldQueue
             }
 
         }
-/* FIX SCRIPT FOR UNPROCESSED WALLET TRANSACTIONS, IF NEEDED UPDATE THE DATE TO THE LAST WORKING WALLET IMPORT.
+/* FIX SCRIPT FOR UNPROCESSED WALLET TRANSACTIONS, IF NEEDED UPDATE THE DATE TO THE LAST WORKING WALLET IMPORT.*/
         // If the last transaction date is not earlier than a specified date, request the next page of wallet results.
-        if (isset($date) && $date > '2017-12-15')
+        if (isset($date) && $date > '2018-04-25')
         {
-            Log::info('PollWallet: Date ' . $date . ' is greater than 2017-12-15, repolling for any earlier than ' . $ref_id);
+            Log::info('PollWallet: Date ' . $date . ' is greater than 2018-04-25, repolling for any earlier than ' . $ref_id);
             PollWallet::dispatch($ref_id);
         }
         else
         {
             Log::info('PollWallet: No more wallet transactions to be found or date reached');
         }
-*/
+//*/
     }
 
 }
