@@ -21,7 +21,13 @@
                     @foreach ($miners as $miner)
                         <tr>
                             <td><a href="/miners/{{ $miner->eve_id }}">{{ $miner->name }}</a></td>
-                            <td>{{ $miner->corporation->name }}</td>
+                            <td>
+                                @if (isset($miner->corporation))
+                                    {{ $miner->corporation->name }}
+                                @else
+                                    UNKNOWN
+                                @endif
+                            </td>
                             <td class="numeric">{{ number_format($miner->amount_owed, 0) == '-0' ? '0' : number_format($miner->amount_owed, 0) }}</td>
                             <td class="numeric">{{ number_format($miner->total_payments, 0) == '-0' ? '0' : number_format($miner->total_payments, 0) }}</td>
                             <td>{{ date('M j, Y', strtotime($miner->latest_mining_activity)) }}</td>
