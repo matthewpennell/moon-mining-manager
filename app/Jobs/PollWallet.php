@@ -22,16 +22,16 @@ class PollWallet implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $tries = 10;
-    private $from_id;
+    private $page;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($from_id = NULL)
+    public function __construct($page = 1)
     {
-        $this->from_id = $from_id;
+        $this->page = $page;
     }
 
     /**
@@ -44,36 +44,20 @@ class PollWallet implements ShouldQueue
         
         $esi = new EsiConnection;
 
-        if ($this->from_id != NULL)
-        {
-            Log::info('PollWallet: Retrieving transactions earlier than ' . $this->from_id);
-        }
-        else
-        {
-            Log::info('PollWallet: Retrieving most recent transactions');
-        }
+        Log::info('PollWallet: Retrieving transactions, page ' . $this->page);
 
         // Request the transactions from the master wallet division.
-        if ($this->from_id)
-        {
-            $transactions = $esi->esi->setQueryString([
-                'from_id' => $this->from_id,
-            ])->invoke('get', '/corporations/{corporation_id}/wallets/{division}/journal/', [
-                'corporation_id' => $esi->corporation_id,
-                'division' => 1, // master wallet
-            ]);
-        }
-        else
-        {
-            $transactions = $esi->esi->invoke('get', '/corporations/{corporation_id}/wallets/{division}/journal/', [
-                'corporation_id' => $esi->corporation_id,
-                'division' => 1, // master wallet
-            ]);
-        }
+        $transactions = $esi->esi->setQueryString([
+            'page' => $this->page,
+        ])->invoke('get', '/corporations/{corporation_id}/wallets/{division}/journal/', [
+            'corporation_id' => $esi->corporation_id,
+            'division' => 1, // master wallet
+        ]);
 
         Log::info('PollWallet: retrieved ' . count($transactions) . ' transactions from the corporation wallet');
 
         $delay_counter = 1;
+        $date = NULL;
 
         foreach ($transactions as $transaction)
         {
@@ -144,7 +128,7 @@ class PollWallet implements ShouldQueue
                 elseif (isset($miner))
                 {
 
-                    Log::info('PollWallet: found a player donation from a recognised miner ' . $miner->eve_id);
+                    Log::info('PollWallet: found a player donation from a recognised miner ' . $miner->eve_id . ' on ' . $date);
 
                     // Check if this donation was already processed.
                     $payment = Payment::where('ref_id', $ref_id)->first();
@@ -199,13 +183,14 @@ class PollWallet implements ShouldQueue
 
         }
 
-        /* FIX SCRIPT FOR UNPROCESSED WALLET TRANSACTIONS, IF NEEDED UPDATE THE DATE TO THE LAST WORKING WALLET IMPORT.
+        /* FIX SCRIPT FOR UNPROCESSED WALLET TRANSACTIONS, IF NEEDED UPDATE THE DATE TO THE LAST WORKING WALLET IMPORT. */
 
         // If the last transaction date is not earlier than a specified date, request the next page of wallet results.
         if (isset($date) && $date > '2018-04-25')
         {
-            Log::info('PollWallet: Date ' . $date . ' is greater than 2018-04-25, repolling for any earlier than ' . $ref_id);
-            PollWallet::dispatch($ref_id);
+            Log::info('PollWallet: Date ' . $date . ' is greater than 2018-04-25, repolling for any earlier transactions');
+            $next_page = $this->page + 1;
+            PollWallet::dispatch($next_page);
         }
         else
         {
