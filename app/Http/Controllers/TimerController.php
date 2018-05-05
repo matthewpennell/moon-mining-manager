@@ -29,6 +29,14 @@ class TimerController extends Controller
 
         if (isset($miner))
         {
+
+            // Fix "-0" display bug by cleaning up the remaining ISK balance.
+            if ($miner->amount_owed < 0 && $miner->amount_owed > -1)
+            {
+                $miner->amount_owed = 0;
+                $miner->save();
+            }
+
             // Retrieve all history of the miner's mining, invoices and payments.
             $mining_activities = MiningActivity::where('miner_id', $miner->eve_id)->get();
             $invoices = Invoice::where('miner_id', $miner->eve_id)->get();
