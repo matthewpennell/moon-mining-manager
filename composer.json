@@ -14,7 +14,8 @@
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "matthewpennell/eveonline-socialite-sisi": "dev-master",
-        "nullx27/eveonline-socialite": "^0.3.0"
+        "nullx27/eveonline-socialite": "^0.3.0",
+        "squareboat/sneaker": "^4.0"
     },
     "require-dev": {
         "doctrine/dbal": "^2.6",
