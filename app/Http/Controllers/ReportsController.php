@@ -71,6 +71,8 @@ class ReportsController extends Controller
         return view('reports.main', [
             'year' => $year,
             'month' => $month,
+            'prev_month' => ($month == 1) ? 12 : $month - 1,
+            'next_month' => ($month == 12) ? 1 : $month + 1,
             'dates' => $dates,
             'mining' => $mining,
             'payments' => $payments,
