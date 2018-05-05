@@ -71,7 +71,7 @@
                     });
                 </script>
                 <div class="report-navigation">
-                    <a href="/reports/{{ ($month == 1) ? $year - 1 : $year }}/{{ str_pad($prev_month, 2, "0", STR_PAD_LEFT) }}">&laquo; Previous month</a> | <a href="/reports/{{ ($month == 12 ? $year + 1 : $year }}/{{ str_pad($next_month, 2, "0", STR_PAD_LEFT) }}">Next month &raquo;</a>
+                    <a href="/reports/{{ ($month == 1) ? $year - 1 : $year }}/{{ str_pad($prev_month, 2, "0", STR_PAD_LEFT) }}">&laquo; Previous month</a> | <a href="/reports/{{ ($month == 12) ? $year + 1 : $year }}/{{ str_pad($next_month, 2, "0", STR_PAD_LEFT) }}">Next month &raquo;</a>
                 </div>
             </div>
 
