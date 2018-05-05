@@ -136,18 +136,83 @@ class PollWallet implements ShouldQueue
                     if (!isset($payment) && !isset($rental_payment))
                     {
 
-                        // Record this transaction in the payments table.
-                        $payment = new Payment;
-                        $payment->miner_id = $transaction->first_party_id;
-                        $payment->ref_id = $ref_id;
-                        $payment->amount_received = $transaction->amount;
-                        $payment->save();
+                        // Parse the 'reason' entered by the player to see if they want to pay off other players/alts bills.
+                        $reason = $transaction->reason;
+                        if ($reason && strlen($reason) > 0)
+                        {
+                            // Split by commas.
+                            $elements = explode(',', $reason);
+                            $recipients = [];
 
-                        Log::info('PollWallet: saved a new payment from miner ' . $miner->eve_id . ' for ' . $transaction->amount);
+                            // For each element found, test it to see if it is a character ID or name, and find a reference to the relevant miner.
+                            foreach ($elements as $element)
+                            {
+                                if (preg_match('/^\d+$/', trim($element)))
+                                {
+                                    $recipient_miner = Miner::where('eve_id', trim($element))->first();
+                                }
+                                else
+                                {
+                                    $recipient_miner = Miner::where('name', trim($element))->first();
+                                }
+                                if (isset($recipient_miner))
+                                {
+                                    $recipients[] = $recipient_miner;
+                                }
+                            }
+                            Log::info('PollWallet: detected player-entered reason for payment, parsed for alternative recipients of payment, found ' . count($recipients) . ' additional valid recipients', [
+                                'recipients' => $recipients
+                            ]);
 
-                        // Deduct the amount from their outstanding balance.
-                        $miner->amount_owed -= $transaction->amount;
-                        $miner->save();
+                            // If any valid recipients were found, create payments to them.
+                            if (count($recipients) > 0)
+                            {
+                                foreach ($recipients as $recipient)
+                                {
+                                    // Calculate how much to pay off for this recipient - either the full amount, or whatever is left of the balance.
+                                    if ($transaction->amount >= $recipient->amount_owed)
+                                    {
+                                        $payment_amount = $recipient->amount_owed;
+                                    }
+                                    else
+                                    {
+                                        $payment_amount = $transaction->amount;
+                                    }
+
+                                    // Update the remaining balance of what was sent.
+                                    $transaction->amount = $transaction->amount - $payment_amount;
+
+                                    // Record the transaction in the payments table.
+                                    $payment = new Payment;
+                                    $payment->miner_id = $recipient->eve_id;
+                                    $payment->ref_id = $ref_id;
+                                    $payment->amount_received = $payment_amount;
+                                    $payment->save();
+                                    Log::info('PollWallet: saved a new payment from miner ' . $miner->eve_id . ' on behalf of miner ' . $recipient->eve_id . ' for ' . $payment_amount);
+
+                                    // Deduct the amount from the recipient's outstanding balance.
+                                    $recipient->amount_owed -= $payment_amount;
+                                    $recipient->save();
+                                }
+                            }
+                        }
+
+                        // If there is any money left to apply to the donator's balance after paying other recipients.
+                        if ($transaction->amount > 0)
+                        {
+                            // Record this transaction in the payments table.
+                            $payment = new Payment;
+                            $payment->miner_id = $transaction->first_party_id;
+                            $payment->ref_id = $ref_id;
+                            $payment->amount_received = $transaction->amount;
+                            $payment->save();
+
+                            Log::info('PollWallet: saved a new payment from miner ' . $miner->eve_id . ' for ' . $transaction->amount);
+
+                            // Deduct the amount from their outstanding balance.
+                            $miner->amount_owed -= $transaction->amount;
+                            $miner->save();
+                        }
 
                         // Send a receipt.
                         $template = Template::where('name', 'receipt')->first();
