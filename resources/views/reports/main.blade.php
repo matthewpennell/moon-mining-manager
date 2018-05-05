@@ -71,7 +71,7 @@
                     });
                 </script>
                 <div class="report-navigation">
-                    <a href="/reports/{{ $year }}/{{ $month - 1 }}">&laquo; Previous month</a> | <a href="/reports/{{ $year }}/{{ $month + 1 }}">Next month &raquo;</a>
+                    <a href="/reports/{{ $year }}/{{ str_pad($month - 1, 2, "0", STR_PAD_LEFT) }}">&laquo; Previous month</a> | <a href="/reports/{{ $year }}/{{ str_pad($month + 1, 2, "0", STR_PAD_LEFT) }}">Next month &raquo;</a>
                 </div>
             </div>
 
@@ -146,7 +146,7 @@
                     });
                 </script>
                 <div class="report-navigation">
-                    <a href="/reports/{{ $year }}/{{ $month - 1 }}">&laquo; Previous month</a> | <a href="/reports/{{ $year }}/{{ $month + 1 }}">Next month &raquo;</a>
+                    <a href="/reports/{{ $year }}/{{ str_pad($month - 1, 2, "0", STR_PAD_LEFT) }}">&laquo; Previous month</a> | <a href="/reports/{{ $year }}/{{ str_pad($month + 1, 2, "0", STR_PAD_LEFT) }}">Next month &raquo;</a>
                 </div>
             </div>
 
