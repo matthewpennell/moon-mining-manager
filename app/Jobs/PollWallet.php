@@ -137,8 +137,11 @@ class PollWallet implements ShouldQueue
                     {
 
                         // Parse the 'reason' entered by the player to see if they want to pay off other players/alts bills.
-                        $reason = $transaction->reason;
-                        if ($reason && strlen($reason) > 0)
+                        if (isset($transaction->reason))
+                        {
+                            $reason = $transaction->reason;
+                        }
+                        if (isset($reason) && strlen($reason) > 0)
                         {
                             // Split by commas.
                             $elements = explode(',', $reason);
