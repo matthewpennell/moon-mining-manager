@@ -128,7 +128,7 @@ class PollWallet implements ShouldQueue
                 elseif (isset($miner))
                 {
 
-                    Log::info('PollWallet: found a player donation from a recognised miner ' . $miner->eve_id . ' on ' . $date);
+                    Log::info('PollWallet: found a player donation of ' . $transaction->amount . ' ISK from a recognised miner ' . $miner->eve_id . ' on ' . $date . ', reference ' . $ref_id);
 
                     // Check if this donation was already processed.
                     $payment = Payment::where('ref_id', $ref_id)->first();
@@ -137,8 +137,11 @@ class PollWallet implements ShouldQueue
                     {
 
                         // Parse the 'reason' entered by the player to see if they want to pay off other players/alts bills.
-                        $reason = $transaction->reason;
-                        if ($reason && strlen($reason) > 0)
+                        if (isset($transaction->reason))
+                        {
+                            $reason = $transaction->reason;
+                        }
+                        if (isset($reason) && strlen($reason) > 0)
                         {
                             // Split by commas.
                             $elements = explode(',', $reason);
