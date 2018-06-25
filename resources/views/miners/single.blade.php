@@ -11,7 +11,7 @@
             @include('common.card', [
                 'avatar' => $miner->avatar,
                 'name' => $miner->name, 
-                'sub' => $miner->corporation->name
+                'sub' => (isset($miner->corporation->name) ? $miner->corporation->name : 'UNKNOWN'),
             ])
         </div>
 
