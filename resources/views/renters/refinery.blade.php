@@ -38,7 +38,7 @@
 
         <div class="col-8">
 
-            <div class="card-heading">Activity Log</div>
+            <div class="card-heading">Activity Log (<a href="/payment/new">Payment received</a>)</div>
 
             <table>
                 <thead>
