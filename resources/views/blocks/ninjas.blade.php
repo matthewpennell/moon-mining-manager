@@ -6,7 +6,7 @@
         @include('common.card', [
             'size' => 'small',
             'avatar' => $ninja->avatar,
-            'name' => $ninja->name . ' (' . $ninja->corporation->name . ')', 
+            'name' => $ninja->name . ' (' . (isset($ninja->corporation->name) ? $ninja->corporation->name : 'UNKNOWN') . ')', 
             'amount' => $ninja->amount_owed
         ])
     @endforeach
