@@ -54,7 +54,9 @@
                                     Invoice sent
                                 @endif
                                 @if (isset($activity->quantity))
-                                    Mining {{ $activity->type->typeName }} ({{ number_format($activity->quantity, 0) }} units)
+                                    {{ $activity->type->typeName }}
+                                    <br>
+                                    <small>{{ number_format($activity->quantity, 0) }} units</small>
                                 @endif
                                 @if (isset($activity->amount_received))
                                     Payment received
