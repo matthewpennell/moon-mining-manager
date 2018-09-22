@@ -41,6 +41,7 @@
                 <thead>
                     <tr>
                         <th>Activity</th>
+                        <th>Location</th>
                         <th class="numeric">Amount</th>
                         <th>Date</th>
                     </tr>
@@ -57,6 +58,11 @@
                                 @endif
                                 @if (isset($activity->amount_received))
                                     Payment received
+                                @endif
+                            </td>
+                            <td>
+                                @if (isset($activity->refinery_id))
+                                    {{ $activity->refinery->name }}
                                 @endif
                             </td>
                             <td class="numeric">
