@@ -52,7 +52,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new PollWallet)->hourlyAt(30);
 
         // Pull the mining activity for the day and store it.
-        $schedule->job(new PollMiningObservers)->dailyAt('02:00');
+        $schedule->job(new PollMiningObservers)->dailyAt('12:00');
 
         // Check for any new ores that have been mined where we don't have details of their component materials.
         $schedule->job(new UpdateReprocessedMaterials)->twiceDaily(4, 16);
@@ -61,7 +61,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new UpdateMaterialValues)->dailyAt('05:00');
         
         // Process any new mining activity.
-        $schedule->job(new ProcessMiningActivity)->dailyAt('06:00');
+        $schedule->job(new ProcessMiningActivity)->dailyAt('14:00');
         
         // Archive old price history records.
         $schedule->job(new ArchiveReprocessedMaterialsHistory)->dailyAt('06:55');
@@ -76,7 +76,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new CorporationChecks)->monthlyOn(15, '23:00');
 
         // Monthly recalculation of moon rental fees.
-        $schedule->job(new CalculateRent)->monthlyOn(25, '14:00');
+        $schedule->job(new CalculateRent)->monthlyOn(25, '15:00');
 
         // Monthly notification of updated moon rental fees.
         $schedule->job(new GenerateRentNotifications)->monthlyOn(25, '22:00');
