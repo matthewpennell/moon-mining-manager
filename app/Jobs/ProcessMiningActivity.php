@@ -90,7 +90,7 @@ class ProcessMiningActivity implements ShouldQueue
                 $miner = Miner::where('eve_id', $key)->first();
                 $miner->amount_owed += $value;
                 $miner->save();
-                Log::info('ProcessMiningActivity: updated stored amount owed by miner ' . $key . ' to ' . number_format($miner->amount_owed, 0) . ' ISK');
+                Log::info('ProcessMiningActivity: updated stored amount owed by miner ' . $key . ' by ' . number_format($value, 0) . ' ISK, new total is ' . number_format($miner->amount_owed, 0) . ' ISK');
             }
         }
 

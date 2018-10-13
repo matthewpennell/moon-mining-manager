@@ -7,6 +7,7 @@ use Seat\Eseye\Configuration;
 use Seat\Eseye\Containers\EsiAuthentication;
 use Seat\Eseye\Eseye;
 use App\User;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Generic class for use by controllers or queued jobs that need to request information
@@ -62,6 +63,8 @@ class EsiConnection
             $user->refresh_token = $new_token->refresh_token;
             $user->save();
         }
+
+        Log::info('EsiConnection: TEMPORARY DELETE ME AFTER USE - access_token = ' . $new_token->access_token);
 
         $authentication = new EsiAuthentication([
             'secret'        => $secret,
