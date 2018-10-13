@@ -64,8 +64,6 @@ class EsiConnection
             $user->save();
         }
 
-        Log::info('EsiConnection: TEMPORARY DELETE ME AFTER USE - access_token = ' . $new_token->access_token);
-
         $authentication = new EsiAuthentication([
             'secret'        => $secret,
             'client_id'     => $client_id,
