@@ -18,6 +18,8 @@ use App\Jobs\GenerateRentalInvoices;
 use App\Jobs\CorporationChecks;
 use App\Jobs\CalculateRent;
 use App\Jobs\GenerateRentNotifications;
+use App\Jobs\GenerateRentReminders;
+use App\Jobs\SendRenterDelinquencyList;
 
 class Kernel extends ConsoleKernel
 {
@@ -80,6 +82,13 @@ class Kernel extends ConsoleKernel
 
         // Monthly notification of updated moon rental fees.
         $schedule->job(new GenerateRentNotifications)->monthlyOn(25, '22:00');
+
+        // Twice monthly reminder emails about unpaid moon rental fees.
+        $schedule->job(new GenerateRentReminders)->monthlyOn(14, '09:00');
+        $schedule->job(new GenerateRentReminders)->monthlyOn(26, '09:00');
+
+        // Send monthly summary of delinquent renters to the site admin.
+        $schedule->job(new SendRenterDelinquencyList)->monthlyOn(29, '09:00');
 
     }
 

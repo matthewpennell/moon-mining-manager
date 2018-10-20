@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use App\Classes\EsiConnection;
 use Illuminate\Support\Facades\Log;
 
-class GenerateRentNotification implements ShouldQueue
+class GenerateRentReminder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -41,7 +41,6 @@ class GenerateRentNotification implements ShouldQueue
      */
     public function handle()
     {
-
         // Retrieve the renter record.
         $renter = Renter::find($this->id);
         
@@ -54,11 +53,11 @@ class GenerateRentNotification implements ShouldQueue
         // Grab a reference to the refinery that is being rented.
         $refinery = Refinery::where('observer_id', $renter->refinery_id)->first();
 
-        // Round the rental amount since we don't need to worry about cents.
-        $monthly_rental_fee = round($renter->monthly_rental_fee);
+        // Grab the current outstanding balance for this refinery.
+        $outstanding_balance = round($renter->amount_owed);
 
-        // Pick up the renter notice template to apply text substitutions.
-        $template = Template::where('name', 'renter_notification')->first();
+        // Pick up the renter reminder template to apply text substitutions.
+        $template = Template::where('name', 'renter_reminder')->first();
         
         // Grab the template subject and body.
         $subject = $template->subject;
@@ -67,11 +66,11 @@ class GenerateRentNotification implements ShouldQueue
         // Replace placeholder elements in email template.
         $subject = str_replace('{date}', date('Y-m-d'), $subject);
         $subject = str_replace('{name}', $character->name, $subject);
-        $subject = str_replace('{monthly_rental_fee}', number_format($monthly_rental_fee, 0), $subject);
+        $subject = str_replace('{outstanding_balance}', number_format($outstanding_balance, 0), $subject);
         $body = str_replace('{date}', date('Y-m-d'), $body);
         $body = str_replace('{name}', $character->name, $body);
         $body = str_replace('{refinery}', $refinery->name, $body);
-        $body = str_replace('{monthly_rental_fee}', number_format($monthly_rental_fee, 0), $body);
+        $body = str_replace('{outstanding_balance}', number_format($outstanding_balance, 0), $body);
         $mail = array(
             'body' => $body,
             'recipients' => array(
@@ -86,9 +85,8 @@ class GenerateRentNotification implements ShouldQueue
 
         // Queue sending the evemail, spaced at 1 minute intervals to avoid triggering the mailspam limiter (4/min).
         SendEvemail::dispatch($mail)->delay(Carbon::now()->addMinutes($this->mail_delay));
-        Log::info('GenerateRentNotification: dispatched job to send mail in ' . $this->mail_delay . ' minutes', [
+        Log::info('GenerateRentReminder: dispatched job to send mail in ' . $this->mail_delay . ' minutes', [
             'mail' => $mail,
         ]);
-
     }
 }

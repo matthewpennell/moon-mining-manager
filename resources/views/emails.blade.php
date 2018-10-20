@@ -15,6 +15,7 @@
                     <li><strong>{refinery}</strong> - the name of a rented refinery</li>
                     <li><strong>{amount_owed}</strong> - the total amount currently owed by the recipient</li>
                     <li><strong>{monthly_rental_fee}</strong> - the monthly rental fee for a rented refinery</li>
+                    <li><strong>{outstanding_balance}</strong> - the outstanding balance owed for a rented refinery</li>
                     <li><strong>{activity_log}</strong> - a list of mining activity by the recipient</li>
                 </ul>
             </div>
