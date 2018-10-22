@@ -225,7 +225,7 @@
             </div>
         @endif
 
-        <img src="https://wiki.braveineve.com/lib/tpl/vector/user/logo.png" alt="Brave Collective" class="logo">
+        <img src="https://wiki.bravecollective.com/lib/tpl/vector/user/logo.png" alt="Brave Collective" class="logo">
 
         <h1>Active Alliance Moon Mining Extraction Timers</h1>
 
