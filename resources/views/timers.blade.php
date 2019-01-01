@@ -225,7 +225,7 @@
             </div>
         @endif
 
-        <img src="https://wiki.braveineve.com/lib/tpl/vector/user/logo.png" alt="Brave Collective" class="logo">
+        <img src="https://wiki.bravecollective.com/lib/tpl/vector/user/logo.png" alt="Brave Collective" class="logo">
 
         <h1>Active Alliance Moon Mining Extraction Timers</h1>
 
@@ -312,7 +312,7 @@
 
         @if ($activity_log)
             <div class="mining-activity">
-                <h2>Your mining activity log (<a href="https://wiki.braveineve.com/member/alliance/industry/moonmining">wiki link</a>)</h2>
+                <h2>Your mining activity log (<a href="https://wiki.bravecollective.com/member/alliance/industry/moonmining">wiki link</a>)</h2>
                 <ul id="activity-log">
                     @foreach ($activity_log as $event)
                         <li>

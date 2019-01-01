@@ -98,13 +98,13 @@
 
         @include('common.public-nav', ['page' => 'timers'])
 
-        <img src="https://wiki.braveineve.com/lib/tpl/vector/user/logo.png" alt="Brave Collective" class="logo">
+        <img src="https://wiki.bravecollective.com/lib/tpl/vector/user/logo.png" alt="Brave Collective" class="logo">
 
         <h1>Alliance Moons</h1>
 
         <p>Click on table headings to sort. To inquire about renting a moon, please evemail <a href="https://zkillboard.com/character/93533671/">Metric Candy</a> quoting the relevant moon ID.</p>
 
-        <p>For more information on the Brave moon rental program, please consult <a href="https://wiki.braveineve.com/member/alliance/industry/moon-rental" target="_blank">this wiki page</a>.</p>
+        <p>For more information on the Brave moon rental program, please consult <a href="https://wiki.bravecollective.com/member/alliance/industry/moon-rental" target="_blank">this wiki page</a>.</p>
 
         <div class="row">
 
