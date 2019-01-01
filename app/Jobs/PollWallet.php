@@ -198,7 +198,7 @@ class PollWallet implements ShouldQueue
                     }
 
                     // If there is any money left to apply to the donator's balance after paying other recipients.
-                    if ($transaction->amount > 0)
+                    if ($transaction->amount > 1)
                     {
                         // Record this transaction in the payments table.
                         $payment = new Payment;
